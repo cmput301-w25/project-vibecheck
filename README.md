@@ -7,7 +7,7 @@
 | Mohammed Al Robiay | malrobia | moeongit     |
 | Seeratpreet Kaur | seeratpr | seeratkaursamra     |
 | Shza El Maadawy | shza | SamyKader     |
-| [Full Name] | [CCID] | [@username]     |
+| Joel Omari | mwananko | Joel-III     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 
