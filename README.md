@@ -1,11 +1,11 @@
-# CMPUT 301 W25 - Team [Team Name]
+# CMPUT 301 W25 - Team VibeCheck
 
 ## Team Members
 
 | Name        | CCID   | GitHub Username |
 | ----------- | ------ | --------------- |
 | Mohammed Al Robiay | malrobia | moeongit     |
-| [Full Name] | [CCID] | [@username]     |
+| Seeratpreet Kaur | seeratpr | seeratkaursamra     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
