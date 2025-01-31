@@ -8,7 +8,7 @@
 | Seeratpreet Kaur | seeratpr | seeratkaursamra     |
 | Shza El Maadawy | shza | SamyKader     |
 | Joel Omari | mwananko | Joel-III     |
-| [Full Name] | [CCID] | [@username]     |
+| Oliver Moore | ormoore | OliverMoore13     |
 | [Full Name] | [CCID] | [@username]     |
 
 ## Project Description
