@@ -9,7 +9,7 @@
 | Shza El Maadawy | shza | SamyKader     |
 | Joel Omari | mwananko | Joel-III     |
 | Oliver Moore | ormoore | OliverMoore13     |
-| [Full Name] | [CCID] | [@username]     |
+| Titobiloluwa Adeniji | titobilo | tadeniji3     |
 
 ## Project Description
 
