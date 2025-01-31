@@ -6,7 +6,7 @@
 | ----------- | ------ | --------------- |
 | Mohammed Al Robiay | malrobia | moeongit     |
 | Seeratpreet Kaur | seeratpr | seeratkaursamra     |
-| [Full Name] | [CCID] | [@username]     |
+| Shza El Maadawy | shza | SamyKader     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
