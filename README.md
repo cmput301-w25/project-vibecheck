@@ -29,7 +29,7 @@
 
 ## Documentation
 
-- [https://github.com/cmput301-w25/project-vibecheck/wiki]
+- https://github.com/cmput301-w25/project-vibecheck/wiki
 - [Scrum Board]
 - [UI Mockups]
 - [UML]
