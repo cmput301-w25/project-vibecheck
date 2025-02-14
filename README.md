@@ -31,5 +31,5 @@
 
 - https://github.com/cmput301-w25/project-vibecheck/wiki
 - https://github.com/orgs/cmput301-w25/projects/82
-- [UI Mockups]
+- https://www.figma.com/design/Ah7n65odNQhdtwgjkjVUDx/VibeCheck?node-id=0-1&p=f&t=6S4NWGgf3VRJZQXU-0
 - [UML]
