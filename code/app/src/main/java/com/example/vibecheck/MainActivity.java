@@ -24,9 +24,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // ✅ Initialize network checker
         networkChecker = new NetworkStatusChecker(this);
-        networkChecker.startChecking(); // ✅ Make sure this is running!
+        networkChecker.startChecking();
     }
 
     @Override
