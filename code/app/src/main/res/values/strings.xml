@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">VibeCheck</string>
+    <string-array name="mood_options">
+        <item>Anger</item>
+        <item>Confusion</item>
+        <item>Disgust</item>
+        <item>Fear</item>
+        <item>Happiness</item>
+        <item>Sadness</item>
+        <item>Shame</item>
+        <item>Surprise</item>
+    </string-array>
+
+    <string-array name="social_options">
+        <item>Alone</item>
+        <item>One-to-One</item>
+        <item>Small Group</item>
+        <item>Large Group</item>
+    </string-array>
 </resources>
