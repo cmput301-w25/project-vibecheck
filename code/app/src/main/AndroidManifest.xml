@@ -12,15 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VibeCheck"
         tools:targetApi="31">
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Add Mood Event Activity -->
+        <activity
+            android:name=".AddMoodEventActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

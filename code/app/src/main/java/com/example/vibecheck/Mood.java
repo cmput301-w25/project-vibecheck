@@ -4,27 +4,26 @@ import java.util.Date;
 
 public class Mood {
 
-    public enum MoodType {
+    public enum MoodState {
         // Represents various emotional states a user can have
         ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
     }
 
-    public enum SocialContext {
+    public enum SocialSituation {
         // Describes the social setting when the mood was recorded
         ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE
     }
 
     private Date timestamp;
-    private MoodType moodType;
-    private String moodTrigger;
-    private SocialContext socialContext;
-    private String moodDescription;
+    private MoodState moodState;
+    private String trigger;
+    private SocialSituation socialSituation;
+    private String description;
     private byte[] image;
-
-    private int maxImageSize = 65536;
+    private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
-    private String userHandle;
+    private String username;
     private String documentId;
 
     /**
@@ -34,14 +33,14 @@ public class Mood {
         // Default constructor needed for Firebase auto-mapping
     }
 
-    public Mood(MoodType moodType) {
+    public Mood(MoodState moodState) {
         this.timestamp = new Date();
-        this.moodType = moodType;
+        this.moodState = moodState;
     }
 
-    public Mood(Date timestamp, MoodType moodType) {
+    public Mood(Date timestamp, MoodState moodState) {
         this.timestamp = timestamp;
-        this.moodType = moodType;
+        this.moodState = moodState;
     }
 
     public String getDocumentId() {
@@ -60,50 +59,42 @@ public class Mood {
         this.timestamp = timestamp;
     }
 
-    public MoodType getMoodType() {
-        return moodType;
+    public MoodState getMoodState() {
+        return moodState;
     }
 
-    public void setMoodType(MoodType moodType) {
-        this.moodType = moodType;
+    public void setMoodState(MoodState moodState) {
+        this.moodState = moodState;
     }
 
-    public String getMoodTrigger() {
-        return moodTrigger;
+    public String getTrigger() {
+        return trigger;
     }
 
-    public void setMoodTrigger(String moodTrigger) {
-        this.moodTrigger = moodTrigger;
+    public void setTrigger(String trigger) {
+        this.trigger = trigger;
     }
 
-    public SocialContext getSocialContext() {
-        return socialContext;
+    public SocialSituation getSocialSituation() {
+        return socialSituation;
     }
 
-    public void setSocialContext(SocialContext socialContext) {
-        this.socialContext = socialContext;
+    public void setSocialSituation(SocialSituation socialSituation) {
+        this.socialSituation = socialSituation;
     }
 
-    public String getMoodDescription() {
-        return moodDescription;
+    public String getDescription() {
+        return description;
     }
 
     /**
      * Assigns a description to the mood while ensuring it follows length constraints.
      */
-    public void setMoodDescription(String moodDescription) {
-        if (moodDescription != null && (moodDescription.length() > 20 || moodDescription.split("\\s+").length > 3)) {
+    public void setDescription(String description) {
+        if (description != null && (description.length() > 20 || description.split("\\s+").length > 3)) {
             throw new IllegalArgumentException("Description must not exceed 20 characters or 3 words.");
         }
-        this.moodDescription = moodDescription;
-    }
-
-    public int getMaxImageSize() {
-        return maxImageSize;
-    }
-
-    public void setMaxImageSize(int maxImageSize) {
-        this.maxImageSize = maxImageSize;
+        this.description = description;
     }
 
     public byte[] getImage() {
@@ -114,7 +105,7 @@ public class Mood {
      * Sets the mood image while ensuring it adheres to the size limit.
      */
     public void setImage(byte[] image) {
-        if (image != null && image.length > maxImageSize) {
+        if (image != null && image.length > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("Image must be under 65536 bytes.");
         }
         this.image = image;
@@ -136,22 +127,22 @@ public class Mood {
         this.longitude = longitude;
     }
 
-    public String getUserHandle() {
-        return userHandle;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserHandle(String userHandle) {
-        this.userHandle = userHandle;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
         return "Mood{" +
                 "timestamp=" + timestamp +
-                ", moodType=" + moodType +
-                ", moodTrigger='" + moodTrigger + '\'' +
-                ", socialContext=" + socialContext +
-                ", moodDescription='" + moodDescription + '\'' +
+                ", moodState=" + moodState +
+                ", trigger='" + trigger + '\'' +
+                ", socialSituation=" + socialSituation +
+                ", description='" + description + '\'' +
                 ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
