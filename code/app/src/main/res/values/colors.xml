@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<color name="black">#FF000000</color>
+<color name="white">#FFFFFFFF</color>
+<color name="login_white">#FCF9F9</color>
+<color name="login_light_grey">#EFE9E9</color>
+<color name="login_black">#000000</color>
+<color name="login_blue">#ADD0F1</color>
+<color name="login_pink">#FCC2F6</color>
+<color name="login_pink_dark">#FF92F0</color>
 </resources>
