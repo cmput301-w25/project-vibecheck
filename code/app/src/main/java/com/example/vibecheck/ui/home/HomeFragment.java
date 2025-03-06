@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.ass1.navviewsteal.databinding.FragmentHomeBinding;
+import com.example.vibecheck.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
