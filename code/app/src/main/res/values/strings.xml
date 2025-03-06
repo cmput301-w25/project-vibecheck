@@ -17,4 +17,11 @@
         <item>Small Group</item>
         <item>Large Group</item>
     </string-array>
+
+    <!-- Navigation menu strings -->
+    <string name="title_home">Home</string>
+    <string name="title_history">History</string>
+    <string name="title_post">Post</string>
+    <string name="title_map">Map</string>
+    <string name="title_profile">Profile</string>
 </resources>
