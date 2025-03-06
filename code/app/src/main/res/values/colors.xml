@@ -8,4 +8,13 @@
 <color name="login_blue">#ADD0F1</color>
 <color name="login_pink">#FCC2F6</color>
 <color name="login_pink_dark">#FF92F0</color>
+<color name="home_background_blue">#D4EAFF</color>
+    <color name="sadness_blue">#87B9E8</color>
+    <color name="fear_purple">#A27FA3</color>
+    <color name="happiness_yellow">#E7D976</color>
+    <color name="shame_pink">#D3A8C6</color>
+    <color name="surprise_orange">#E79650</color>
+    <color name="confusion_grey">#FFFEFE</color>
+    <color name="anger_red">#D26969</color>
+    <color name="disgust_green">#9EB694</color>
 </resources>
