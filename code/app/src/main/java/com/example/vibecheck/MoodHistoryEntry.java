@@ -23,4 +23,11 @@ public class MoodHistoryEntry implements Comparable<MoodHistoryEntry>{
     public int compareTo(MoodHistoryEntry entry) {
         return this.getEntry().getKey().getTimestamp().compareTo(entry.getEntry().getKey().getTimestamp());
     }
+
+    public Mood getMood(){
+        return this.getEntry().getKey();
+    }
+
+
+
 }

@@ -51,8 +51,12 @@ public class MoodHistory implements Serializable {
         }
     }
 
-    public void sortByDate(){
+    public void sortByDateReverse(){
         Collections.reverse(moodList);
+    }
+
+    public void sortByDate(){
+        Collections.sort(moodList);
     }
 
     public void filterByMood(Mood.MoodState state){
