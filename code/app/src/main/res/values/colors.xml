@@ -12,4 +12,16 @@
     <color name="dark_blue">#0000FF</color>
     <color name="light_gray">#F0F0F0</color>
     <color name="gray">#808080</color>
+    <color name="dark_gray" />
+
+    <!-- Mood colours -->
+    <color name="anger">#D9534F</color>
+    <color name="confusion">#AAAAAA</color>
+    <color name="disgust">#A0C080</color>
+    <color name="fear">#9975B9</color>
+    <color name="happiness">#F9E79F</color>
+    <color name="sadness">#78A7D1</color>
+    <color name="shame">#D49AC8</color>
+    <color name="surprise">#E5A25D</color>
+    <color name="boredom">#BFBFBF</color>
 </resources>

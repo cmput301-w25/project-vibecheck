@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue"
-    tools:context=".HomeActivity">
+    tools:context=".ui.home.HomeFragment">
 
     <!-- Top Navigation Bar -->
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="4dp"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:background="@color/white"
-        android:elevation="4dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- App Name -->
         <TextView
@@ -23,36 +26,36 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="VibeCheck"
+            android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textStyle="bold" />
 
         <!-- Search Icon -->
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/search_icon"
+            android:contentDescription="Search"
             android:padding="5dp"
-            android:contentDescription="Search"/>
+            android:src="@drawable/search_icon" />
 
         <!-- Filter Icon -->
         <ImageView
             android:id="@+id/filter_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/filter_icon"
+            android:contentDescription="Filter"
             android:padding="5dp"
-            android:contentDescription="Filter"/>
+            android:src="@drawable/filter_icon" />
 
         <!-- Notification Icon -->
         <ImageView
             android:id="@+id/notification_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/notification_icon"
+            android:contentDescription="Notifications"
             android:padding="5dp"
-            android:contentDescription="Notifications"/>
+            android:src="@drawable/notification_icon" />
     </LinearLayout>
 
     <!-- RecyclerView for Feed -->

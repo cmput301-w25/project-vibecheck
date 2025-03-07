@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:cardCornerRadius="12dp"
-    android:cardElevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,14 +21,12 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- android:src="@drawable/circle_profile_icon" PLACEHOLDER -->
             <ImageView
                 android:id="@+id/user_profile_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/circle_profile_icon"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circle_profile_icon"
                 android:contentDescription="User Profile"/>
 
             <LinearLayout
@@ -41,28 +39,69 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="user1"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:hint="Username"/>
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location"
                     android:textSize="12sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/gray"
+                    android:hint="Location"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Mood Post Content -->
-        <View
+        <!-- Mood Post Container (Background Color Set Dynamically) -->
+        <RelativeLayout
+            android:id="@+id/mood_post_container"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@color/light_gray"
-            android:id="@+id/mood_post_container"/>
+            android:padding="0dp"
+            android:background="@color/white">
+
+            <!-- Mood Emoji (Top-Right Corner) -->
+            <TextView
+                android:id="@+id/moodEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="😃"
+                android:textSize="18sp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="6dp"/>
+
+            <!-- Mood Text Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <!-- Mood Trigger Text  -->
+                <TextView
+                    android:id="@+id/moodTriggerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:hint="Trigger"/>
+
+                <!-- Mood Description Text -->
+                <TextView
+                    android:id="@+id/moodDescriptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/dark_gray"
+                    android:hint="Mood Description"/>
+            </LinearLayout>
+        </RelativeLayout>
 
         <!-- Like and Comment Buttons -->
         <LinearLayout
