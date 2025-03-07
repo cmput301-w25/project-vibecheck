@@ -56,8 +56,6 @@ public class MoodFilterFragment extends DialogFragment {
         CheckBox surpriseBox = view.findViewById(R.id.surprise_box);
         CheckBox boredomBox = view.findViewById(R.id.boredom_box);
 
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         return builder

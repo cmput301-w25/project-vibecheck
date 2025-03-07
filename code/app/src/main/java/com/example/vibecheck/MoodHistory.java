@@ -11,7 +11,7 @@ public class MoodHistory implements Serializable {
 
     private ArrayList<MoodHistoryEntry> moodList = new ArrayList<>();
     private ArrayList<MoodHistoryEntry> filteredMoodList = new ArrayList<>();
-    private User profile;
+    private String username;
 
     public void addMoodEvent(Mood moodEvent){
         MoodHistoryEntry entry = new MoodHistoryEntry(moodEvent);
@@ -23,8 +23,8 @@ public class MoodHistory implements Serializable {
         moodList.remove(entry);
     }
 
-    public MoodHistory(User profile, ArrayList<MoodHistoryEntry> moodList){
-        this.profile = profile;
+    public MoodHistory(String username, ArrayList<MoodHistoryEntry> moodList){
+        this.username = username;
         this.moodList = moodList;
         filteredMoodList = moodList;
     }
@@ -47,12 +47,12 @@ public class MoodHistory implements Serializable {
         this.moodList = moodList;
     }
 
-    public User getProfile() {
-        return profile;
+    public String getUsername() {
+        return username;
     }
 
-    public void setProfile(User profile) {
-        this.profile = profile;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     //TODO: delete if not used

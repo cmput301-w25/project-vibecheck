@@ -36,36 +36,15 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         sortButton = findViewById(R.id.mood_history_sort_button);
         filterButton = findViewById(R.id.mood_history_filter_button);
 
-        Mood test1 = new Mood(Mood.MoodState.ANGER);
-        test1.setDescription("Angry");
-        test1.setLocation(34.0,21.0);
-        test1.setUsername("Phil");
-        test1.setTimestamp(new Date(2323223232L));
-
-        Mood test2 = new Mood(Mood.MoodState.FEAR);
-        test2.setDescription("Fearful");
-        test2.setTimestamp(new Date(3323223232L));
-
         dataList = new ArrayList<MoodHistoryEntry>();
 
-        dataList.add(new MoodHistoryEntry(test1));
-        dataList.add(new MoodHistoryEntry(test2));
-
-        User testUser = new User("test","pass");
-
-        history = new MoodHistory(testUser,dataList);
+        history = new MoodHistory("placeholder",dataList);
 
 
 
         moodEntryList = findViewById(R.id.mood_history_list);
         moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
         moodEntryList.setAdapter(moodHistoryEntryAdapter);
-        //<Mood.MoodState[]> states1 = {Mood.MoodState.FEAR,Mood.MoodState.ANGER};
-        //history.filterByMood(states1);
-        moodHistoryEntryAdapter.clear();
-        moodHistoryEntryAdapter.addAll(history.getFilteredMoodList());
-        moodHistoryEntryAdapter.notifyDataSetChanged();
-
 
         sortButton.setOnClickListener(v -> {
             toggleSort = !toggleSort;
