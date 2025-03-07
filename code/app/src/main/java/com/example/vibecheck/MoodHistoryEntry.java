@@ -19,6 +19,10 @@ public class MoodHistoryEntry implements Comparable<MoodHistoryEntry>{
         this.entry.setValue(visiblity);
     }
 
+    public Boolean getVisiblity(){
+        return entry.getValue();
+    }
+
     @Override
     public int compareTo(MoodHistoryEntry entry) {
         return this.getEntry().getKey().getTimestamp().compareTo(entry.getEntry().getKey().getTimestamp());
