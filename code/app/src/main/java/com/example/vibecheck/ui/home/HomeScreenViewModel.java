@@ -18,12 +18,18 @@ import com.google.firebase.firestore.EventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View model for the home screen.
+ */
 public class HomeScreenViewModel extends ViewModel {
 
     private final MutableLiveData<List<Mood>> moodPosts;
     private final FirebaseFirestore db;
     private final CollectionReference moodsCollection;
 
+    /**
+     * Constructor for the view model.
+     */
     public HomeScreenViewModel() {
         moodPosts = new MutableLiveData<>();
         db = FirebaseFirestore.getInstance();
@@ -33,10 +39,18 @@ public class HomeScreenViewModel extends ViewModel {
         listenForMoodUpdates();
     }
 
+    /**
+     * Get the mood posts.
+     * @return
+     *      returns the mood posts
+     */
     public LiveData<List<Mood>> getMoodPosts() {
         return moodPosts;
     }
 
+    /**
+     * Listen for real time updates from firestore.
+     */
     private void listenForMoodUpdates() {
         moodsCollection.orderBy("timestamp")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {

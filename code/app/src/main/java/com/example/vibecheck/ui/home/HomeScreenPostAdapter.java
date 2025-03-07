@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Adapter for the home screen recycler view. Displays mood posts.
+ */
 public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAdapter.HomeScreenPostViewHolder> {
 
     private List<Mood> moodPosts = new ArrayList<>();
@@ -26,6 +29,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     private static final Map<Mood.MoodState, String> moodColors = new HashMap<>();
     private static final Map<Mood.MoodState, String> moodEmojis = new HashMap<>();
 
+    /**
+     * Initialize the mood state to color mapping.
+     */
     static {
         moodColors.put(Mood.MoodState.CONFUSION, "@colors/confusion");//Gray
         moodColors.put(Mood.MoodState.ANGER, "@colors/anger");    //Red
@@ -48,12 +54,25 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         moodEmojis.put(Mood.MoodState.BOREDOM, "😴");
     }
 
-    //Update mood post data in the adapter
+    /**
+     * Set the mood posts in the adapter.
+     * @param newPosts
+     *      These are the new posts to add to the adapter.
+     */
     public void setMoodPosts(List<Mood> newPosts) {
         this.moodPosts = newPosts;
         notifyDataSetChanged();
     }
 
+    /**
+     * Called when RecyclerView needs a new {@link HomeScreenPostViewHolder} of the given type to represent
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return
+     *      returns a new {@link HomeScreenPostViewHolder}
+     */
     @NonNull
     @Override
     public HomeScreenPostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,6 +80,12 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         return new HomeScreenPostViewHolder(view);
     }
 
+    /**
+     * Used to bind mood info to views
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(@NonNull HomeScreenPostViewHolder holder, int position) {
         Mood mood = moodPosts.get(position);
@@ -82,15 +107,27 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         holder.moodEmoji.setText(moodEmojis.getOrDefault(mood.getMoodState(), "🙂"));
     }
 
+    /**
+     * Returns the total number of items in the data set held by the adapter.
+     * @return
+     */
     @Override
     public int getItemCount() {
         return moodPosts.size();
     }
 
+    /**
+     * ViewHolder for the home screen recycler view.
+     */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
         TextView usernameText, moodTriggerText, moodDescriptionText, moodEmoji;
         RelativeLayout moodPostContainer;
 
+        /**
+         * Constructor for the ViewHolder
+         * @param itemView
+         *      The view to be displayed
+         */
         public HomeScreenPostViewHolder(@NonNull View itemView) {
             super(itemView);
             usernameText = itemView.findViewById(R.id.username);
