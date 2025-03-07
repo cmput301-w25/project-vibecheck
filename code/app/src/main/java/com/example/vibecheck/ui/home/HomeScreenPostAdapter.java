@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vibecheck.Mood;
@@ -30,19 +31,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     private static final Map<Mood.MoodState, String> moodEmojis = new HashMap<>();
 
     /**
-     * Initialize the mood state to color mapping.
+     * Initialize mood state emoji mapping
      */
     static {
-        moodColors.put(Mood.MoodState.CONFUSION, "@colors/confusion");//Gray
-        moodColors.put(Mood.MoodState.ANGER, "@colors/anger");    //Red
-        moodColors.put(Mood.MoodState.DISGUST, "@colors/disgust");  //Green
-        moodColors.put(Mood.MoodState.FEAR, "@colors/fear");     //Purple
-        moodColors.put(Mood.MoodState.HAPPINESS, "@colors/happiness");//Yellow
-        moodColors.put(Mood.MoodState.SADNESS, "@colors/sadness");  //Blue
-        moodColors.put(Mood.MoodState.SHAME, "@colors/shame");    //Pink
-        moodColors.put(Mood.MoodState.SURPRISE, "@colors/surprise"); //Orange
-        moodColors.put(Mood.MoodState.BOREDOM, "@colors/boredom");  // Gray
-
         moodEmojis.put(Mood.MoodState.ANGER, "😡");
         moodEmojis.put(Mood.MoodState.CONFUSION, "😕");
         moodEmojis.put(Mood.MoodState.DISGUST, "🤢");
@@ -100,8 +91,8 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No description");
 
         //Change background color based on mood state
-        String color = moodColors.getOrDefault(mood.getMoodState(), "#FFFFFF");//Default White
-        holder.moodPostContainer.setBackgroundColor(Color.parseColor(color));
+        int colorResId = getMoodColourResourceID(mood.getMoodState());
+        holder.moodPostContainer.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), colorResId));
 
         //Set emoji based on mood state
         holder.moodEmoji.setText(moodEmojis.getOrDefault(mood.getMoodState(), "🙂"));
@@ -135,6 +126,22 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);
+        }
+    }
+
+    private int getMoodColourResourceID(Mood.MoodState moodState) {
+        if (moodState == null) return R.color.white; // Default fallback color
+        switch (moodState) {
+            case ANGER: return R.color.anger;
+            case CONFUSION: return R.color.confusion;
+            case DISGUST: return R.color.disgust;
+            case FEAR: return R.color.fear;
+            case HAPPINESS: return R.color.happiness;
+            case SADNESS: return R.color.sadness;
+            case SHAME: return R.color.shame;
+            case SURPRISE: return R.color.surprise;
+            case BOREDOM: return R.color.boredom;
+            default: return R.color.white;
         }
     }
 }
