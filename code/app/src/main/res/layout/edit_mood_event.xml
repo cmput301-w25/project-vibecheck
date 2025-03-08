@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue"
+    android:padding="20dp">
+
+    <!-- ❌ Cancel Button -->
+    <ImageView
+        android:id="@+id/cancel_button"
+        android:layout_width="49dp"
+        android:layout_height="46dp"
+        android:clickable="true"
+        android:contentDescription="Cancel"
+        android:focusable="true"
+        android:src="@drawable/cancel_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ✅ Save Button -->
+    <ImageView
+        android:id="@+id/save_button"
+        android:layout_width="52dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:contentDescription="Save Mood"
+        android:focusable="true"
+        android:src="@drawable/save_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 📝 Title: "Edit My Mood" -->
+    <TextView
+        android:id="@+id/edit_mood_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit My Mood"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/cancel_button"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"/>
+
+    <!-- 📅 Date Label -->
+
+    <!-- 📅 Date Value (Non-Editable) -->
+
+    <!-- 😊 Mood Type (Dropdown/Spinner) -->
+    <TextView
+        android:id="@+id/mood_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingTop="12dp"
+        android:text="Date:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_mood_title" />
+
+    <TextView
+        android:id="@+id/mood_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingStart="6dp"
+        android:text="N/A"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/mood_date_label"
+        app:layout_constraintTop_toTopOf="@id/mood_date_label" />
+
+    <Spinner
+        android:id="@+id/mood_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/mood_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 🔹 Trigger Label -->
+    <TextView
+        android:id="@+id/mood_trigger_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trigger (optional):"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/mood_type_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingTop="14dp"/>
+
+    <!-- 🔹 Trigger Input -->
+    <EditText
+        android:id="@+id/mood_trigger_input"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter trigger (optional)"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/mood_trigger_label"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- ➕ Add Image Button -->
+    <ImageView
+        android:id="@+id/add_image_button"
+        android:layout_width="182dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="14dp"
+        android:clickable="true"
+        android:contentDescription="Add Image"
+        android:focusable="true"
+        android:src="@drawable/add_post_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mood_trigger_input" />
+
+    <!-- 📝 Mood Description (Editable) -->
+    <EditText
+        android:id="@+id/mood_description_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter description"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_corners"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@id/add_image_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
+
+    <!-- 👥 Social Situation Dropdown -->
+    <Spinner
+        android:id="@+id/social_situation_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/mood_description_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
+
+    <!-- 🗑️ Delete Button -->
+    <ImageView
+        android:id="@+id/delete_button"
+        android:layout_width="73dp"
+        android:layout_height="91dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:contentDescription="Delete Mood"
+        android:focusable="true"
+        android:src="@drawable/delete_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

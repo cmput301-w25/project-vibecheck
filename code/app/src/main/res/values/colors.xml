@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="black">#FF000000</color>
-<color name="white">#FFFFFFFF</color>
-<color name="login_white">#FCF9F9</color>
-<color name="login_light_grey">#EFE9E9</color>
-<color name="login_black">#000000</color>
-<color name="login_blue">#ADD0F1</color>
-<color name="login_pink">#FCC2F6</color>
-<color name="login_pink_dark">#FF92F0</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="login_white">#FCF9F9</color>
+    <color name="login_light_grey">#EFE9E9</color>
+    <color name="login_black">#000000</color>
+    <color name="login_blue">#ADD0F1</color>
+    <color name="login_pink">#FCC2F6</color>
+    <color name="login_pink_dark">#FF92F0</color>
+    <color name="light_blue">#ADD0F1</color>
+    <color name="dark_blue">#0000FF</color>
+    <color name="light_gray">#F0F0F0</color>
+    <color name="gray">#808080</color>
+    <color name="dark_gray">#404040</color>"/>
+
+    <!-- History layout colours -->
+    <color name="home_background_blue">#D4EAFF</color>
+    <color name="sadness_blue">#87B9E8</color>
+    <color name="fear_purple">#A27FA3</color>
+    <color name="happiness_yellow">#E7D976</color>
+    <color name="shame_pink">#D3A8C6</color>
+    <color name="surprise_orange">#E79650</color>
+    <color name="confusion_grey">#FFFEFE</color>
+    <color name="anger_red">#D26969</color>
+    <color name="disgust_green">#9EB694</color>
+    <color name="heart_red">#F43756</color>
+
+    <!-- Mood colours -->
+    <color name="anger">#D9534F</color>
+    <color name="confusion">#AAAAAA</color>
+    <color name="disgust">#A0C080</color>
+    <color name="fear">#9975B9</color>
+    <color name="happiness">#F9E79F</color>
+    <color name="sadness">#78A7D1</color>
+    <color name="shame">#D49AC8</color>
+    <color name="surprise">#E5A25D</color>
+    <color name="boredom">#BFBFBF</color>
 </resources>
