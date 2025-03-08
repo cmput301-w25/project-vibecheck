@@ -11,4 +11,19 @@
         android:label="@string/title_home"
         tools:layout="@layout/home_screen" />
 
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.example.vibecheck.ui.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/login" />
+
+    <fragment
+        android:id="@+id/navigation_signup"
+        android:name="com.example.vibecheck.ui.signup.SignupFragment"
+        android:label="@string/title_signup"
+        tools:layout="@layout/signup" />
+
+
+
+
 </navigation>
