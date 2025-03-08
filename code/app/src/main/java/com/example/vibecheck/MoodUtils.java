@@ -64,7 +64,7 @@ public class MoodUtils {
      * @param timestamp
      * @return
      */
-    private String formatTimestamp(Timestamp timestamp) {
+    private static String formatTimestamp(Timestamp timestamp) {
         if (timestamp == null) return "Unknown date";
         Date date = timestamp.toDate();
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
