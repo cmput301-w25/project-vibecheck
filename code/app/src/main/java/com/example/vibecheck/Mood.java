@@ -1,6 +1,8 @@
 package com.example.vibecheck;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Mood {
 
@@ -146,5 +148,33 @@ public class Mood {
                 ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
+    }
+
+    /**
+     * Formats the timestamp for display.
+     * @return
+     *      Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hour:min am/pm".
+     */
+    public String getFormattedTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
+        return sdf.format(timestamp);
+    }
+
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+     */
+    public String socialSituationToString() {
+        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
+    }
+
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+     */
+    public String moodStateToString() {
+        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
     }
 }

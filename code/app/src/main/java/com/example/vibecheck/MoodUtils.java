@@ -28,14 +28,12 @@ public class MoodUtils {
         }
     }
 
-
     /**
      * Returns the actual color (int) for a given MoodState using ContextCompat.
      */
     public static int getMoodColor(Context context, Mood.MoodState moodState) {
         return ContextCompat.getColor(context, getMoodColourResourceID(moodState));
     }
-
 
     /**
      * Returns the emoji associated with a given MoodState.
