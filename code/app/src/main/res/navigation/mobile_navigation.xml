@@ -9,21 +9,19 @@
         android:id="@+id/navigation_home"
         android:name="com.example.vibecheck.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/home_screen" />
+        tools:layout="@layout/home_screen" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_history"
+            app:destination="@id/navigation_history" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_login"
-        android:name="com.example.vibecheck.ui.login.LoginFragment"
-        android:label="@string/title_login"
-        tools:layout="@layout/login" />
-
-    <fragment
-        android:id="@+id/navigation_signup"
-        android:name="com.example.vibecheck.ui.signup.SignupFragment"
-        android:label="@string/title_signup"
-        tools:layout="@layout/signup" />
-
-
-
-
+        android:id="@+id/navigation_history"
+        android:name="com.example.vibecheck.ui.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/mood_history" >
+        <action
+            android:id="@+id/action_navigation_history_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

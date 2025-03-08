@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private NetworkStatusChecker networkChecker;
     private ActivityMainBinding binding;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+
 
         //Bottom navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
