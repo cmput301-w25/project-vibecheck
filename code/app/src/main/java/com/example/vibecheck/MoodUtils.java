@@ -2,12 +2,7 @@ package com.example.vibecheck;
 
 import android.content.Context;
 import androidx.core.content.ContextCompat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.Date;
-
 import com.example.vibecheck.Mood;
-import com.google.firebase.Timestamp;
 
 /**
  * Utility class for colour-coding moods and emojis.
@@ -57,17 +52,5 @@ public class MoodUtils {
             case BOREDOM: return "😴";
             default: return "🙂";
         }
-    }
-
-    /**
-     * Formats a Timestamp into a readable date string.
-     * @param timestamp
-     * @return
-     */
-    private static String formatTimestamp(Timestamp timestamp) {
-        if (timestamp == null) return "Unknown date";
-        Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
-        return sdf.format(date);
     }
 }
