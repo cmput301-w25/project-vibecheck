@@ -28,6 +28,9 @@
             android:name=".AddMoodEventActivity"
             android:exported="true" />
 
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".HomeActivity" />
     </application>
 
 </manifest>

@@ -1,32 +1,37 @@
 package com.example.vibecheck;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.example.vibecheck.NetworkStatusChecker;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     private NetworkStatusChecker networkChecker;
-    private Button signupButton;
     private Button loginButton;
-    private String username;
-    private String password;
-    private String confirmPassword;
+    private EditText editUsername;
+    private EditText editPassword;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         EdgeToEdge.enable(this);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
+        
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login_container), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -36,46 +41,42 @@ public class MainActivity extends AppCompatActivity {
         networkChecker = new NetworkStatusChecker(this);
         networkChecker.startChecking();
 
+        // Navigate to SignupActivity when signup link is clicked
         TextView goToSignup = findViewById(R.id.link_to_signup);
-        goToSignup.setOnClickListener( g -> {
-            setContentView(R.layout.signup);
-
-            signupButton = findViewById(R.id.signup_button);
-            signupButton.setOnClickListener( s -> {
-                if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                    throw new IllegalArgumentException("Must fill all of the fields!");
-                }
-                else if (!(password.equals(confirmPassword))) {
-                    throw new IllegalArgumentException("Password and confirm password must match!");
-                } else {
-                    setContentView(R.layout.activity_main);
-                }
-            });
-
-            EditText editSignupUsername = findViewById(R.id.edit_text_signup_username);
-            EditText editSignupPassword = findViewById(R.id.edit_text_signup_password);
-            EditText editConfirmPassword = findViewById(R.id.edit_text_confirm_password);
-            username = editSignupUsername.getText().toString();
-            password = editSignupPassword.getText().toString();
-            confirmPassword = editConfirmPassword.getText().toString();
+        goToSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
 
+        // Initialize login UI elements
+        editUsername = findViewById(R.id.edit_text_login_username);
+        editPassword = findViewById(R.id.edit_text_login_password);
         loginButton = findViewById(R.id.login_button);
-        loginButton.setOnClickListener( l -> {
-            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                throw new IllegalArgumentException("Must fill all of the fields!");
-            }
-            else if (!(password.equals(confirmPassword))) {
-                throw new IllegalArgumentException("Password and confirm password must match!");
+
+        loginButton.setOnClickListener(v -> {
+            String email = editUsername.getText().toString().trim();
+            String password = editPassword.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
-                setContentView(R.layout.activity_main);
+                // Authenticate with Firebase
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                // Login successful
+                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                                // Navigate to the main app screen
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // Login failed
+                                Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
-
-        EditText editUsername = findViewById(R.id.edit_text_login_username);
-        EditText editPassword = findViewById(R.id.edit_text_login_password);
-        username = editUsername.getText().toString();
-        password = editPassword.getText().toString();
     }
 
     @Override
