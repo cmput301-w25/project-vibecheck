@@ -30,6 +30,8 @@ public class UserMoodDisplayFragment extends Fragment{
     private ListenerRegistration moodListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private androidx.cardview.widget.CardView moodTypeCard, moodDescriptionCard;
+
     /**
      * Called to have the fragment instantiate its user interface view.
      * @param inflater The LayoutInflater object that can be used to inflate
@@ -56,6 +58,8 @@ public class UserMoodDisplayFragment extends Fragment{
         moodDescription = view.findViewById(R.id.mood_description);
         socialSituation = view.findViewById(R.id.social_situation);
         backButton = view.findViewById(R.id.back_button);
+        moodTypeCard = view.findViewById(R.id.mood_type_card);
+        moodDescriptionCard = view.findViewById(R.id.mood_description_card);
 
         //Get mood event ID from navigation arguments
         String moodEventId = getArguments().getString("moodEventId");
@@ -86,9 +90,20 @@ public class UserMoodDisplayFragment extends Fragment{
                     usernameText.setText(user.getUsername() + "'s Mood");
                     moodDate.setText(mood.getFormattedTimestamp());
                     moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
-                    moodTrigger.setText(mood.getTrigger());
                     moodDescription.setText(mood.getDescription());
-                    socialSituation.setText(mood.socialSituationToString());
+
+                    //Set mood type card and description card colors based on mood state
+                    int moodColor = MoodUtils.getMoodColor(requireContext(), mood.getMoodState());
+                    moodTypeCard.setCardBackgroundColor(moodColor);
+                    moodDescriptionCard.setCardBackgroundColor(moodColor);
+
+                    //Only update trigger and social situation if they are not null or empty
+                    if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
+                        moodTrigger.setText(mood.getTrigger());
+                    }
+                    if (mood.getSocialSituation() != null && !mood.socialSituationToString().trim().isEmpty()) {
+                        socialSituation.setText(mood.socialSituationToString());
+                    }
                 }
             }
         });

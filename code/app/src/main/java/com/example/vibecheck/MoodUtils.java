@@ -13,7 +13,7 @@ public class MoodUtils {
      * Returns the color resource ID for a given MoodState.
      */
     private static int getMoodColourResourceID(Mood.MoodState moodState) {
-        if (moodState == null) return R.color.white; // Default fallback color
+        if (moodState == null) return R.color.white; //Default fallback color
         switch (moodState) {
             case ANGER: return R.color.anger;
             case CONFUSION: return R.color.confusion;
