@@ -26,6 +26,22 @@ import java.util.Map;
 public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAdapter.HomeScreenPostViewHolder> {
 
     private List<Mood> moodPosts = new ArrayList<>();
+    private OnMoodClickListener onMoodClickListener;
+
+    /**
+     * Click listener for mood posts.
+     */
+    public interface OnMoodClickListener {
+        void onMoodClick(String moodEventId, boolean isLoggedUserPost);
+    }
+
+    /**
+     * Constructor for the adapter.
+     * @param listener
+     */
+    public HomeScreenPostAdapter(OnMoodClickListener listener) {
+        this.onMoodClickListener = listener;
+    }
 
     /**
      * Set the mood posts in the adapter.
@@ -77,6 +93,19 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
 
         //Set emoji based on mood state
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
+
+        /*
+    FUNCTIONALITY FOR CLICKING ON MOOD POSTS IN HOME FEED (TO VIEW MOOD EVENTS)
+    COMMENTED OUT FOR NOW BECAUSE IDK IF WE HAVE A FUNCTION TO GET THE LOGGED IN
+    USER'S USERNAME YET.
+
+        //Handle click on mood post
+        holder.moodPostContainer.setOnClickListener(v -> {
+            boolean isLoggedUserPost = mood.getUsername().equals(GET LOGGED-IN USER"S USERNAME);
+            if (onMoodClickListener != null) {
+                onMoodClickListener.onMoodClick(mood.getDocumentId(), isLoggedUserPost);
+            }
+        });*/
     }
 
     /**

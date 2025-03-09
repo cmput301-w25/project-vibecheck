@@ -13,6 +13,13 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_history"
             app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_home_to_myMoodDisplay"
+            app:destination="@id/myMoodDisplayFragment" />
+
+        <action
+            android:id="@+id/action_home_to_userMoodDisplay"
+            app:destination="@id/userMoodDisplayFragment" />
     </fragment>
 
     <fragment
@@ -24,4 +31,28 @@
             android:id="@+id/action_navigation_history_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+
+    <fragment
+        android:id="@+id/myMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
+        android:label="@string/title_my_mood_event_display"
+        tools:layout="@layout/my_mood_display_view">
+        <action
+            android:id="@+id/action_myMoodDisplayFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_myMoodDisplayFragment_to_navigation_edit_mood_event"
+            app:destination="@id/navigation_EDITMYMOODEVENT,CHANGETHISLATER" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.viewmoodevents.UserMoodDisplayFragment"
+        android:label="@string/title_user_mood_event_display"
+        tools:layout="@layout/user_mood_display_view">
+        <action
+            android:id="@+id/action_userMoodDisplayFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
 </navigation>

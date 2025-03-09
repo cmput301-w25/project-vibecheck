@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.HomeScreenBinding;
 
 /**
@@ -56,11 +59,19 @@ public class HomeFragment extends Fragment {
         //Initialize ViewModel
         homeScreenViewModel = new ViewModelProvider(this).get(HomeScreenViewModel.class);
 
-        // et up RecyclerView
+        //Set up RecyclerView
         RecyclerView recyclerView = binding.recyclerViewFeed;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        homeScreenPostAdapter = new HomeScreenPostAdapter();
+        //Set up adapter, navigation to view mood events
+        homeScreenPostAdapter = new HomeScreenPostAdapter(new HomeScreenPostAdapter.OnMoodClickListener() {
+            @Override
+            public void onMoodClick(String moodEventId, boolean isLoggedUserPost) {
+                navigateToViewMoodEvents(moodEventId, isLoggedUserPost);
+            }
+        });
+
+        //Set adapter
         recyclerView.setAdapter(homeScreenPostAdapter);
 
         //Observe ViewModel changes
@@ -69,6 +80,24 @@ public class HomeFragment extends Fragment {
                 homeScreenPostAdapter.setMoodPosts(moodPosts);
             }
         });
+    }
+
+    /**
+     * Navigate to the view mood events fragment.
+     * @param moodEventId
+     * @param isLoggedUserPost
+     */
+    private void navigateToViewMoodEvents(String moodEventId, boolean isLoggedUserPost) {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        Bundle bundle = new Bundle();
+        bundle.putString("moodEventId", moodEventId);
+
+        //Navigate to view mood events fragment, to my mood or user mood if the username matches the logged in username
+        if (isLoggedUserPost) {
+            navController.navigate(R.id.action_home_to_myMoodDisplay, bundle);
+        } else {
+            navController.navigate(R.id.action_home_to_userMoodDisplay, bundle);
+        }
     }
 
     /**
