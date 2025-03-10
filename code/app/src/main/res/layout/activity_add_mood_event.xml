@@ -2,45 +2,121 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D4EAFF"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Your Mood"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/salsa"
+        android:textColor="@color/black"
+        />
+
 
     <!-- Dropdown for selecting mood -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Mood:" />
-    <Spinner
-        android:id="@+id/dropdown_mood"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/salsa"
+        android:text="Select Mood:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:layout_marginBottom="12dp">
+
+        <Spinner
+            android:id="@+id/dropdown_mood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/dropdown_icon"
+            android:backgroundTint="@color/black" />
+    </RelativeLayout>
 
     <!-- Input for optional trigger -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trigger (optional):" />
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/salsa"
+        android:text="Trigger (optional):"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
     <EditText
         android:id="@+id/input_trigger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter trigger" />
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/login_rounded_rectangle"
+        android:hint="Enter trigger"
+        android:inputType="text"
+        android:padding="8dp" />
 
     <!-- Dropdown for social situation -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Social Situation:" />
-    <Spinner
-        android:id="@+id/dropdown_social"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/salsa"
+        android:text="Social Situation:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:layout_marginBottom="24dp">
+
+        <Spinner
+            android:id="@+id/dropdown_social"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/dropdown_icon"
+            android:backgroundTint="@color/black" />
+    </RelativeLayout>
 
     <!-- Save Button -->
     <Button
         android:id="@+id/button_save_mood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:fontFamily="@font/salsa"
+        android:layout_marginBottom="16dp"
         android:text="Save Mood" />
 
     <!-- Back Button -->
@@ -48,5 +124,8 @@
         android:id="@+id/button_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:fontFamily="@font/salsa"
         android:text="Back" />
 </LinearLayout>
