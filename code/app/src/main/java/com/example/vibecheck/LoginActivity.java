@@ -14,12 +14,43 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import androidx.annotation.NonNull;
 
-public class LoginActivity extends AppCompatActivity {
-    private EditText etEmail, etPassword;
-    private Button btnLogin;
-    private TextView tvSignUp;
-    private FirebaseAuth mAuth;
+/**
+ * LoginActivity handles user login functionality using Firebase Authentication.
+ * <p>
+ * It provides an interface for users to input their email (or account) and password,
+ * and offers navigation to the Sign Up screen if needed.
+ * </p>
+ */
 
+public class LoginActivity extends AppCompatActivity {
+    /**
+     * EditText for user email input.
+     */
+    /**
+     * EditText for user password input.
+     */
+    private EditText etEmail, etPassword;
+    /**
+     * Button to initiate login process.
+     */
+    private Button btnLogin;
+    /**
+     * TextView that acts as a link to the Sign Up activity.
+     */
+    private TextView tvSignUp;
+    /**
+     * Instance of Firebase Authentication.
+     */
+    private FirebaseAuth mAuth;
+    /**
+     * Called when the activity is first created.
+     * <p>
+     * This method initializes the Firebase Authentication instance, binds UI elements,
+     * and sets up click listeners for login and sign up actions.
+     * </p>
+     *
+     * @param savedInstanceState the saved state of the activity, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +67,15 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set click listener for the Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the click event for the login button.
+             * <p>
+             * Validates user input and attempts to sign in using Firebase Authentication.
+             * If login is successful, a success message is shown. Otherwise, an error message is displayed.
+             * </p>
+             *
+             * @param v the view that was clicked
+             */
             @Override
             public void onClick(View v) {
                 // Get input values and remove leading/trailing whitespace
@@ -51,6 +91,11 @@ public class LoginActivity extends AppCompatActivity {
                 // Sign in user with Firebase Authentication
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
+                            /**
+                             * Called when the sign-in task is complete.
+                             *
+                             * @param task the task containing the sign-in result
+                             */
                             @Override
                             public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -72,6 +117,14 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set click listener for the Sign Up link
         tvSignUp.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the click event for the sign-up link.
+             * <p>
+             * Navigates the user to the SignUpActivity to create a new account.
+             * </p>
+             *
+             * @param v the view that was clicked
+             */
             @Override
             public void onClick(View v) {
                 // Navigate to SignUpActivity
