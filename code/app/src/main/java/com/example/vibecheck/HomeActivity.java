@@ -74,7 +74,8 @@ public class HomeActivity extends AppCompatActivity {
 
             } else if (itemId == R.id.navigation_profile) {
                 //Navigate to Profile Activity
-                //navController.navigate(R.id.navigation_profile);
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
                 return true;
             } else {
                 return false;

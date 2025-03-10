@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <!-- Home navigation, some actions may be removable (fragments->Activities) -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.vibecheck.ui.home.HomeFragment"
@@ -32,6 +33,9 @@
         <action
             android:id="@+id/action_navigation_home_to_MoodHistoryActivity"
             app:destination="@id/MoodHistoryActivity" />
+        <action
+            android:id="@+id/action_navigation_home_to_ProfileActivity"
+            app:destination="@id/ProfileActivity" />
     </fragment>
 
     <!-- Add Mood Event Activity -->
@@ -42,12 +46,20 @@
         tools:layout="@layout/activity_add_mood_event">
     </activity>
 
-    <!-- Mood History -->
+    <!-- Mood History Activity -->
     <activity
         android:id="@+id/MoodHistoryActivity"
         android:name="com.example.vibecheck.MoodHistoryActivity"
         android:label="@string/title_mood_history"
         tools:layout="@layout/mood_history">
+    </activity>
+
+    <!-- Profile Activity -->
+    <activity
+        android:id="@+id/ProfileActivity"
+        android:name="com.example.vibecheck.ProfileActivity"
+        android:label="@string/title_profile"
+        tools:layout="@layout/activity_profile">
     </activity>
 
     <!-- Profile, will probably have to make 1 for logged user, and 1 for other users -->
