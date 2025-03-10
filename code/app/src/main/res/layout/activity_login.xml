@@ -43,7 +43,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="21dp"
             android:fontFamily="@font/salsa"
-            android:text="Account"
+            android:text="Email"
             android:textColor="@color/login_black"
             android:textSize="14sp"
             android:textStyle="bold"

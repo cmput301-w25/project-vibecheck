@@ -42,7 +42,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/salsa"
-            android:text="Account"
+            android:text="Email"
             android:textColor="@color/login_black"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -64,13 +64,46 @@
             android:padding="8dp"
             android:textColor="@color/login_black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/signup_password"
+            app:layout_constraintBottom_toTopOf="@+id/username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signup_account" />
 
         <TextView
-            android:id="@+id/signup_password"
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/salsa"
+            android:text="Username"
+            android:textColor="@color/login_black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_username"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_username" />
+
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:autofillHints="username"
+            android:background="@drawable/login_rounded_input"
+            android:ems="10"
+            android:fontFamily="@font/salsa"
+            android:padding="8dp"
+            android:textColor="@color/login_black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/confirm_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <TextView
+            android:id="@+id/confirm_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -80,43 +113,9 @@
             android:textColor="@color/login_black"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_signup_password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_username" />
-
-        <EditText
-            android:id="@+id/edit_text_signup_password"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:autofillHints="password"
-            android:background="@drawable/login_rounded_input"
-            android:ems="10"
-            android:fontFamily="@font/salsa"
-            android:inputType="textPassword"
-            android:padding="8dp"
-            android:textColor="@color/login_black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/confirm_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.50"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signup_password" />
-
-        <TextView
-            android:id="@+id/confirm_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/salsa"
-            android:text="Confirm Password"
-            android:textColor="@color/login_black"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/edit_text_confirm_password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_signup_password"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_username"
             app:layout_constraintVertical_bias="0.50" />
 
         <EditText

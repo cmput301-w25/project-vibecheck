@@ -17,4 +17,15 @@
         <item>Small Group</item>
         <item>Large Group</item>
     </string-array>
+
+    <!-- Navigation menu strings -->
+    <string name="title_home">Home</string>
+    <string name="title_history">History</string>
+    <string name="title_post">Post</string>
+    <string name="title_map">Map</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_user_mood_event_display">User Mood Event Display"</string>
+    <string name="title_my_mood_event_display">My Mood Event Display"</string>
+    <string name="title_add_mood_event">Create Mood Event</string>
+    <string name="title_mood_history">Mood History</string>
 </resources>
