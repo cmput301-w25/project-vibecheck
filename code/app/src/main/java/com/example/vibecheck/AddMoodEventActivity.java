@@ -1,22 +1,30 @@
+/**
+ * AddMoodEventActivity.java
+ *
+ * This activity handles adding a new mood event, allowing the user to select a mood,
+ * specify an optional trigger, and choose a social situation. The selected mood event
+ * is then stored in Firebase Firestore.
+ *
+ * Outstanding Issues:
+ * - Need to add emojis for the dropdown menu
+ */
 package com.example.vibecheck;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
- * Handles adding a new mood event, including selecting mood, optional triggers, and social situations.
+ * Activity for adding a new mood event.
+ * Allows users to select a mood, enter an optional trigger, and choose a social situation.
+ * Saves the data to Firestore upon submission.
  */
 public class AddMoodEventActivity extends AppCompatActivity {
-
     private EditText inputTrigger;
     private Spinner moodDropdown;
     private Spinner socialDropdown;
@@ -24,6 +32,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private Button backButton;
     private FirebaseFirestore db;
 
+    /**
+     * Initializes the activity, sets up UI components, and populates dropdowns.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +47,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
         socialDropdown = findViewById(R.id.dropdown_social);
         saveMoodButton = findViewById(R.id.button_save_mood);
         backButton = findViewById(R.id.button_back);
-
         db = FirebaseFirestore.getInstance();
 
         // Populate Mood Dropdown
@@ -64,7 +75,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Saves the mood event to Firestore.
+     * Saves the mood event to Firestore after validating user input.
+     * Displays a success or failure message.
      */
     private void saveMood() {
         String selectedMood = moodDropdown.getSelectedItem().toString();
@@ -90,6 +102,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
