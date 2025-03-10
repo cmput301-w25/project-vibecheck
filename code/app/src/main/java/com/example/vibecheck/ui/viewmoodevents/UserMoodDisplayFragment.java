@@ -104,7 +104,7 @@ public class UserMoodDisplayFragment extends Fragment{
                 Mood mood = snapshot.toObject(Mood.class);
 
                 if (mood != null) {
-                    usernameText.setText(user.getUsername() + "'s Mood");
+                    usernameText.setText(mood.getUsername() + "'s Mood");
                     moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
                     moodDescription.setText(mood.getDescription());
 

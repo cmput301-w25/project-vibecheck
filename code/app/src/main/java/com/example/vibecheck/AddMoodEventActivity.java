@@ -25,6 +25,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
+
 /**
  * Activity for adding a new mood event.
  * Allows users to select a mood, enter an optional trigger, and choose a social situation.
@@ -125,6 +127,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
         Mood newMood = new Mood();
         newMood.setMoodState(Mood.MoodState.valueOf(selectedMood.toUpperCase()));
         if (!triggerText.isEmpty()) newMood.setTrigger(triggerText);
+        newMood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
+        newMood.setTimestamp(new Date());
         newMood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
 
         // Save to Firestore
