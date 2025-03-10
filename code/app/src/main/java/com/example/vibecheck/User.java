@@ -61,6 +61,7 @@ public class User {
     /**
      * Updates the user's password.
      *
+     *
      * @param password The new password to be assigned.
      */
     public void setPassword(String password) {
