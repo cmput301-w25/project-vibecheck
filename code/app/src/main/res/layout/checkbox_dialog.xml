@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/anger_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anger" />
+
+    <CheckBox
+        android:id="@+id/confusion_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confusion" />
+
+    <CheckBox
+        android:id="@+id/disgust_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disgust" />
+
+    <CheckBox
+        android:id="@+id/fear_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fear" />
+
+    <CheckBox
+        android:id="@+id/happines_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Happiness" />
+
+    <CheckBox
+        android:id="@+id/sadness_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sadness" />
+
+    <CheckBox
+        android:id="@+id/shame_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shame" />
+
+    <CheckBox
+        android:id="@+id/surprise_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Surprise" />
+
+    <CheckBox
+        android:id="@+id/boredom_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boredom" />
+
+</LinearLayout>
