@@ -16,6 +16,24 @@ import java.util.ArrayList;
 
 public class MoodFilterFragment extends DialogFragment {
 
+    public static MoodFilterFragment newInstance(ArrayList<Mood.MoodState> states) {
+        MoodFilterFragment fragment = new MoodFilterFragment();
+
+        Bundle args = new Bundle();
+        ArrayList<String> stateStrings = toStringList(states);
+        args.putStringArrayList("states", stateStrings);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static ArrayList<String> toStringList(Iterable<?> iterable) {
+        ArrayList<String> strings = new ArrayList<>();
+        for (Object value : iterable)
+            strings.add(String.valueOf(value));
+        return strings;
+    }
+
     interface MoodFilterDialogListener {
         void filter(ArrayList<Mood.MoodState> states);
     }
@@ -45,6 +63,12 @@ public class MoodFilterFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
+        super.onCreateDialog(savedInstanceState);
+        ArrayList<String> currentlyChecked = new ArrayList<>();
+       if (getArguments() != null) {
+           currentlyChecked = getArguments().getStringArrayList("states");
+       }
+
         View view = LayoutInflater.from(getContext()).inflate(R.layout.checkbox_dialog, null);
         CheckBox angerBox = view.findViewById(R.id.anger_box);
         CheckBox confusionBox = view.findViewById(R.id.confusion_box);
@@ -55,6 +79,39 @@ public class MoodFilterFragment extends DialogFragment {
         CheckBox shameBox = view.findViewById(R.id.shame_box);
         CheckBox surpriseBox = view.findViewById(R.id.surprise_box);
         CheckBox boredomBox = view.findViewById(R.id.boredom_box);
+
+        for(String s: currentlyChecked){
+            switch(s){
+                case "ANGER":
+                    angerBox.setChecked(true);
+                case "CONFUSION":
+                    confusionBox.setChecked(true);
+                    break;
+                case "DISGUST":
+                    disgustBox.setChecked(true);
+                    break;
+                case "FEAR":
+                    fearBox.setChecked(true);
+                    break;
+                case "HAPPINESS":
+                    happinessBox.setChecked(true);
+                    break;
+                case "SADNESS":
+                    sadnessBox.setChecked(true);
+                    break;
+                case "SHAME":
+                    shameBox.setChecked(true);
+                    break;
+                case "SURPRISE":
+                    surpriseBox.setChecked(true);
+                    break;
+                case "BOREDOM":
+                    boredomBox.setChecked(true);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
