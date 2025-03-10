@@ -121,15 +121,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/mood_history_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/home_background_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mood_history_menu"
-        tools:listitem="@layout/mood_event" />
+        android:background="@color/home_background_blue" />
 
 </LinearLayout>
