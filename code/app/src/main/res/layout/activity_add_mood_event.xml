@@ -38,7 +38,7 @@
             android:id="@+id/dropdown_mood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="android:color/transparent"
+            android:background="@android:color/transparent"
             android:spinnerMode="dropdown" />
 
         <ImageView
@@ -93,7 +93,7 @@
             android:id="@+id/dropdown_social"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="android:color/transparent"
+            android:background="@android:color/transparent"
             android:spinnerMode="dropdown" />
 
         <ImageView
