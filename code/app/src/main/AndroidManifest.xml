@@ -16,12 +16,22 @@
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
+            android:exported="true" />
+
+        <!-- Login Activity -->
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Home (inner app) Activity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
 
         <!-- Add Mood Event Activity -->
         <activity
@@ -32,6 +42,9 @@
         <activity
             android:name=".MoodHistoryActivity"
             android:exported="true" />
+
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ProfileActivity" />
 
     </application>
 

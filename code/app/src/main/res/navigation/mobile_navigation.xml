@@ -1,0 +1,38 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_home">
+
+    <!-- Home Fragment (Main Feed) -->
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.vibecheck.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_screen" >
+        <action
+            android:id="@+id/action_navigation_home_to_userMoodDisplayFragment"
+            app:destination="@id/userMoodDisplayFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_myMoodDisplayFragment"
+            app:destination="@id/myMoodDisplayFragment" />
+    </fragment>
+
+    <!-- User Mood Display Fragment -->
+    <fragment
+        android:id="@+id/userMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.viewmoodevents.UserMoodDisplayFragment"
+        android:label="View Mood Event"
+        tools:layout="@layout/user_mood_display_view" >
+        <action
+            android:id="@+id/action_userMoodDisplayFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <!-- My Mood Display Fragment -->
+    <fragment
+        android:id="@+id/myMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
+        android:label="View My Mood Event"
+        tools:layout="@layout/my_mood_display_view" />
+
+</navigation>

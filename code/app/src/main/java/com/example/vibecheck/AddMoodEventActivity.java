@@ -11,10 +11,16 @@
 package com.example.vibecheck;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +36,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private Spinner socialDropdown;
     private Button saveMoodButton;
     private Button backButton;
+    private TextView moodEmoji;
+    private RelativeLayout moodBackground;
+
     private FirebaseFirestore db;
 
     /**
@@ -47,6 +56,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
         socialDropdown = findViewById(R.id.dropdown_social);
         saveMoodButton = findViewById(R.id.button_save_mood);
         backButton = findViewById(R.id.button_back);
+        moodEmoji = findViewById(R.id.mood_emoji);
+        moodBackground = findViewById(R.id.mood_background);
+      
         db = FirebaseFirestore.getInstance();
 
         // Populate Mood Dropdown
@@ -57,6 +69,26 @@ public class AddMoodEventActivity extends AppCompatActivity {
         );
         moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         moodDropdown.setAdapter(moodAdapter);
+
+        // Handle Mood Selection
+        moodDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMood = parent.getItemAtPosition(position).toString().toUpperCase();
+                Mood.MoodState moodState = Mood.MoodState.valueOf(selectedMood);
+
+                // Change Background Color
+                int moodColor = MoodUtils.getMoodColor(AddMoodEventActivity.this, moodState);
+                moodBackground.setBackgroundColor(moodColor);
+
+                // Change Emoji
+                String emoji = MoodUtils.getEmojiForMood(moodState);
+                moodEmoji.setText(emoji);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         // Populate Social Situation Dropdown
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(

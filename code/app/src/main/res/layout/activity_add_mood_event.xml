@@ -27,30 +27,35 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <RelativeLayout
+        android:id="@+id/mood_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/spinner_background"
+        android:layout_marginBottom="12dp"
         android:orientation="horizontal"
-        android:padding="4dp"
-        android:layout_marginBottom="12dp">
+        android:background="@color/white"
+        android:padding="4dp">
 
+        <!-- Mood Dropdown, padding leaves space for emoji -->
         <Spinner
             android:id="@+id/dropdown_mood"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingEnd="48dp"
             android:background="@android:color/transparent"
             android:spinnerMode="dropdown" />
 
-        <ImageView
+        <!-- Mood Emoji Display -->
+        <TextView
+            android:id="@+id/mood_emoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:background="@drawable/dropdown_icon"
-            android:backgroundTint="@color/black" />
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:text=""
+            android:textSize="20sp" />
+
+
     </RelativeLayout>
 
     <!-- Input for optional trigger -->
@@ -65,7 +70,8 @@
     <EditText
         android:id="@+id/input_trigger"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+
         android:layout_marginBottom="12dp"
         android:background="@drawable/login_rounded_rectangle"
         android:hint="Enter trigger"
@@ -92,20 +98,10 @@
         <Spinner
             android:id="@+id/dropdown_social"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:spinnerMode="dropdown" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:background="@drawable/dropdown_icon"
-            android:backgroundTint="@color/black" />
+      
     </RelativeLayout>
 
     <!-- Save Button -->
