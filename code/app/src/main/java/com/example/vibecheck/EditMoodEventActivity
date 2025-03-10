@@ -17,6 +17,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.Date;
 
+/**
+ * Activity for editing or deleting a mood event.
+ * <p>
+ * This activity loads the mood event data from Firestore, allows the user to update
+ * fields (trigger, description, mood state, social situation), and provides options
+ * to save the changes or delete the event.
+ * </p>
+ */
+
 public class EditMoodEventActivity extends AppCompatActivity {
 
     // UI elements – note cancelButton is now an ImageView to match XML
@@ -37,7 +46,11 @@ public class EditMoodEventActivity extends AppCompatActivity {
     // Arrays for spinner data using the enums from Mood class
     private Mood.MoodState[] moodStates = Mood.MoodState.values();
     private Mood.SocialSituation[] socialSituations = Mood.SocialSituation.values();
-
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied; otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
