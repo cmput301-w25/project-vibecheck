@@ -8,19 +8,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
-    private EditText etEmail, etPassword, etConfirmPassword;
+    private EditText etEmail, etUsername, etPassword;
     private Button btnSignUp;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -28,38 +24,36 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up); // Adjust if your XML file name differs
+        setContentView(R.layout.activity_sign_up);
 
         // Initialize Firebase Authentication and Firestore
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Bind UI elements to variables
-        etEmail = findViewById(R.id.edit_text_signup_username); // Using "Account" as email
-        etPassword = findViewById(R.id.edit_text_signup_password);
-        etConfirmPassword = findViewById(R.id.edit_text_confirm_password);
+        // Bind UI elements from the existing XML layout:
+        // Note: the IDs are taken directly from your XML file.
+        etEmail = findViewById(R.id.edit_text_signup_username); // Email input (despite the id name)
+        etUsername = findViewById(R.id.edit_text_username);         // Username input
+        etPassword = findViewById(R.id.edit_text_confirm_password);   // Password input
+
         btnSignUp = findViewById(R.id.signup_button);
 
         // Set click listener for the Sign Up button
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get input values and remove leading/trailing whitespace
+                // Retrieve and trim input values
                 String email = etEmail.getText().toString().trim();
+                String username = etUsername.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                String confirmPassword = etConfirmPassword.getText().toString().trim();
 
                 // Validate inputs
-                if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (!password.equals(confirmPassword)) {
-                    Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
+                // Create a new user with email and password using Firebase Authentication
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignUpActivity.this, task -> {
                             if (task.isSuccessful()) {
@@ -68,23 +62,21 @@ public class SignUpActivity extends AppCompatActivity {
                                     // Prepare user data for Firestore
                                     Map<String, Object> userData = new HashMap<>();
                                     userData.put("email", email);
+                                    userData.put("username", username);
+                                    userData.put("displayName", username);  // Added field: displayName same as username
                                     userData.put("uid", user.getUid());
 
                                     // Add user data to Firestore
                                     db.collection("users").document(user.getUid())
                                             .set(userData)
                                             .addOnSuccessListener(aVoid -> {
-                                                // Show success message
                                                 Toast.makeText(SignUpActivity.this,
-                                                        "Sign up successful and user added to Firestore",
-                                                        Toast.LENGTH_SHORT).show();
-
+                                                        "Sign up successful", Toast.LENGTH_SHORT).show();
                                                 // Navigate to LoginActivity
                                                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                                 finish();
                                             })
                                             .addOnFailureListener(e -> {
-                                                // Handle Firestore failure
                                                 Toast.makeText(SignUpActivity.this,
                                                         "Failed to add user to Firestore: " + e.getMessage(),
                                                         Toast.LENGTH_LONG).show();
