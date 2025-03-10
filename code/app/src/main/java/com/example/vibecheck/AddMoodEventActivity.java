@@ -13,6 +13,8 @@ package com.example.vibecheck;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +58,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         backButton = findViewById(R.id.button_back);
         moodEmoji = findViewById(R.id.mood_emoji);
         moodBackground = findViewById(R.id.mood_background);
-
+      
         db = FirebaseFirestore.getInstance();
 
         // Populate Mood Dropdown
