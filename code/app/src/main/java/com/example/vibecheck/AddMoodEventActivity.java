@@ -4,9 +4,6 @@
  * This activity handles adding a new mood event, allowing the user to select a mood,
  * specify an optional trigger, and choose a social situation. The selected mood event
  * is then stored in Firebase Firestore.
- *
- * Outstanding Issues:
- * - Need to add emojis for the dropdown menu
  */
 package com.example.vibecheck;
 
