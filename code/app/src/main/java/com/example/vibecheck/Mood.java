@@ -1,16 +1,33 @@
+/**
+ * Mood.java
+ *
+ * This class represents a mood event recorded by the user, including details such as
+ * emotional state, social situation, timestamp, optional trigger, description, location,
+ * and an optional image. It is designed to be stored in Firestore and supports serialization.
+ *
+ * Outstanding Issues:
+ */
+
 package com.example.vibecheck;
 
 import java.util.Date;
 
+/**
+ * Represents a recorded mood entry, capturing emotional state, context, and metadata.
+ */
 public class Mood {
 
+    /**
+     * Represents various emotional states a user can have.
+     */
     public enum MoodState {
-        // Represents various emotional states a user can have
         ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
     }
 
+    /**
+     * Describes the social setting when the mood was recorded.
+     */
     public enum SocialSituation {
-        // Describes the social setting when the mood was recorded
         ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE
     }
 
@@ -33,11 +50,20 @@ public class Mood {
         // Default constructor needed for Firebase auto-mapping
     }
 
+    /**
+     * Constructs a mood entry with a specified mood state.
+     * @param moodState The emotional state of the user.
+     */
     public Mood(MoodState moodState) {
         this.timestamp = new Date();
         this.moodState = moodState;
     }
 
+    /**
+     * Constructs a mood entry with a timestamp and mood state.
+     * @param timestamp The date and time the mood was recorded.
+     * @param moodState The emotional state of the user.
+     */
     public Mood(Date timestamp, MoodState moodState) {
         this.timestamp = timestamp;
         this.moodState = moodState;
@@ -89,6 +115,8 @@ public class Mood {
 
     /**
      * Assigns a description to the mood while ensuring it follows length constraints.
+     * @param description A brief description of the mood event (max 20 characters, 3 words).
+     * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
         if (description != null && (description.length() > 20 || description.split("\\s+").length > 3)) {
@@ -103,6 +131,8 @@ public class Mood {
 
     /**
      * Sets the mood image while ensuring it adheres to the size limit.
+     * @param image A byte array representing the image.
+     * @throws IllegalArgumentException if the image size exceeds the allowed limit.
      */
     public void setImage(byte[] image) {
         if (image != null && image.length > MAX_IMAGE_SIZE) {
@@ -121,6 +151,8 @@ public class Mood {
 
     /**
      * Assigns a geographic location to the mood entry.
+     * @param latitude The latitude coordinate.
+     * @param longitude The longitude coordinate.
      */
     public void setLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
