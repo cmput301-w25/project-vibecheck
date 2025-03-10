@@ -22,40 +22,42 @@
 
         <!-- App Name -->
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/salsa"
             android:text="VibeCheck"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black" />
 
         <!-- Search Icon -->
-        <ImageView
+        <ImageButton
             android:id="@+id/search_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginRight="12dp"
             android:contentDescription="Search"
-            android:padding="5dp"
-            android:src="@drawable/search_icon" />
+            android:background="@drawable/search_icon"
+            android:backgroundTint="@color/black"/>
 
         <!-- Filter Icon -->
-        <ImageView
+        <ImageButton
             android:id="@+id/filter_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginRight="12dp"
             android:contentDescription="Filter"
-            android:padding="5dp"
-            android:src="@drawable/filter_icon" />
+            android:background="@drawable/filter_icon"
+            android:backgroundTint="@color/black" />
 
         <!-- Notification Icon -->
-        <ImageView
+        <ImageButton
             android:id="@+id/notification_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:contentDescription="Notifications"
-            android:padding="5dp"
-            android:src="@drawable/notification_icon" />
+            android:background="@drawable/notification_icon"
+            android:backgroundTint="@color/black" />
     </LinearLayout>
 
     <!-- RecyclerView for Feed -->

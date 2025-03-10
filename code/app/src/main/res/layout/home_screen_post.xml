@@ -39,18 +39,20 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/salsa"
+                    android:hint="Username"
                     android:textColor="@color/black"
-                    android:hint="Username"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:fontFamily="@font/salsa"
+                    android:hint="Location"
                     android:textColor="@color/gray"
-                    android:hint="Location"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -111,21 +113,22 @@
             android:gravity="end"
             android:layout_marginTop="8dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_like"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/like_empty_icon"
-                android:padding="5dp"
-                android:contentDescription="Like"/>
+                android:layout_marginRight="8dp"
+                android:contentDescription="Like"
+                android:backgroundTint="#F43756"
+                android:background="@drawable/heart_icon" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_comment"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/comment_icon"
-                android:padding="5dp"
-                android:contentDescription="Comment"/>
+                android:contentDescription="Comment"
+                android:background="@drawable/comment_icon"
+                android:backgroundTint="@color/black"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
