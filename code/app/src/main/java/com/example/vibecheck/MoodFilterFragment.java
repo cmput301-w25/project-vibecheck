@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class MoodFilterFragment extends DialogFragment {
 
+    //Code for newInstance derived from here:
+    //https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
     public static MoodFilterFragment newInstance(ArrayList<Mood.MoodState> states) {
         MoodFilterFragment fragment = new MoodFilterFragment();
 
@@ -27,6 +29,8 @@ public class MoodFilterFragment extends DialogFragment {
         return fragment;
     }
 
+    //Code for this method adapted from code from here:
+    //https://stackoverflow.com/questions/52862900/converting-arraylist-of-enums-to-string
     public static ArrayList<String> toStringList(Iterable<?> iterable) {
         ArrayList<String> strings = new ArrayList<>();
         for (Object value : iterable)
