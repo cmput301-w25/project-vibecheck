@@ -58,11 +58,11 @@ public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
 
         description.setText(entry.getMood().getDescription());
 
-        //Change Background Color Based on Mood
+        // Change Background Color Based on Mood
         int moodColor = MoodUtils.getMoodColor(getContext(), entry.getMood().getMoodState());
         moodPostContainer.setBackgroundColor(moodColor);
 
-        //Change Emoji Based on Mood
+        // Change Emoji Based on Mood
         String emoji = MoodUtils.getEmojiForMood(entry.getMood().getMoodState());
         moodEmoji.setText(emoji);
 

@@ -48,35 +48,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Initialize login UI elements
-        editUsername = findViewById(R.id.edit_text_login_username);
-        editPassword = findViewById(R.id.edit_text_login_password);
-        loginButton = findViewById(R.id.login_button);
+        if (mAuth.getCurrentUser() != null) {
+            // ✅ User already logged in → Go to HomeActivity
+            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+        } else {
+            // ✅ No user logged in → Go to LoginActivity
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
 
-        loginButton.setOnClickListener(v -> {
-            String email = editUsername.getText().toString().trim();
-            String password = editPassword.getText().toString().trim();
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                // Authenticate with Firebase
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, task -> {
-                            if (task.isSuccessful()) {
-                                // Login successful
-                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                                // Navigate to the main app screen
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                // Login failed
-                                Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-            }
-        });
+        finish();
     }
 
     @Override

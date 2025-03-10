@@ -1,105 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_home">
 
-    <!-- Home navigation, some actions may be removable (fragments->Activities) -->
+    <!-- Home Fragment (Main Feed) -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.vibecheck.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="Home"
         tools:layout="@layout/home_screen" >
         <action
-            android:id="@+id/action_navigation_home_to_navigation_history"
-            app:destination="@id/navigation_history" />
-        <action
-            android:id="@+id/action_home_to_myMoodDisplay"
-            app:destination="@id/myMoodDisplayFragment" />
-
-        <action
-            android:id="@+id/action_home_to_userMoodDisplay"
+            android:id="@+id/action_navigation_home_to_userMoodDisplayFragment"
             app:destination="@id/userMoodDisplayFragment" />
         <action
-            android:id="@+id/action_navigation_home_to_navigation_map"
-            app:destination="@id/navigation_map" />
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_profile"
-            app:destination="@id/navigation_profile" />
-        <action
-            android:id="@+id/action_navigation_home_to_AddMoodEventActivity"
-            app:destination="@id/AddMoodEventActivity" />
-        <action
-            android:id="@+id/action_navigation_home_to_MoodHistoryActivity"
-            app:destination="@id/MoodHistoryActivity" />
-        <action
-            android:id="@+id/action_navigation_home_to_ProfileActivity"
-            app:destination="@id/ProfileActivity" />
+            android:id="@+id/action_navigation_home_to_myMoodDisplayFragment"
+            app:destination="@id/myMoodDisplayFragment" />
     </fragment>
 
-    <!-- Add Mood Event Activity -->
-    <activity
-        android:id="@+id/AddMoodEventActivity"
-        android:name="com.example.vibecheck.AddMoodEventActivity"
-        android:label="@string/title_add_mood_event"
-        tools:layout="@layout/activity_add_mood_event">
-    </activity>
-
-    <!-- Mood History Activity -->
-    <activity
-        android:id="@+id/MoodHistoryActivity"
-        android:name="com.example.vibecheck.MoodHistoryActivity"
-        android:label="@string/title_mood_history"
-        tools:layout="@layout/mood_history">
-    </activity>
-
-    <!-- Profile Activity -->
-    <activity
-        android:id="@+id/ProfileActivity"
-        android:name="com.example.vibecheck.ProfileActivity"
-        android:label="@string/title_profile"
-        tools:layout="@layout/activity_profile">
-    </activity>
-
-    <!-- Profile, will probably have to make 1 for logged user, and 1 for other users -->
-    <!--
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.vibecheck.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/profile" >
-        <action
-            android:id="@+id/action_navigation_profile_to_navigation_home"
-            app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_navigation_profile_to_navigation_history"
-            app:destination="@id/navigation_history" />
-        <action
-            android:id="@+id/action_navigation_profile_to_navigation_map"
-            app:destination="@id/navigation_map" />
-    </fragment>
--->
-
-    <!-- View Mood Events -->
-    <fragment
-        android:id="@+id/myMoodDisplayFragment"
-        android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
-        android:label="@string/title_my_mood_event_display"
-        tools:layout="@layout/my_mood_display_view">
-        <action
-            android:id="@+id/action_myMoodDisplayFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
-    </fragment>
-
+    <!-- User Mood Display Fragment -->
     <fragment
         android:id="@+id/userMoodDisplayFragment"
         android:name="com.example.vibecheck.ui.viewmoodevents.UserMoodDisplayFragment"
-        android:label="@string/title_user_mood_event_display"
-        tools:layout="@layout/user_mood_display_view">
+        android:label="View Mood Event"
+        tools:layout="@layout/user_mood_display_view" >
         <action
             android:id="@+id/action_userMoodDisplayFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+
+    <!-- My Mood Display Fragment -->
+    <fragment
+        android:id="@+id/myMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
+        android:label="View My Mood Event"
+        tools:layout="@layout/my_mood_display_view" />
 
 </navigation>

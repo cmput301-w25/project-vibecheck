@@ -1,3 +1,8 @@
+/*
+This is a small utility class to handle consistend colour-coding of moods and
+consistent emoji-coding as well.
+ */
+
 package com.example.vibecheck;
 
 import android.content.Context;

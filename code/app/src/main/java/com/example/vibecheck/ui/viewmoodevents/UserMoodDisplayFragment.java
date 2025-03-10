@@ -1,11 +1,22 @@
+/*
+This class is the fragment that operates to display a user's mood event as a fragment on the home activity.
+Simple functionality, populates the fields with the mood event's information, colour-codes the mood type and description,
+emoji-codes the mood type, and handles the back button click.
+
+Outstanding issues: Top needs padding so the back button is pressable (on certain devices). Bottom navigation still works
+to change page is back button inaccessable
+ */
+
 package com.example.vibecheck.ui.viewmoodevents;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +31,8 @@ import com.example.vibecheck.MoodUtils;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+
+import java.util.Date;
 
 /**
  * Fragment to display a user's mood event.
@@ -50,6 +63,14 @@ public class UserMoodDisplayFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_mood_display_view, container, false);
 
+        //Get mood event ID from navigation arguments
+        String moodEventId = getArguments() != null ? getArguments().getString("moodEventId") : null;
+        if (moodEventId == null || moodEventId.isEmpty()) {
+            Log.e("UserMoodDisplay", "Error: moodEventId is null or empty");
+            Toast.makeText(getContext(), "Error loading mood event.", Toast.LENGTH_SHORT).show();
+            return view; // Prevents crash by stopping execution
+        }
+
         //Initialize UI elements
         usernameText = view.findViewById(R.id.username_mood_title);
         moodDate = view.findViewById(R.id.mood_date);
@@ -60,9 +81,6 @@ public class UserMoodDisplayFragment extends Fragment{
         backButton = view.findViewById(R.id.back_button);
         moodTypeCard = view.findViewById(R.id.mood_type_card);
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
-
-        //Get mood event ID from navigation arguments
-        String moodEventId = getArguments().getString("moodEventId");
 
         //Load the mood event from Firestore
         loadMoodEvent(moodEventId);
@@ -88,9 +106,14 @@ public class UserMoodDisplayFragment extends Fragment{
 
                 if (mood != null) {
                     usernameText.setText(user.getUsername() + "'s Mood");
-                    moodDate.setText(mood.getFormattedTimestamp());
                     moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
                     moodDescription.setText(mood.getDescription());
+
+                    if (mood.getTimestamp() == null) {
+                        Log.e("UserMoodDisplayFragment", "ERROR: Mood timestamp is NULL in loadMoodEvent!");
+                        mood.setTimestamp(new Date()); // Prevents crash
+                    }
+                    moodDate.setText(mood.getFormattedTimestamp());
 
                     //Set mood type card and description card colors based on mood state
                     int moodColor = MoodUtils.getMoodColor(requireContext(), mood.getMoodState());

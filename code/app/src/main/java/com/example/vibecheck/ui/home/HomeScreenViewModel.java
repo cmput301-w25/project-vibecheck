@@ -1,3 +1,11 @@
+/*
+This class is the view model for the home screen. Obtains and handles the mood event data
+from the firestore database.
+
+Outstanding issues: Null values in mood info from firebase can cause crashes, temporary fix implemented
+but will need to deal with root cause later
+ */
+
 package com.example.vibecheck.ui.home;
 
 import android.util.Log;
@@ -9,6 +17,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.vibecheck.Mood;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -16,6 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.EventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,16 +73,33 @@ public class HomeScreenViewModel extends ViewModel {
 
                         List<Mood> moodList = new ArrayList<>();
                         if (value != null) {
-                            for (QueryDocumentSnapshot document : value) {
+                            for (DocumentSnapshot document : value.getDocuments()) {
+                                Log.d("FirestoreDebug", "Raw Firestore Document: " + document.getData());
+
                                 Mood mood = document.toObject(Mood.class);
-                                moodList.add(mood);
+
+                                if (mood != null) {
+                                    mood.setDocumentId(document.getId());
+
+                                    // Check if timestamp is actually present
+                                    if (document.contains("timestamp") && document.getTimestamp("timestamp") != null) {
+                                        mood.setTimestamp(document.getTimestamp("timestamp").toDate());
+                                    } else {
+                                        Log.e("FirestoreError", "ERROR: Mood document missing timestamp! ID: " + document.getId());
+
+                                        // Backup Plan: Assign a default timestamp to prevent crashing
+                                        mood.setTimestamp(new Date());
+                                    }
+
+                                    moodList.add(mood);
+                                } else {
+                                    Log.e("FirestoreError", "Mood object is null for document: " + document.getId());
+                                }
                             }
                         }
-
                         //Update UI in real-time
                         moodPosts.postValue(moodList);
                     }
                 });
     }
-
 }

@@ -1,6 +1,17 @@
+/*
+This java class is the adapter for posts on the home screen feed of the app. Populates the recycler view with
+home screen mood posts, which are themselves populated with data from the homescreen viewmodel.
+Through the use of the MoodUtils class, emoji and colour-coding are set based on the mood state
+for each post.
+
+Outstanding issues: Recognizing logged in users to select my mood display or user mood display,
+issues and crashing occurs when certain parts of mood info are null
+ */
+
 package com.example.vibecheck.ui.home;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vibecheck.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,11 +42,15 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     private List<Mood> moodPosts = new ArrayList<>();
     private OnMoodClickListener onMoodClickListener;
 
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+
     /**
      * Click listener for mood posts.
      */
     public interface OnMoodClickListener {
-        void onMoodClick(String moodEventId, boolean isLoggedUserPost);
+        void onMoodClick(String moodEventId);
     }
 
     /**
@@ -79,6 +97,11 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     public void onBindViewHolder(@NonNull HomeScreenPostViewHolder holder, int position) {
         Mood mood = moodPosts.get(position);
 
+        // Get current user from firebase
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
         //Set user information
         holder.usernameText.setText(mood.getUsername());
 
@@ -94,18 +117,26 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         //Set emoji based on mood state
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
 
-        /*
-    FUNCTIONALITY FOR CLICKING ON MOOD POSTS IN HOME FEED (TO VIEW MOOD EVENTS)
-    COMMENTED OUT FOR NOW BECAUSE IDK IF WE HAVE A FUNCTION TO GET THE LOGGED IN
-    USER'S USERNAME YET.
+        //Check if the mood post is from the logged in user
+        String moodUsername = mood.getUsername();
+        String currentEmail = (currentUser != null) ? currentUser.getEmail() : null;
+        boolean isLoggedUserPost = moodUsername != null && currentEmail != null && moodUsername.equals(currentEmail);
 
         //Handle click on mood post
         holder.moodPostContainer.setOnClickListener(v -> {
-            boolean isLoggedUserPost = mood.getUsername().equals(GET LOGGED-IN USER"S USERNAME);
-            if (onMoodClickListener != null) {
-                onMoodClickListener.onMoodClick(mood.getDocumentId(), isLoggedUserPost);
+            Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getDocumentId());
+
+            if (mood.getDocumentId() == null || mood.getDocumentId().isEmpty()) {
+                Log.e("HomeScreenPostAdapter", "ERROR: mood.getDocumentId() is NULL or EMPTY!");
+                return;
             }
-        });*/
+
+            if (onMoodClickListener != null) {
+                onMoodClickListener.onMoodClick(mood.getDocumentId());
+            } else {
+                Log.e("HomeScreenPostAdapter", "ERROR: onMoodClickListener is NULL!");
+            }
+        });
     }
 
     /**
