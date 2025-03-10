@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
 
             } else if (itemId == R.id.navigation_post) {
-                //Open the Post Mood Event Activity
+                //Open the Add Mood Event Activity
                 Intent intent = new Intent(HomeActivity.this, AddMoodEventActivity.class);
                 startActivity(intent);
                 return true;

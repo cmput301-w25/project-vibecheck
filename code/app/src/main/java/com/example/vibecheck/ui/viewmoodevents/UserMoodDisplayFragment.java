@@ -68,7 +68,7 @@ public class UserMoodDisplayFragment extends Fragment{
         loadMoodEvent(moodEventId);
 
         //Handle back button click
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
         backButton.setOnClickListener(v -> navController.popBackStack());
 
         return view;
