@@ -28,6 +28,11 @@
             android:name=".AddMoodEventActivity"
             android:exported="true" />
 
+        <!-- Mood History Activity -->
+        <activity
+            android:name=".MoodHistoryActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

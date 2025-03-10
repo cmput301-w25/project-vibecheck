@@ -1,0 +1,54 @@
+package com.example.vibecheck;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+
+public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
+    public MoodHistoryEntryAdapter(Context context, ArrayList<MoodHistoryEntry> moodHistory) {
+        super(context, 0, moodHistory);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View view;
+
+        if (convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.mood_event,
+                    parent, false);
+        } else {
+            view = convertView;
+        }
+
+        MoodHistoryEntry entry = getItem(position);
+
+        TextView username = view.findViewById(R.id.username);
+        TextView location = view.findViewById(R.id.location);
+        TextView description = view.findViewById(R.id.description);
+
+        username.setText(entry.getMood().getUsername());
+
+        if(entry.getMood().getLatitude() == null || entry.getMood().getLongitude() == null){
+            location.setText("");
+        }else{
+            String latitude = entry.getMood().getLatitude().toString();
+            String longitude = entry.getMood().getLongitude().toString();
+            String locationString = "(" + latitude + ", " + longitude + ")";
+            location.setText(locationString);
+        }
+
+        description.setText(entry.getMood().getDescription());
+
+        return view;
+    }
+
+}
