@@ -102,7 +102,6 @@ public class UserMoodDisplayFragment extends Fragment{
         moodListener = moodRef.addSnapshotListener((snapshot, error) -> {
             if (snapshot != null && snapshot.exists()) {
                 Mood mood = snapshot.toObject(Mood.class);
-                User user = snapshot.toObject(User.class);
 
                 if (mood != null) {
                     usernameText.setText(user.getUsername() + "'s Mood");
