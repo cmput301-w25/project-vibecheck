@@ -13,13 +13,45 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * SignUpActivity handles user registration by creating a new account using Firebase Authentication.
+ * <p>
+ * Upon successful sign up, the user's information is stored in Firestore under the "users" collection,
+ * and the user is redirected to the LoginActivity.
+ * </p>
+ */
 public class SignUpActivity extends AppCompatActivity {
+    /**
+     * EditText for capturing the user's email.
+     */
+    /**
+     * EditText for capturing the user's password.
+     */
+    /**
+     * EditText for capturing the user's chosen username.
+     */
     private EditText etEmail, etUsername, etPassword;
+    /**
+     * Button to initiate the sign-up process.
+     */
     private Button btnSignUp;
+    /**
+     * Instance of Firebase Authentication.
+     */
     private FirebaseAuth mAuth;
+    /**
+     * Instance of Firebase Firestore.
+     */
     private FirebaseFirestore db;
-
+    /**
+     * Called when the activity is first created.
+     * <p>
+     * This method initializes Firebase instances, binds the UI elements, and sets up the click listener
+     * for the sign-up button.
+     * </p>
+     *
+     * @param savedInstanceState the previously saved state of the activity, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +68,17 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.signup_button);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the click event for the sign-up button.
+             * <p>
+             * It retrieves input from the user, validates that all fields are filled, and
+             * attempts to create a new user with Firebase Authentication.
+             * If the sign-up is successful, user data is stored in Firestore and the user is
+             * redirected to the LoginActivity.
+             * </p>
+             *
+             * @param v the view that was clicked
+             */
             @Override
             public void onClick(View v) {
                 
