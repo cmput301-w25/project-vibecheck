@@ -25,6 +25,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     private ArrayAdapter<MoodHistoryEntry> moodHistoryEntryAdapter;
     private ImageButton sortButton;
     private  ImageButton filterButton;
+    private ImageButton backButton;
 
     // true - most recent first, false - oldest first
     private Boolean toggleSort = true;
@@ -41,6 +42,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
 
         sortButton = findViewById(R.id.mood_history_sort_button);
         filterButton = findViewById(R.id.mood_history_filter_button);
+        backButton = findViewById(R.id.navbar_back_button);
 
         dataList = new ArrayList<MoodHistoryEntry>();
 
@@ -64,6 +66,10 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
                 mood.setDescription(description);
                 mood.setLocation(latitude, longitude);
                 mood.setDocumentId(documentId);
+
+                // Ensure Mood Entries Load with Colors and Emojis
+                moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
+                dataList.add(new MoodHistoryEntry(mood));
 
                 // Need to add mood to adapter else mood history not displayed
                 //until after sorting or filtering.
@@ -98,6 +104,11 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         filterButton.setOnClickListener(v -> {
             MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
             fragment.show(getSupportFragmentManager(), "");
+        });
+
+        // Close mood history activity and return to home screen
+        backButton.setOnClickListener(v -> {
+            finish();
         });
 
     }

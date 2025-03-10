@@ -29,13 +29,25 @@
         <action
             android:id="@+id/action_navigation_home_to_AddMoodEventActivity"
             app:destination="@id/AddMoodEventActivity" />
+        <action
+            android:id="@+id/action_navigation_home_to_MoodHistoryActivity"
+            app:destination="@id/MoodHistoryActivity" />
     </fragment>
 
+    <!-- Add Mood Event Activity -->
     <activity
         android:id="@+id/AddMoodEventActivity"
         android:name="com.example.vibecheck.AddMoodEventActivity"
         android:label="@string/title_add_mood_event"
         tools:layout="@layout/activity_add_mood_event">
+    </activity>
+
+    <!-- Mood History -->
+    <activity
+        android:id="@+id/MoodHistoryActivity"
+        android:name="com.example.vibecheck.MoodHistoryActivity"
+        android:label="@string/title_mood_history"
+        tools:layout="@layout/mood_history">
     </activity>
 
     <!-- Profile, will probably have to make 1 for logged user, and 1 for other users -->

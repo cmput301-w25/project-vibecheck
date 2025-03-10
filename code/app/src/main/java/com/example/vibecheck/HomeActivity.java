@@ -55,8 +55,10 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
 
             } else if (itemId == R.id.navigation_history) {
-                //Navigate to the History Fragment
-                navController.navigate(R.id.navigation_history);
+                //Navigate to the History Activity
+                //navController.navigate(R.id.navigation_history);
+                Intent intent = new Intent(HomeActivity.this, MoodHistoryActivity.class);
+                startActivity(intent);
                 return true;
 
             } else if (itemId == R.id.navigation_post) {
