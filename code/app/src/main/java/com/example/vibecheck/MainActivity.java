@@ -1,77 +1,90 @@
 package com.example.vibecheck;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.example.vibecheck.NetworkStatusChecker;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.example.vibecheck.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     private NetworkStatusChecker networkChecker;
-    private ActivityMainBinding binding;
-    
+    private Button loginButton;
+    private EditText editUsername;
+    private EditText editPassword;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_login);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mAuth = FirebaseAuth.getInstance();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login_container), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-
-
-
-        //Bottom navigation
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
-        //Navigation destinations / menu ID's
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home,
-                R.id.navigation_history,
-                R.id.navigation_post,
-                R.id.navigation_map,
-                R.id.navigation_profile
-        ).build();
-
-        //Navigation controller
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
-
-
-        //Initialize the NetworkStatusChecker
         networkChecker = new NetworkStatusChecker(this);
         networkChecker.startChecking();
+
+        // Navigate to SignupActivity when signup link is clicked
+        TextView goToSignup = findViewById(R.id.link_to_signup);
+        goToSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        });
+
+        // Initialize login UI elements
+        editUsername = findViewById(R.id.edit_text_login_username);
+        editPassword = findViewById(R.id.edit_text_login_password);
+        loginButton = findViewById(R.id.login_button);
+
+        loginButton.setOnClickListener(v -> {
+            String email = editUsername.getText().toString().trim();
+            String password = editPassword.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            } else {
+                // Authenticate with Firebase
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                // Login successful
+                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                                // Navigate to the main app screen
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // Login failed
+                                Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (networkChecker != null) {
-            networkChecker.stopChecking();
+        networkChecker.stopChecking();
 
-            //Prevent memory leaks
-            networkChecker = null;
-        }
+        //Prevent memory leaks
+        networkChecker = null;
     }
 }

@@ -20,18 +20,34 @@
         <action
             android:id="@+id/action_home_to_userMoodDisplay"
             app:destination="@id/userMoodDisplayFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_history"
-        android:name="com.example.vibecheck.ui.history.HistoryFragment"
-        android:label="@string/title_history"
-        tools:layout="@layout/mood_history" >
         <action
-            android:id="@+id/action_navigation_history_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            android:id="@+id/action_navigation_home_to_navigation_map"
+            app:destination="@id/navigation_map" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
     </fragment>
 
+    <!-- Profile, will probably have to make 1 for logged user, and 1 for other users -->
+    <!--
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.vibecheck.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_history"
+            app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_map"
+            app:destination="@id/navigation_map" />
+    </fragment>
+-->
+
+    <!-- View Mood Events -->
     <fragment
         android:id="@+id/myMoodDisplayFragment"
         android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
@@ -40,9 +56,6 @@
         <action
             android:id="@+id/action_myMoodDisplayFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_myMoodDisplayFragment_to_navigation_edit_mood_event"
-            app:destination="@id/navigation_EDITMYMOODEVENT,CHANGETHISLATER" />
     </fragment>
 
     <fragment

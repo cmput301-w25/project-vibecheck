@@ -4,6 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +20,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.HomeScreenBinding;
@@ -25,6 +34,13 @@ public class HomeFragment extends Fragment {
     private HomeScreenBinding binding;
     private HomeScreenViewModel homeScreenViewModel;
     private HomeScreenPostAdapter homeScreenPostAdapter;
+
+    // Declare UI elements
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+    private ImageView iconSearch;
+    private ImageView iconFilter;
+    private ImageView iconNotifications;
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -55,6 +71,34 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Initialize Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        // Initialize Toolbar components
+        toolbarTitle = view.findViewById(R.id.title);
+        iconSearch = view.findViewById(R.id.icon_search);
+        iconFilter = view.findViewById(R.id.icon_filter);
+        iconNotifications = view.findViewById(R.id.icon_notifications);
+
+        // Set click listeners for toolbar icons
+        iconSearch.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Search clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        iconFilter.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Filter clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        iconNotifications.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Notifications clicked", Toast.LENGTH_SHORT).show();
+        });
+
 
         //Initialize ViewModel
         homeScreenViewModel = new ViewModelProvider(this).get(HomeScreenViewModel.class);
@@ -88,7 +132,7 @@ public class HomeFragment extends Fragment {
      * @param isLoggedUserPost
      */
     private void navigateToViewMoodEvents(String moodEventId, boolean isLoggedUserPost) {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
         Bundle bundle = new Bundle();
         bundle.putString("moodEventId", moodEventId);
 
