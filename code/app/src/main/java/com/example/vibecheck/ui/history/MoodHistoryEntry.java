@@ -1,4 +1,6 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.history;
+
+import com.example.vibecheck.Mood;
 
 import java.util.AbstractMap;
 import java.util.Map;

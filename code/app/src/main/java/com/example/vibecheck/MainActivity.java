@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +12,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.vibecheck.ui.home.HomeActivity;
+import com.example.vibecheck.ui.login.LoginActivity;
+import com.example.vibecheck.ui.signup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Start home activity if current user is logged in, login activity if not
         if (mAuth.getCurrentUser() != null) {
-            // ✅ User already logged in → Go to HomeActivity
             startActivity(new Intent(MainActivity.this, HomeActivity.class));
         } else {
-            // ✅ No user logged in → Go to LoginActivity
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 

@@ -94,6 +94,7 @@ public class UserMoodDisplayFragment extends Fragment{
 
 
     /**
+     * I MIGHT CONSIDER DOING A FALLBACK PLAN FOR THIS
      * Loads a mood event from Firestore and updates the UI accordingly.
      * @param moodEventId
      */
@@ -101,13 +102,39 @@ public class UserMoodDisplayFragment extends Fragment{
         DocumentReference moodRef = db.collection("moods").document(moodEventId);
         moodListener = moodRef.addSnapshotListener((snapshot, error) -> {
             if (snapshot != null && snapshot.exists()) {
+                //Obtain the mood from the snapshot
                 Mood mood = snapshot.toObject(Mood.class);
 
+                //Check if mood is null
                 if (mood != null) {
-                    usernameText.setText(mood.getUsername() + "'s Mood");
+                    //Obtain the username from the mood
+                    String username = mood.getUsername();
+
+                    //If username is null or empty, set it to "N/A"
+                    if (username == null || username.isEmpty()) {
+                        username = "N/A";
+                    }
+                    usernameText.setText(username + "'s Mood");
+
+                    //Attempts to find and set the display name of the user associated with the mood
+                    db.collection("users")
+                            .whereEqualTo("username", username)
+                            .limit(1)
+                            .get()
+                            .addOnSuccessListener(querySnapshot -> {
+                                if (!querySnapshot.isEmpty()) {
+                                    String displayName = querySnapshot.getDocuments().get(0).getString("displayName");
+                                    if (displayName != null && !displayName.isEmpty()) {
+                                        usernameText.setText(displayName + "'s Mood");
+                                    }
+                                }
+                            });
+
+                    //Obtains mood event details
                     moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
                     moodDescription.setText(mood.getDescription());
 
+                    //If the timestamp is null, set it to the current time
                     if (mood.getTimestamp() == null) {
                         Log.e("UserMoodDisplayFragment", "ERROR: Mood timestamp is NULL in loadMoodEvent!");
                         mood.setTimestamp(new Date()); // Prevents crash

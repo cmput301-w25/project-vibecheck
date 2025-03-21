@@ -1,4 +1,4 @@
-package com.example.vibecheck; 
+package com.example.vibecheck.ui.signup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vibecheck.ui.login.LoginActivity;
+import com.example.vibecheck.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     /**
      * Button to initiate the sign-up process.
      */
-    private Button btnSignUp;
+    private Button btnSignUp, btnCancel;
     /**
      * Instance of Firebase Authentication.
      */
@@ -66,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.edit_text_confirm_password);   
 
         btnSignUp = findViewById(R.id.signup_button);
+        btnCancel = findViewById(R.id.cancel_signup_button);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             /**
@@ -127,6 +130,18 @@ public class SignUpActivity extends AppCompatActivity {
                                         Toast.LENGTH_LONG).show();
                             }
                         });
+            }
+        });
+
+
+        /**
+         * Handles the click event for the cancel button, returns the user to the login screen.
+         */
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                finish();
             }
         });
     }

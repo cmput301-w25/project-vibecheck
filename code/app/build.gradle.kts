@@ -41,6 +41,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-auth")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -48,7 +49,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation("androidx.cardview:cardview:1.0.0")
+
     testImplementation(libs.junit)
+    testImplementation ("org.mockito:mockito-core:5.11.0")
+    testImplementation ("org.mockito:mockito-inline:5.2.0")
+    testImplementation ("androidx.test:core:1.5.0")
+    testImplementation("org.robolectric:robolectric:4.10.3")
+
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

@@ -9,8 +9,20 @@ belongs to the logged in user is not implemented. We need to be able to compare 
 to the user id of the selected post, and Top needs padding to access back button on certain devices
  */
 
+//user oliverrlmoore@gmail.com
+//pass MysteryChimp
+
+
+/*
+QUICK LOGIN INFO
+oliverrlmoore@gmail.com
+MysteryChimp
+ */
+
+
 package com.example.vibecheck.ui.viewmoodevents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +34,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.vibecheck.EditMoodEventActivity;
 import com.example.vibecheck.R;
 import com.example.vibecheck.Mood;
 import com.example.vibecheck.User;
@@ -39,9 +53,12 @@ public class MyMoodDisplayFragment extends Fragment {
     private TextView moodDate, moodType, moodTrigger, moodDescription, socialSituation;
     private ImageView backButton, editButton;
     private ListenerRegistration moodListener;
+    private androidx.cardview.widget.CardView moodTypeCard, moodDescriptionCard;
+    private String moodEventId;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private androidx.cardview.widget.CardView moodTypeCard, moodDescriptionCard;
+
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -73,7 +90,7 @@ public class MyMoodDisplayFragment extends Fragment {
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
 
         //Get mood event ID from arguments
-        String moodEventId = getArguments().getString("moodEventId");
+        moodEventId = getArguments().getString("moodEventId");
 
         //Load user's own mood event
         loadMoodEvent(moodEventId);
@@ -82,21 +99,12 @@ public class MyMoodDisplayFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
         backButton.setOnClickListener(v -> navController.popBackStack());
 
-        /*
-        WILL NEED TO IMPLEMENT EDIT BUTTON LATER, COMMENTED OUT FOR NOW
-        NEED TO KEEP IN MIND VALIDATION OF WETHER THE MOOD ON DISPLAY BELONGS TO THE
-        USER LOGGED IN OR IF ITS AN EXTERNAL USER.
-        MAYBE SEE ABOUT VALIDATING THAT WHENEVER THE LOGGED IN USER TAPS ON A MOOD EVENT TO
-        VIEW IT, POSSIBLY MAKE THAT A MoodUtil OR JUST CHECK AND VALIDATE IN WHATEVER FRAGMENT THEY CAN TAP ON
-        A MOOD EVENT IN
-
         //Handle edit button click
         editButton.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("moodEventId", moodEventId);
-            navController.navigate(R.id.((((NAV NAME TO PUT HERE LATER)))), args);
+            Intent intent = new Intent(requireContext(), EditMoodEventActivity.class);
+            intent.putExtra("moodEventId", moodEventId);
+            startActivity(intent);
         });
-        */
 
         return view;
     }
@@ -105,7 +113,7 @@ public class MyMoodDisplayFragment extends Fragment {
      * Loads a mood event from Firestore and updates the UI accordingly.
      * @param moodEventId
      */
-    private void loadMoodEvent(String moodEventId) {
+    public void loadMoodEvent(String moodEventId) {
         DocumentReference moodRef = db.collection("moods").document(moodEventId);
         moodListener = moodRef.addSnapshotListener((snapshot, error) -> {
             if (snapshot != null && snapshot.exists()) {
@@ -131,6 +139,17 @@ public class MyMoodDisplayFragment extends Fragment {
                 }
             }
         });
+    }
+
+    /**
+     *  Called when the fragment is visible to the user and actively running, refreshes fragment upon return
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (moodEventId != null) {
+            loadMoodEvent(moodEventId);
+        }
     }
 
     /**

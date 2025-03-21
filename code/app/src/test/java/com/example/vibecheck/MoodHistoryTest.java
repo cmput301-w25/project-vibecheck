@@ -3,6 +3,10 @@ package com.example.vibecheck;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.example.vibecheck.ui.history.MoodFilterFragment;
+import com.example.vibecheck.ui.history.MoodHistory;
+import com.example.vibecheck.ui.history.MoodHistoryEntry;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -168,7 +172,7 @@ public class MoodHistoryTest {
         ArrayList<String> stateStrings = new ArrayList<>();
         stateStrings.add("ANGER");
         stateStrings.add("SURPRISE");
-        assertEquals(stateStrings,MoodFilterFragment.toStringList(stateStrings));
+        assertEquals(stateStrings, MoodFilterFragment.toStringList(stateStrings));
     }
 
 
