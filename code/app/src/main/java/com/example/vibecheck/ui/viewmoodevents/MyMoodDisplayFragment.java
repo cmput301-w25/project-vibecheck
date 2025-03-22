@@ -9,10 +9,6 @@ belongs to the logged in user is not implemented. We need to be able to compare 
 to the user id of the selected post, and Top needs padding to access back button on certain devices
  */
 
-//user oliverrlmoore@gmail.com
-//pass MysteryChimp
-
-
 /*
 QUICK LOGIN INFO
 oliverrlmoore@gmail.com
@@ -121,7 +117,9 @@ public class MyMoodDisplayFragment extends Fragment {
 
                 if (mood != null) {
                     moodDate.setText(mood.getFormattedTimestamp());
-                    moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
+                    Mood.MoodState foundMoodState = mood.getMoodState();
+
+                    moodType.setText(MoodUtils.getEmojiForMood(foundMoodState) + " " + foundMoodState.moodStateToString());
                     moodDescription.setText(mood.getDescription());
 
                     //Set mood type card and description card colors based on mood state
@@ -133,8 +131,14 @@ public class MyMoodDisplayFragment extends Fragment {
                     if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
                         moodTrigger.setText(mood.getTrigger());
                     }
-                    if (mood.getSocialSituation() != null && !mood.socialSituationToString().trim().isEmpty()) {
-                        socialSituation.setText(mood.socialSituationToString());
+                    /*
+                    if (mood.getDescription() != null && !mood.getDescription().trim().isEmpty()) {
+                        moodDescription.setText(mood.getDescription());
+                    }
+                    */
+                    Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
+                    if (foundSocialSituation != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
+                        socialSituation.setText(foundSocialSituation.socialSituationToString());
                     }
                 }
             }

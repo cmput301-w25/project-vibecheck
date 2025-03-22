@@ -14,7 +14,7 @@
         android:padding="10dp"
         android:background="@color/white">
 
-        <!-- User Info (Profile Image + Name + Location) -->
+        <!-- User Info (Profile Image + Name + Location + Emoji) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +52,22 @@
                     android:textColor="@color/gray"
                     android:hint="Location"/>
             </LinearLayout>
+
+            <!-- Spacer pushes emoji to right -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- Emoji -->
+            <TextView
+                android:id="@+id/moodEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="😃"
+                android:textSize="24sp"
+                android:layout_marginEnd="6dp"
+                android:gravity="center_vertical"/>
         </LinearLayout>
 
         <!-- Mood Post Container (Background Color Set Dynamically) -->
@@ -62,17 +78,6 @@
             android:layout_marginTop="8dp"
             android:padding="0dp"
             android:background="@color/white">
-
-            <!-- Mood Emoji (Top-Right Corner) -->
-            <TextView
-                android:id="@+id/moodEmoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="😃"
-                android:textSize="18sp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="6dp"
-                android:layout_marginTop="6dp"/>
 
             <!-- Mood Text Container -->
             <LinearLayout

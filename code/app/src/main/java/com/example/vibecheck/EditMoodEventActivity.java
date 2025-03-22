@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.vibecheck.ui.createmood.AddMoodEventActivity;
 import com.example.vibecheck.ui.home.HomeActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,10 +44,12 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private ImageView saveButton;
     private ImageView deleteButton;
     private TextView moodDate;
+    private TextView moodEmoji;
     private Spinner moodTypeSpinner;
     private EditText moodTriggerInput;
     private EditText moodDescriptionInput;
     private Spinner socialSituationSpinner;
+    private RelativeLayout moodBackground;
     private ImageView addImageButton;
 
     // Firebase Firestore
@@ -91,9 +96,31 @@ public class EditMoodEventActivity extends AppCompatActivity {
         moodDescriptionInput = findViewById(R.id.mood_description_input);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         addImageButton = findViewById(R.id.add_image_button);
+        moodBackground = findViewById(R.id.mood_background);
+        moodEmoji = findViewById(R.id.mood_emoji);
 
         db = FirebaseFirestore.getInstance();
 
+
+        // Populate spinners using ArrayAdapter
+        ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.mood_options,
+                android.R.layout.simple_spinner_item
+        );
+        moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        moodTypeSpinner.setAdapter(moodAdapter);
+
+        ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.social_options,  // Defined in XML
+                android.R.layout.simple_spinner_item
+        );
+        socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        socialSituationSpinner.setAdapter(socialAdapter);
+
+
+/*ORIGINAL  SPINNER CODE
         // Populate spinners using ArrayAdapter
         ArrayAdapter<Mood.MoodState> moodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, moodStates);
         moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,6 +129,30 @@ public class EditMoodEventActivity extends AppCompatActivity {
         ArrayAdapter<Mood.SocialSituation> socialAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, socialSituations);
         socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         socialSituationSpinner.setAdapter(socialAdapter);
+ */
+
+
+        // Handle Mood Selection
+        moodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMood = parent.getItemAtPosition(position).toString().toUpperCase();
+                Mood.MoodState moodState = Mood.MoodState.valueOf(selectedMood);
+
+                // Change Background Color
+                int moodColor = MoodUtils.getMoodColor(EditMoodEventActivity.this, moodState);
+                moodBackground.setBackgroundColor(moodColor);
+
+                // Change Emoji
+                String emoji = MoodUtils.getEmojiForMood(moodState);
+                moodEmoji.setText(emoji);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+
 
         // Load mood event data from Firestore
         loadMoodEventData();
@@ -206,12 +257,17 @@ public class EditMoodEventActivity extends AppCompatActivity {
         String moodStateStr = moodTypeSpinner.getSelectedItem().toString();
         String socialSituationStr = socialSituationSpinner.getSelectedItem().toString();
 
+        Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(socialSituationStr);
+        Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(moodStateStr);
+
+
+
         db.collection("moods").document(moodEventId)
                 .update(
                         "trigger", trigger,
                         "description", description,
-                        "moodState", moodStateStr,
-                        "socialSituation", socialSituationStr
+                        "moodState", moodState,
+                        "socialSituation", socialSituation
                 )
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();
