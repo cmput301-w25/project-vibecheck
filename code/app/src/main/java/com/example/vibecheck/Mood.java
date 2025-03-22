@@ -121,7 +121,7 @@ public class Mood {
      * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
-        if (description != null && (description.length() > 20 || description.split("\\s+").length > 3)) {
+        if (description != null && (description.length() > 200)) {
             throw new IllegalArgumentException("Description must not exceed 20 characters or 3 words.");
         }
         this.description = description;

@@ -20,7 +20,7 @@
 
         <!-- Login Activity -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,21 +30,26 @@
 
         <!-- Home (inner app) Activity -->
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.home.HomeActivity"
             android:exported="true" />
 
         <!-- Add Mood Event Activity -->
         <activity
-            android:name=".AddMoodEventActivity"
+            android:name=".ui.createmood.AddMoodEventActivity"
             android:exported="true" />
 
         <!-- Mood History Activity -->
         <activity
-            android:name=".MoodHistoryActivity"
+            android:name=".ui.history.MoodHistoryActivity"
             android:exported="true" />
 
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ProfileActivity" />
+        <!-- Edit Mood Event Activity -->
+        <activity
+            android:name=".EditMoodEventActivity"
+            android:exported="true" />
+
+        <activity android:name=".ui.signup.SignUpActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
 
     </application>
 

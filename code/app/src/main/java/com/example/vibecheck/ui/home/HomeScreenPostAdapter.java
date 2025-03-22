@@ -10,7 +10,6 @@ issues and crashing occurs when certain parts of mood info are null
 
 package com.example.vibecheck.ui.home;
 
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vibecheck.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Adapter for the home screen recycler view. Displays mood posts.
@@ -42,15 +35,11 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     private List<Mood> moodPosts = new ArrayList<>();
     private OnMoodClickListener onMoodClickListener;
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private FirebaseUser currentUser;
-
     /**
      * Click listener for mood posts.
      */
     public interface OnMoodClickListener {
-        void onMoodClick(String moodEventId);
+        void onMoodClick(Mood mood);
     }
 
     /**
@@ -97,13 +86,8 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     public void onBindViewHolder(@NonNull HomeScreenPostViewHolder holder, int position) {
         Mood mood = moodPosts.get(position);
 
-        // Get current user from firebase
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
         //Set user information
-        holder.usernameText.setText(mood.getUsername());
+        holder.displayNameText.setText(mood.getUsername());
 
         //Set mood trigger text
         holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No trigger");
@@ -117,11 +101,6 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         //Set emoji based on mood state
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
 
-        //Check if the mood post is from the logged in user
-        String moodUsername = mood.getUsername();
-        String currentEmail = (currentUser != null) ? currentUser.getEmail() : null;
-        boolean isLoggedUserPost = moodUsername != null && currentEmail != null && moodUsername.equals(currentEmail);
-
         //Handle click on mood post
         holder.moodPostContainer.setOnClickListener(v -> {
             Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getDocumentId());
@@ -132,7 +111,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             }
 
             if (onMoodClickListener != null) {
-                onMoodClickListener.onMoodClick(mood.getDocumentId());
+                onMoodClickListener.onMoodClick(mood);
             } else {
                 Log.e("HomeScreenPostAdapter", "ERROR: onMoodClickListener is NULL!");
             }
@@ -152,7 +131,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      * ViewHolder for the home screen recycler view.
      */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameText, moodTriggerText, moodDescriptionText, moodEmoji;
+        TextView displayNameText, moodTriggerText, moodDescriptionText, moodEmoji;
         RelativeLayout moodPostContainer;
 
         /**
@@ -162,7 +141,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
          */
         public HomeScreenPostViewHolder(@NonNull View itemView) {
             super(itemView);
-            usernameText = itemView.findViewById(R.id.username);
+            displayNameText = itemView.findViewById(R.id.username);
             moodTriggerText = itemView.findViewById(R.id.moodTriggerText);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);

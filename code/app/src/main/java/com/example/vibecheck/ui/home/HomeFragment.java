@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.vibecheck.Mood;
+import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.HomeScreenBinding;
 
@@ -94,6 +96,9 @@ public class HomeFragment extends Fragment {
         iconFilter = view.findViewById(R.id.icon_filter);
         iconNotifications = view.findViewById(R.id.icon_notifications);
 
+        // Initialize NavController
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
+
         // Set click listeners for toolbar icons
         iconSearch.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Search clicked", Toast.LENGTH_SHORT).show();
@@ -118,8 +123,8 @@ public class HomeFragment extends Fragment {
         //Set up adapter, navigation to view mood events
         homeScreenPostAdapter = new HomeScreenPostAdapter(new HomeScreenPostAdapter.OnMoodClickListener() {
             @Override
-            public void onMoodClick(String moodEventId) {
-                navigateToViewMoodEvents(moodEventId);
+            public void onMoodClick(Mood mood) {
+                MoodUtils.navigateToViewMoodEvent(navController, mood);
             }
         });
 
@@ -132,24 +137,6 @@ public class HomeFragment extends Fragment {
                 homeScreenPostAdapter.setMoodPosts(moodPosts);
             }
         });
-    }
-
-    /**
-     * Navigate to the view mood events fragment.
-     * @param moodEventId
-     */
-    private void navigateToViewMoodEvents(String moodEventId) {
-        if (moodEventId == null || moodEventId.isEmpty()) {
-            Log.e("HomeFragment", "Error: moodEventId is null or empty when navigating.");
-            return;
-        }
-
-        Log.d("HomeFragment", "Navigating to UserMoodDisplayFragment with ID: " + moodEventId);
-
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
-        Bundle bundle = new Bundle();
-        bundle.putString("moodEventId", moodEventId);
-        navController.navigate(R.id.action_navigation_home_to_userMoodDisplayFragment, bundle);
     }
 
     /**

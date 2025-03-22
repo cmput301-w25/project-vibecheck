@@ -1,4 +1,4 @@
-package com.example.vibecheck; // Replace with your actual package name
+package com.example.vibecheck.ui.login; // Replace with your actual package name
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vibecheck.MoodUtils;
+import com.example.vibecheck.R;
+import com.example.vibecheck.ui.home.HomeActivity;
+import com.example.vibecheck.ui.signup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -101,7 +107,25 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Login successful
                                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                    // Navigate to another activity (e.g., MainActivity) - uncomment to use
+
+                                    //Get the current user's ID
+                                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                    // Obtain the user's username from Firestore to store globally for easy access
+                                    FirebaseFirestore.getInstance().collection("users")
+                                            .document(uid)
+                                            .get()
+                                            .addOnSuccessListener(documentSnapshot -> {
+                                                String username = documentSnapshot.getString("username");
+                                                if (username != null) {
+                                                    MoodUtils.setCurrentUsername(username);
+                                                }
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(LoginActivity.this, "Failed to load user profile", Toast.LENGTH_SHORT).show();
+                                            });
+
+                                    // Navigate to home activity
                                      startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                      finish();
                                 } else {
