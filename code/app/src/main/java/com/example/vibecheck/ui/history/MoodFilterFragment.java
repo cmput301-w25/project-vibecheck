@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
 
 import java.util.ArrayList;

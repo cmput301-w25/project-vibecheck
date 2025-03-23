@@ -17,8 +17,14 @@ import android.util.Log;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 
+import com.example.vibecheck.ui.moodevents.Mood;
+
+import java.util.Date;
+
 /**
- * Utility class for colour-coding moods and emojis.
+ * Utility class for colour-coding moods and emojis, determining if a mood event is owned by the current user,
+ * handling navigation to the appropriate fragment for viewing a mood event, obtaining the time since a post was made,
+ * and holds the current username of the user who is logged in.
  */
 public class MoodUtils {
 
@@ -50,13 +56,13 @@ public class MoodUtils {
      * @param mood
      */
     public static void navigateToViewMoodEvent(NavController navController, Mood mood) {
-        if (navController == null || mood == null || mood.getDocumentId() == null || mood.getDocumentId().isEmpty()) {
+        if (navController == null || mood == null || mood.getMoodId() == null || mood.getMoodId().isEmpty()) {
             Log.e("MoodUtils", "Invalid mood or NavController");
             return;
         }
 
         Bundle bundle = new Bundle();
-        bundle.putString("moodEventId", mood.getDocumentId());
+        bundle.putString("moodEventId", mood.getMoodId());
 
         if (isMoodOwnedByCurrentUser(mood)) {
             Log.d("MoodUtils", "Navigating to MyMoodDisplayFragment");
@@ -112,5 +118,25 @@ public class MoodUtils {
             case BOREDOM: return "😴";
             default: return "🙂";
         }
+    }
+
+
+    /**
+     * Subtracts the time when a post was made from the current time
+     * to determine the time since the post was made.
+     * For visual display purposes.
+     * @param postDate
+     * @return
+     *      Returns a string representing the time since a given post was made.
+     */
+    public static String timeSincePosting(Date postDate) {
+        long diff = new Date().getTime() - postDate.getTime();
+        long minutes = diff / (60 * 1000);
+        if (minutes < 1) return "Just now";
+        if (minutes < 60) return minutes + " minutes ago";
+        long hours = minutes / 60;
+        if (hours < 24) return hours + " hours ago";
+        long days = hours / 24;
+        return days + " days ago";
     }
 }

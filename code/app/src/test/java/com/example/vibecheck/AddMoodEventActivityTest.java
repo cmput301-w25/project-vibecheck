@@ -2,17 +2,15 @@ package com.example.vibecheck;
 
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 import android.os.Build;
 
-import com.example.vibecheck.ui.createmood.AddMoodEventActivity;
+import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;

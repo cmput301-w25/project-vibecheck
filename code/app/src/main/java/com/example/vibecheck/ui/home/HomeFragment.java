@@ -8,13 +8,9 @@ between user posts and logged in user posts.
 package com.example.vibecheck.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.HomeScreenBinding;

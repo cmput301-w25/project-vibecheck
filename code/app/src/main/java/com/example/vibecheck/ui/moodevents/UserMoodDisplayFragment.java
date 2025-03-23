@@ -7,14 +7,17 @@ Outstanding issues: Top needs padding so the back button is pressable (on certai
 to change page is back button inaccessable
  */
 
-package com.example.vibecheck.ui.viewmoodevents;
+package com.example.vibecheck.ui.moodevents;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,16 +26,24 @@ import androidx.navigation.Navigation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.vibecheck.ui.comments.Comment;
+import com.example.vibecheck.ui.comments.CommentAdapter;
 import com.example.vibecheck.R;
-import com.example.vibecheck.Mood;
-import com.example.vibecheck.User;
 import com.example.vibecheck.MoodUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Fragment to display a user's mood event.
@@ -40,10 +51,19 @@ import java.util.Date;
 public class UserMoodDisplayFragment extends Fragment{
     private TextView usernameText, moodDate, moodType, moodTrigger, moodDescription, socialSituation;
     private ImageView backButton;
+    private RelativeLayout topBar;
     private ListenerRegistration moodListener;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
+    private RecyclerView recyclerView;
+    private EditText commentInput;
+    private ImageButton sendButton;
 
     private androidx.cardview.widget.CardView moodTypeCard, moodDescriptionCard;
+
+    private CommentAdapter commentAdapter;
+    private List<Comment> commentList = new ArrayList<>();
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -61,15 +81,26 @@ public class UserMoodDisplayFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.user_mood_display_view, container, false);
+        return inflater.inflate(R.layout.user_mood_display_view, container, false);
+        //View view = inflater.inflate(R.layout.user_mood_display_view, container, false);
+        //return view;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         //Get mood event ID from navigation arguments
         String moodEventId = getArguments() != null ? getArguments().getString("moodEventId") : null;
         if (moodEventId == null || moodEventId.isEmpty()) {
             Log.e("UserMoodDisplay", "Error: moodEventId is null or empty");
             Toast.makeText(getContext(), "Error loading mood event.", Toast.LENGTH_SHORT).show();
-            return view; // Prevents crash by stopping execution
+            return;
         }
+        loadMoodEvent(moodEventId);
 
         //Initialize UI elements
         usernameText = view.findViewById(R.id.username_mood_title);
@@ -81,20 +112,32 @@ public class UserMoodDisplayFragment extends Fragment{
         backButton = view.findViewById(R.id.back_button);
         moodTypeCard = view.findViewById(R.id.mood_type_card);
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
+        topBar = view.findViewById(R.id.view_mood_topbar);
+
+        recyclerView = view.findViewById(R.id.comment_list);
+        commentInput = view.findViewById(R.id.comment_input);
+        sendButton = view.findViewById(R.id.send_comment_button);
+
+        commentAdapter = new CommentAdapter(commentList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(commentAdapter);
+
+
+        sendButton.setOnClickListener(v -> saveComment());
+
+        loadComments();
 
         //Load the mood event from Firestore
-        loadMoodEvent(moodEventId);
+        //loadMoodEvent(moodEventId);
 
         //Handle back button click
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
         backButton.setOnClickListener(v -> navController.popBackStack());
-
-        return view;
     }
 
 
+    //I MIGHT CONSIDER DOING A FALLBACK PLAN FOR THIS
     /**
-     * I MIGHT CONSIDER DOING A FALLBACK PLAN FOR THIS
      * Loads a mood event from Firestore and updates the UI accordingly.
      * @param moodEventId
      */
@@ -133,7 +176,6 @@ public class UserMoodDisplayFragment extends Fragment{
                     //Obtains mood event details
                     Mood.MoodState foundMoodState = mood.getMoodState();
                     moodType.setText(MoodUtils.getEmojiForMood(foundMoodState) + " " + foundMoodState.moodStateToString());
-                    moodDescription.setText(mood.getDescription());
 
                     //If the timestamp is null, set it to the current time
                     if (mood.getTimestamp() == null) {
@@ -145,11 +187,19 @@ public class UserMoodDisplayFragment extends Fragment{
                     //Set mood type card and description card colors based on mood state
                     int moodColor = MoodUtils.getMoodColor(requireContext(), mood.getMoodState());
                     moodTypeCard.setCardBackgroundColor(moodColor);
+                    topBar.setBackgroundColor(moodColor);
                     moodDescriptionCard.setCardBackgroundColor(moodColor);
 
-                    //Only update trigger and social situation if they are not null or empty
+                    //Only update trigger, description, and social situation if they are not null or empty
                     if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
                         moodTrigger.setText(mood.getTrigger());
+                    } else {
+                        moodTrigger.setText("N/A");
+                    }
+                    if (mood.getDescription() != null && !mood.getDescription().trim().isEmpty()) {
+                        moodDescription.setText(mood.getDescription());
+                    } else {
+                        moodDescription.setText("N/A");
                     }
                     Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
                     if (mood.getSocialSituation() != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
@@ -158,6 +208,98 @@ public class UserMoodDisplayFragment extends Fragment{
                 }
             }
         });
+    }
+
+
+    /**
+     * Called to load comments from Firestore. Obtains the mood ID from the navigation arguments,
+     * queries the database for comments associated with that mood ID, and updates the UI accordingly.
+     */
+    private void loadComments() {
+        String moodId = getArguments().getString("moodEventId");
+        if (moodId == null || moodId.isEmpty()) {
+            Log.e("Comments", "Error: moodId is null or empty");
+            return;
+        }
+
+        db.collection("comments")
+                .whereEqualTo("moodEventId", moodId)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(100)
+                .addSnapshotListener((snapshots, error) -> {
+                    if (error != null) {
+                        Log.e("Comments", "Listen failed.", error);
+                        return;
+                    }
+
+                    commentList.clear();
+                    for (QueryDocumentSnapshot doc : snapshots) {
+                        try {
+                            Comment comment = doc.toObject(Comment.class);
+                            if (comment.getCommentText() != null && !comment.getCommentText().trim().isEmpty()) {
+                                commentList.add(comment);
+                            }
+                        } catch (Exception e) {
+                            Log.e("Comments", "Failed to parse comment document: " + doc.getId(), e);
+                        }
+
+                    }
+                    commentAdapter.notifyDataSetChanged();
+                });
+    }
+
+
+
+    /**
+     * Creates a new comment then saves it to Firestore, verifies user inputs, and updates the UI accordingly.
+     */
+    private void saveComment() {
+
+        // Obtains and validates user input
+        String commentText = commentInput.getText().toString().trim();
+        if (commentText.isEmpty()) {
+            Toast.makeText(getContext(), "Comment is empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (commentText.length() > 200) {
+            Toast.makeText(getContext(), "Comment too long (max 200 characters)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //Obtains and validates user ID
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        //Obtains mood ID from navigation arguments
+        String moodId = getArguments().getString("moodEventId");
+        String userId = user.getUid();
+
+        //Gets the current user's username
+        String username = MoodUtils.getCurrentUsername();
+        if (username == null || username.isEmpty()) {
+            username = user.getEmail();
+        }
+
+        //Creates a new comment and saves it to Firestore
+        Comment newComment = new Comment(moodId, userId, username, commentText);
+
+        db.collection("comments")
+                .add(newComment)
+                .addOnSuccessListener(docRef -> {
+                    String commentID = docRef.getId();
+                    docRef.update("commentID", commentID)
+                            .addOnSuccessListener(aVoid -> {
+                                //Clears the input field and refreshes the comments
+                                commentInput.setText("");
+                                loadComments();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Error updating comment ID", Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "Failed to post comment", Toast.LENGTH_SHORT).show()
+                );
     }
 
     /**
