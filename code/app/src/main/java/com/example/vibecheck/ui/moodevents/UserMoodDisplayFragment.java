@@ -49,7 +49,7 @@ import java.util.List;
  * Fragment to display a user's mood event.
  */
 public class UserMoodDisplayFragment extends Fragment{
-    private TextView usernameText, moodDate, moodType, moodTrigger, moodDescription, socialSituation;
+    private TextView usernameText, moodDate, moodType, moodTrigger, moodDescription, socialSituation, commentsLabel;
     private ImageView backButton;
     private RelativeLayout topBar;
     private ListenerRegistration moodListener;
@@ -113,6 +113,7 @@ public class UserMoodDisplayFragment extends Fragment{
         moodTypeCard = view.findViewById(R.id.mood_type_card);
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
         topBar = view.findViewById(R.id.view_mood_topbar);
+        commentsLabel = view.findViewById(R.id.comments_label);
 
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
@@ -126,6 +127,11 @@ public class UserMoodDisplayFragment extends Fragment{
         sendButton.setOnClickListener(v -> saveComment());
 
         loadComments();
+        if (commentList.isEmpty()) {
+            commentsLabel.setText("Comments (No Comments Yet)");
+        } else {
+            commentsLabel.setText("Comments");
+        }
 
         //Load the mood event from Firestore
         //loadMoodEvent(moodEventId);
@@ -245,6 +251,11 @@ public class UserMoodDisplayFragment extends Fragment{
 
                     }
                     commentAdapter.notifyDataSetChanged();
+                    if (commentList.isEmpty()) {
+                        commentsLabel.setText("Comments (No Comments Yet)");
+                    } else {
+                        commentsLabel.setText("Comments");
+                    }
                 });
     }
 

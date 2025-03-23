@@ -59,7 +59,7 @@ import java.util.List;
  */
 public class MyMoodDisplayFragment extends Fragment {
 
-    private TextView moodDate, moodType, moodTrigger, moodDescription, socialSituation;
+    private TextView moodDate, moodType, moodTrigger, moodDescription, socialSituation, commentsLabel;
     private ImageView backButton, editButton;
     private RelativeLayout topBar;
     private ListenerRegistration moodListener;
@@ -124,6 +124,7 @@ public class MyMoodDisplayFragment extends Fragment {
         moodTypeCard = view.findViewById(R.id.mood_type_card);
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
         topBar = view.findViewById(R.id.view_mood_topbar);
+        commentsLabel = view.findViewById(R.id.comments_label);
 
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
@@ -136,6 +137,11 @@ public class MyMoodDisplayFragment extends Fragment {
         sendButton.setOnClickListener(v -> saveComment());
 
         loadComments();
+        if (commentList.isEmpty()) {
+            commentsLabel.setText("Comments (No Comments Yet)");
+        } else {
+            commentsLabel.setText("Comments");
+        }
 
         //Handle back button click
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
@@ -227,6 +233,11 @@ public class MyMoodDisplayFragment extends Fragment {
 
                     }
                     commentAdapter.notifyDataSetChanged();
+                    if (commentList.isEmpty()) {
+                        commentsLabel.setText("Comments (No Comments Yet)");
+                    } else {
+                        commentsLabel.setText("Comments");
+                    }
                 });
     }
 

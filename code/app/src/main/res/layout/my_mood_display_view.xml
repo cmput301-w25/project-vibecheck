@@ -76,7 +76,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!-- FIXED MOOD TYPE CARD -->
+    <!-- Mood Type Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/mood_type_card"
         android:layout_width="match_parent"
@@ -99,7 +99,7 @@
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
-    <!-- SCROLLABLE CONTENT -->
+    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -202,13 +202,15 @@
 
             <!-- Comments Header -->
             <TextView
+                android:id="@+id/comments_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Comments"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
 
             <!-- Comment List -->
             <androidx.recyclerview.widget.RecyclerView
