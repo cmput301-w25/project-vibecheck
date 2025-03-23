@@ -142,7 +142,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         public HomeScreenPostViewHolder(@NonNull View itemView) {
             super(itemView);
             displayNameText = itemView.findViewById(R.id.username);
-            moodTriggerText = itemView.findViewById(R.id.moodTriggerText);
+            moodTriggerText = itemView.findViewById(R.id.moodReasonText);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);

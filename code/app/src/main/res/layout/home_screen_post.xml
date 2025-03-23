@@ -89,13 +89,13 @@
 
                 <!-- Mood Trigger Text  -->
                 <TextView
-                    android:id="@+id/moodTriggerText"
+                    android:id="@+id/moodReasonText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:hint="Reason"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:hint="Trigger"/>
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <!-- Mood Description Text -->
                 <TextView

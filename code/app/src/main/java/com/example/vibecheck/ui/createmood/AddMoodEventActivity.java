@@ -7,7 +7,6 @@
  */
 package com.example.vibecheck.ui.createmood;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +40,7 @@ import java.util.Date;
  */
 public class AddMoodEventActivity extends AppCompatActivity {
     private EditText inputTrigger;
+    private EditText inputDescription;
     private Spinner moodDropdown;
     private Spinner socialDropdown;
     private Button saveMoodButton;
@@ -73,6 +73,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Initialize UI components
         moodDropdown = findViewById(R.id.dropdown_mood);
         inputTrigger = findViewById(R.id.input_trigger);
+        inputDescription = findViewById(R.id.input_description);
         socialDropdown = findViewById(R.id.dropdown_social);
         saveMoodButton = findViewById(R.id.button_save_mood);
         backButton = findViewById(R.id.button_back);
@@ -110,10 +111,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                moodBackground.setBackgroundColor(Color.WHITE);
-                moodEmoji.setText("");
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         // Populate Social Situation Dropdown
@@ -139,6 +137,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         //Obtains user inputs
         String selectedMood = moodDropdown.getSelectedItem().toString();
         String triggerText = inputTrigger.getText().toString().trim();
+        String descriptionText = inputDescription.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(selectedSocial);
         Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(selectedMood); //valueOf(selectedMood.toUpperCase());
@@ -152,6 +151,12 @@ public class AddMoodEventActivity extends AppCompatActivity {
         //Checks if user is found
         if (currentUser == null) {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validates description length
+        if (descriptionText.length() > 200) {
+            Toast.makeText(this, "Description cannot exceed 200 characters", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -173,6 +178,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     newMood.setTimestamp(new Date());
                     if (!triggerText.isEmpty()) {
                         newMood.setTrigger(triggerText);
+                    }
+                    if (!descriptionText.isEmpty()) {
+                        newMood.setDescription(descriptionText);
                     }
                     newMood.setSocialSituation(socialSituation);
                     newMood.setUsername(username);

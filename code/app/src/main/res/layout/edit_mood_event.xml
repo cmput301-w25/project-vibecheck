@@ -115,16 +115,16 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/mood_trigger_label"
+        android:id="@+id/mood_reason_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trigger (optional):"
-        android:textSize="14sp"
+        android:paddingTop="12dp"
+        android:text="Reason (optional):"
         android:textColor="@color/black"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/mood_type_card"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/mood_type_card" />
 
     <TextView
         android:id="@+id/mood_description_label"
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="184dp"
         android:paddingTop="12dp"
-        android:text="Description:"
+        android:text="Description (optional):"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:paddingTop="12dp"
-        android:text="Add Image:"
+        android:text="Add Image (optional):"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -156,11 +156,11 @@
         android:id="@+id/mood_trigger_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="Enter trigger (optional)"
+        android:hint="Enter reason (optional)"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mood_trigger_label" />
+        app:layout_constraintTop_toBottomOf="@id/mood_reason_label" />
 
     <ImageView
         android:id="@+id/add_image_button"
@@ -193,9 +193,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Enter description"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
             android:padding="12dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:scrollbars="vertical"
+            android:maxLength="200" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
