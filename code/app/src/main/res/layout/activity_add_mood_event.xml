@@ -65,29 +65,52 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/salsa"
-        android:text="Trigger (optional):"
+        android:text="Reason (optional):"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
         android:id="@+id/input_trigger"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-
         android:layout_marginBottom="12dp"
         android:background="@drawable/login_rounded_rectangle"
-        android:hint="Enter trigger"
+        android:hint="Enter reason"
         android:inputType="text"
         android:padding="8dp" />
 
-    <!-- Dropdown for social situation -->
+    <!-- Input for optional description -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/salsa"
-        android:text="Social Situation:"
+        android:text="Description (optional):"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+    <EditText
+        android:id="@+id/input_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_rounded_rectangle"
+        android:gravity="top|start"
+        android:hint="Enter description"
+        android:inputType="textMultiLine"
+        android:maxLength="200"
+        android:minHeight="50dp"
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/salsa"
+        android:text="Social Situation (Optional):"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <!-- Dropdown for social situation -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

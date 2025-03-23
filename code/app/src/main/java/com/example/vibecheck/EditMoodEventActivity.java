@@ -102,7 +102,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 
-        // Populate spinners using ArrayAdapter
+        // Populate spinners using ArrayAdapter, options defined in strings.xml
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.mood_options,
@@ -113,24 +113,11 @@ public class EditMoodEventActivity extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.social_options,  // Defined in XML
+                R.array.social_options,
                 android.R.layout.simple_spinner_item
         );
         socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         socialSituationSpinner.setAdapter(socialAdapter);
-
-
-/*ORIGINAL  SPINNER CODE
-        // Populate spinners using ArrayAdapter
-        ArrayAdapter<Mood.MoodState> moodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, moodStates);
-        moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        moodTypeSpinner.setAdapter(moodAdapter);
-
-        ArrayAdapter<Mood.SocialSituation> socialAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, socialSituations);
-        socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        socialSituationSpinner.setAdapter(socialAdapter);
- */
-
 
         // Handle Mood Selection
         moodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -260,6 +247,11 @@ public class EditMoodEventActivity extends AppCompatActivity {
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(socialSituationStr);
         Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(moodStateStr);
 
+        // Validates description length
+        if (description.length() > 200) {
+            Toast.makeText(this, "Description cannot exceed 200 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         db.collection("moods").document(moodEventId)
