@@ -23,14 +23,42 @@ public class Mood {
      * Represents various emotional states a user can have.
      */
     public enum MoodState {
-        ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
+        ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM;
+
+        public String moodStateToString() {
+            return this.name().charAt(0) + name().substring(1).toLowerCase();
+        }
+
+        public static MoodState moodStateToEnum(String moodStateString) {
+            return MoodState.valueOf(moodStateString.toUpperCase().trim());
+        }
     }
 
     /**
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE
+        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, LARGE_GROUP;
+
+        public String socialSituationToString() {
+            switch (this) {
+                case ALONE: return "Alone";
+                case ONE_TO_ONE: return "One-to-One";
+                case SMALL_GROUP: return "Small Group";
+                case LARGE_AUDIENCE: return "Large Audience";
+                default: return null;
+            }
+        }
+
+        public static SocialSituation socialSituationToEnum(String socialSituationString) {
+            switch (socialSituationString) {
+                case "Alone": return ALONE;
+                case "One-to-One": return ONE_TO_ONE;
+                case "Small Group": return SMALL_GROUP;
+                case "Large Audience": return LARGE_AUDIENCE;
+                default: return null;
+            }
+        }
     }
 
     private Date timestamp;
@@ -44,6 +72,7 @@ public class Mood {
     private Double longitude;
     private String username;
     private String documentId;
+    private boolean isPublic;
 
     /**
      * No-argument constructor required by Firestore for serialization.
@@ -192,11 +221,12 @@ public class Mood {
         return sdf.format(timestamp);
     }
 
+    /*
     /**
      * Converts the mood state to a string representation.
      * @return
      *      Returns a string representation of the mood state, with the first letter capitalized.
-     */
+
     public String socialSituationToString() {
         return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
     }
@@ -205,8 +235,9 @@ public class Mood {
      * Converts the mood state to a string representation.
      * @return
      *      Returns a string representation of the mood state, with the first letter capitalized.
-     */
+
     public String moodStateToString() {
         return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
     }
+    */
 }

@@ -7,6 +7,7 @@
  */
 package com.example.vibecheck.ui.createmood;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -85,7 +86,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Populate Mood Dropdown
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.mood_options,  // Defined in XML
+                R.array.mood_options,
                 android.R.layout.simple_spinner_item
         );
         moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,6 +96,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         moodDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected mood, changes string to uppercase
                 String selectedMood = parent.getItemAtPosition(position).toString().toUpperCase();
                 Mood.MoodState moodState = Mood.MoodState.valueOf(selectedMood);
 
@@ -108,7 +110,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+                moodBackground.setBackgroundColor(Color.WHITE);
+                moodEmoji.setText("");
+            }
         });
 
         // Populate Social Situation Dropdown
@@ -135,6 +140,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
         String selectedMood = moodDropdown.getSelectedItem().toString();
         String triggerText = inputTrigger.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
+        Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(selectedSocial);
+        Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(selectedMood); //valueOf(selectedMood.toUpperCase());
 
         //Validates user input
         if (selectedMood.isEmpty() || selectedSocial.isEmpty()) {
@@ -162,12 +169,12 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
                     //Creates new mood event
                     Mood newMood = new Mood();
-                    newMood.setMoodState(Mood.MoodState.valueOf(selectedMood.toUpperCase()));
+                    newMood.setMoodState(moodState);
                     newMood.setTimestamp(new Date());
                     if (!triggerText.isEmpty()) {
                         newMood.setTrigger(triggerText);
                     }
-                    newMood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
+                    newMood.setSocialSituation(socialSituation);
                     newMood.setUsername(username);
 
                     //Saves mood event to Firestore
@@ -180,7 +187,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             .addOnFailureListener(e -> {
                                 Toast.makeText(this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
-
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to fetch user profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();

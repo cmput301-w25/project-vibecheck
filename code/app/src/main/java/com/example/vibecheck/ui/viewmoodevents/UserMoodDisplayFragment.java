@@ -131,7 +131,8 @@ public class UserMoodDisplayFragment extends Fragment{
                             });
 
                     //Obtains mood event details
-                    moodType.setText(MoodUtils.getEmojiForMood(mood.getMoodState()) + " " + mood.moodStateToString());
+                    Mood.MoodState foundMoodState = mood.getMoodState();
+                    moodType.setText(MoodUtils.getEmojiForMood(foundMoodState) + " " + foundMoodState.moodStateToString());
                     moodDescription.setText(mood.getDescription());
 
                     //If the timestamp is null, set it to the current time
@@ -150,8 +151,9 @@ public class UserMoodDisplayFragment extends Fragment{
                     if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
                         moodTrigger.setText(mood.getTrigger());
                     }
-                    if (mood.getSocialSituation() != null && !mood.socialSituationToString().trim().isEmpty()) {
-                        socialSituation.setText(mood.socialSituationToString());
+                    Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
+                    if (mood.getSocialSituation() != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
+                        socialSituation.setText(foundSocialSituation.socialSituationToString());
                     }
                 }
             }

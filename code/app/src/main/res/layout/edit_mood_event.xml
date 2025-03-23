@@ -56,6 +56,7 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/salsa"
         app:layout_constraintEnd_toStartOf="@id/save_button"
         app:layout_constraintStart_toEndOf="@id/cancel_button"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,10 +85,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Spinner
-            android:id="@+id/mood_type_spinner"
+        <RelativeLayout
+            android:id="@+id/mood_background"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Mood Spinner -->
+            <Spinner
+                android:id="@+id/mood_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingEnd="48dp"
+                android:background="@android:color/transparent"
+                android:spinnerMode="dropdown" />
+
+            <!-- Emoji on the far right -->
+            <TextView
+                android:id="@+id/mood_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:text=""
+                android:textSize="24sp" />
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
