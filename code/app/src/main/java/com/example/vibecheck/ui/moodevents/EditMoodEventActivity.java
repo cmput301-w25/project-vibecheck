@@ -185,11 +185,12 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 Date timestamp = documentSnapshot.getDate("timestamp");
                 String socialSituationStr = documentSnapshot.getString("socialSituation");
 
+                boolean isPublic = documentSnapshot.getBoolean("public");
 
-                String isPublic = documentSnapshot.getString("isPublic");
-                boolean isPublicBool;
-                isPublicBool = isPublic != null && isPublic.equals("true");
-                isPublicButton.setChecked(isPublicBool);
+                //String isPublic = documentSnapshot.getString("isPublic");
+                //boolean isPublicBool;
+                //isPublicBool = isPublic != null && isPublic.equals("true");
+                isPublicButton.setChecked(Boolean.TRUE.equals(isPublic));
 
                 // Set trigger and description.
                 if (trigger != null) {
@@ -272,7 +273,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
                         "description", description,
                         "moodState", moodState,
                         "socialSituation", socialSituation,
-                        "isPublic", isPublic
+                        "public", isPublic
                 )
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();
