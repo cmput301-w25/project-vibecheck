@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private Button backButton;
     private TextView moodEmoji;
     private RelativeLayout moodBackground;
+    private ToggleButton isPublicButton;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -78,6 +80,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         backButton = findViewById(R.id.button_back);
         moodEmoji = findViewById(R.id.mood_emoji);
         moodBackground = findViewById(R.id.mood_background);
+        isPublicButton = findViewById(R.id.is_public_button);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -138,8 +141,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
         String triggerText = inputTrigger.getText().toString().trim();
         String descriptionText = inputDescription.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
+        boolean isPublic = isPublicButton.isChecked();
+
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(selectedSocial);
-        Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(selectedMood); //valueOf(selectedMood.toUpperCase());
+        Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(selectedMood);
 
         //Validates user input
         if (selectedMood.isEmpty() || selectedSocial.isEmpty()) {
@@ -183,6 +188,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     }
                     newMood.setSocialSituation(socialSituation);
                     newMood.setUsername(username);
+                    newMood.setPublic(isPublic);
 
                     //Saves mood event to Firestore
                     db.collection("moods")

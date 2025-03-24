@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +53,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private EditText moodDescriptionInput;
     private Spinner socialSituationSpinner;
     private RelativeLayout moodBackground;
+    private ToggleButton isPublicButton;
     private ImageView addImageButton;
 
     // Firebase Firestore
@@ -100,6 +102,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         addImageButton = findViewById(R.id.add_image_button);
         moodBackground = findViewById(R.id.mood_background);
         moodEmoji = findViewById(R.id.mood_emoji);
+        isPublicButton = findViewById(R.id.is_public_button);
 
         db = FirebaseFirestore.getInstance();
 
@@ -182,6 +185,12 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 Date timestamp = documentSnapshot.getDate("timestamp");
                 String socialSituationStr = documentSnapshot.getString("socialSituation");
 
+
+                String isPublic = documentSnapshot.getString("isPublic");
+                boolean isPublicBool;
+                isPublicBool = isPublic != null && isPublic.equals("true");
+                isPublicButton.setChecked(isPublicBool);
+
                 // Set trigger and description.
                 if (trigger != null) {
                     moodTriggerInput.setText(trigger);
@@ -245,6 +254,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         String description = moodDescriptionInput.getText().toString().trim();
         String moodStateStr = moodTypeSpinner.getSelectedItem().toString();
         String socialSituationStr = socialSituationSpinner.getSelectedItem().toString();
+        boolean isPublic = isPublicButton.isChecked();
 
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(socialSituationStr);
         Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(moodStateStr);
@@ -261,7 +271,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
                         "trigger", trigger,
                         "description", description,
                         "moodState", moodState,
-                        "socialSituation", socialSituation
+                        "socialSituation", socialSituation,
+                        "isPublic", isPublic
                 )
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();

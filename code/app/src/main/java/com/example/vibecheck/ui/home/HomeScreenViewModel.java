@@ -78,7 +78,7 @@ public class HomeScreenViewModel extends ViewModel {
 
                                 Mood mood = document.toObject(Mood.class);
 
-                                if (mood != null) {
+                                if (mood != null && mood.isPublic()) {
                                     mood.setMoodId(document.getId());
 
                                     // Check if timestamp is actually present
