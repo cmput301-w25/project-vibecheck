@@ -23,7 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.vibecheck.ui.createmood.AddMoodEventActivity;
+import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.profile.ProfileActivity;
 import com.example.vibecheck.R;

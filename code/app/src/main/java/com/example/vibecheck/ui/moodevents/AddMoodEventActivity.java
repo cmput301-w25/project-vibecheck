@@ -5,7 +5,7 @@
  * specify an optional trigger, and choose a social situation. The selected mood event
  * is then stored in Firebase Firestore.
  */
-package com.example.vibecheck.ui.createmood;
+package com.example.vibecheck.ui.moodevents;
 
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +24,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.vibecheck.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -189,6 +188,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     db.collection("moods")
                             .add(newMood)
                             .addOnSuccessListener(docRef -> {
+                                String moodId = docRef.getId();
+                                docRef.update("moodId", moodId);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })

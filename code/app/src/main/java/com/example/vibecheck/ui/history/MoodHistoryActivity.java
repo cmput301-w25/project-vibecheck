@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -80,7 +80,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
                 mood.setSocialSituation(socialSituation);
                 mood.setDescription(description);
                 mood.setLocation(latitude, longitude);
-                mood.setDocumentId(documentId);
+                mood.setMoodId(documentId);
 
                 // Ensure Mood Entries Load with Colors and Emojis
                 moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));

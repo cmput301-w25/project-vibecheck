@@ -1,6 +1,6 @@
 package com.example.vibecheck.ui.history;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 
 import java.io.Serializable;
 import java.util.ArrayList;

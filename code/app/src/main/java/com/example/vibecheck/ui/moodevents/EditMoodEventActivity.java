@@ -1,4 +1,4 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.moodevents;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,9 +21,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.vibecheck.ui.createmood.AddMoodEventActivity;
+import com.example.vibecheck.MoodUtils;
+import com.example.vibecheck.R;
 import com.example.vibecheck.ui.home.HomeActivity;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -271,21 +273,58 @@ public class EditMoodEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Deletes the mood event from Firestore.
+     * Deletes all the comments associated with a mood event from the Firestore database
+     * Upon success of deleting the comments, the mood event is then deleted
+     * from Firestore as well.
      */
     private void deleteMoodEvent() {
-        db.collection("moods").document(moodEventId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(EditMoodEventActivity.this, "Mood event deleted", Toast.LENGTH_SHORT).show();
+        // First we have to delete all comments attached to this mood event
+        db.collection("comments")
+                .whereEqualTo("moodEventId", moodEventId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // Loop through and delete each comment
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        doc.getReference().delete();
+                    }
 
-                    Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+
+                    // Once all comments are deleted, we can safely delete the mood event
+                    db.collection("moods").document(moodEventId)
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(EditMoodEventActivity.this, "Mood event and comments deleted", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(EditMoodEventActivity.this, "Error deleting mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(EditMoodEventActivity.this, "Error deleting mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditMoodEventActivity.this, "Failed to delete comments: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+
+
+       /*
+       db.collection("moods").document(moodEventId)
+               .delete()
+               .addOnSuccessListener(aVoid -> {
+                   Toast.makeText(EditMoodEventActivity.this, "Mood event deleted", Toast.LENGTH_SHORT).show();
+
+
+                   Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
+                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                   startActivity(intent);
+                   finish();
+               })
+               .addOnFailureListener(e -> {
+                   Toast.makeText(EditMoodEventActivity.this, "Error deleting mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+               });
+
+
+        */
     }
 }

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 
@@ -103,9 +103,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
 
         //Handle click on mood post
         holder.moodPostContainer.setOnClickListener(v -> {
-            Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getDocumentId());
+            Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getMoodId());
 
-            if (mood.getDocumentId() == null || mood.getDocumentId().isEmpty()) {
+            if (mood.getMoodId() == null || mood.getMoodId().isEmpty()) {
                 Log.e("HomeScreenPostAdapter", "ERROR: mood.getDocumentId() is NULL or EMPTY!");
                 return;
             }
