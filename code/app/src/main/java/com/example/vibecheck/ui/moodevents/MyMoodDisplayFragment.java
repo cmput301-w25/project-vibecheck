@@ -163,36 +163,48 @@ public class MyMoodDisplayFragment extends Fragment {
     public void loadMoodEvent(String moodEventId) {
         DocumentReference moodRef = db.collection("moods").document(moodEventId);
         moodListener = moodRef.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                Log.e("FirestoreError", "Error fetching mood event", error);
+                return;
+            }
+
             if (snapshot != null && snapshot.exists()) {
                 Mood mood = snapshot.toObject(Mood.class);
 
                 if (mood != null) {
-                    moodDate.setText(mood.getFormattedTimestamp());
-                    Mood.MoodState foundMoodState = mood.getMoodState();
-
-                    moodType.setText(MoodUtils.getEmojiForMood(foundMoodState) + " " + foundMoodState.moodStateToString());
-
-                    //Set mood type card and description card colors based on mood state
-                    int moodColor = MoodUtils.getMoodColor(requireContext(), mood.getMoodState());
-                    moodTypeCard.setCardBackgroundColor(moodColor);
-                    topBar.setBackgroundColor(moodColor);
-                    moodDescriptionCard.setCardBackgroundColor(moodColor);
-
-                    //Only update trigger, description, and social situation if they are not null or empty
-                    if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
-                        moodTrigger.setText(mood.getTrigger());
-                    } else {
-                        moodTrigger.setText("N/A");
+                    if (!isAdded()) {
+                        Log.w("MyMoodDisplay", "Fragment is not attached, aborting UI update.");
+                        return;
                     }
-                    if (mood.getDescription() != null && !mood.getDescription().trim().isEmpty()) {
-                        moodDescription.setText(mood.getDescription());
-                    } else {
-                        moodDescription.setText("N/A");
-                    }
-                    Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
-                    if (foundSocialSituation != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
-                        socialSituation.setText(foundSocialSituation.socialSituationToString());
-                    }
+
+                    requireActivity().runOnUiThread(() -> {
+                        moodDate.setText(mood.getFormattedTimestamp());
+                        Mood.MoodState foundMoodState = mood.getMoodState();
+
+                        moodType.setText(MoodUtils.getEmojiForMood(foundMoodState) + " " + foundMoodState.moodStateToString());
+
+                        //Set mood type card and description card colors based on mood state
+                        int moodColor = MoodUtils.getMoodColor(requireContext(), mood.getMoodState());
+                        moodTypeCard.setCardBackgroundColor(moodColor);
+                        topBar.setBackgroundColor(moodColor);
+                        moodDescriptionCard.setCardBackgroundColor(moodColor);
+
+                        //Only update trigger, description, and social situation if they are not null or empty
+                        if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
+                            moodTrigger.setText(mood.getTrigger());
+                        } else {
+                            moodTrigger.setText("N/A");
+                        }
+                        if (mood.getDescription() != null && !mood.getDescription().trim().isEmpty()) {
+                            moodDescription.setText(mood.getDescription());
+                        } else {
+                            moodDescription.setText("N/A");
+                        }
+                        Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
+                        if (foundSocialSituation != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
+                            socialSituation.setText(foundSocialSituation.socialSituationToString());
+                        }
+                    });
                 }
             }
         });

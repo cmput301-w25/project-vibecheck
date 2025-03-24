@@ -206,6 +206,14 @@ public class Mood {
         this.username = username;
     }
 
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     /**
      * @return
      *      Returns a string representation of the mood entry.
