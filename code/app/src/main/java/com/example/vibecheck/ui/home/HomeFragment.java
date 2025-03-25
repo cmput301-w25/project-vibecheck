@@ -43,7 +43,6 @@ public class HomeFragment extends Fragment {
 
     // Declare UI elements
     private Toolbar toolbar;
-    private TextView toolbarTitle;
     private ImageView iconSearch;
     private ImageView iconFilter;
     private ImageView iconNotifications;
@@ -87,7 +86,7 @@ public class HomeFragment extends Fragment {
         }
 
         // Initialize Toolbar components
-        toolbarTitle = view.findViewById(R.id.title);
+        TextView title = toolbar.findViewById(R.id.title);
         iconSearch = view.findViewById(R.id.icon_search);
         iconFilter = view.findViewById(R.id.icon_filter);
         iconNotifications = view.findViewById(R.id.icon_notifications);

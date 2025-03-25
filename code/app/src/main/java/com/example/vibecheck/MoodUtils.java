@@ -18,6 +18,10 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 
 import com.example.vibecheck.ui.moodevents.Mood;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 
@@ -31,19 +35,26 @@ public class MoodUtils {
     //Static variable to store current username of whoever is logged in
     private static String currentUsername = null;
 
+    //Interface for getting display name
+    public interface OnDisplayNameFetchedListener {
+        void onFetched(String displayName);
+    }
+
+
     //Getter and setter for current username
     public static void setCurrentUsername(String username) {
         currentUsername = username;
     }
+
     public static String getCurrentUsername() {
         return currentUsername;
     }
 
     /**
      * Identifies if the current user owns a given mood event.
+     *
      * @param mood
-     * @return
-     *      Returns a boolean to confirm or deny current user mood event ownership
+     * @return Returns a boolean to confirm or deny current user mood event ownership
      */
     public static boolean isMoodOwnedByCurrentUser(Mood mood) {
         if (mood == null || currentUsername == null) return false;
@@ -52,6 +63,7 @@ public class MoodUtils {
 
     /**
      * Navigates to the appropriate fragment for viewing a mood event.
+     *
      * @param navController
      * @param mood
      */
@@ -80,16 +92,26 @@ public class MoodUtils {
     private static int getMoodColourResourceID(Mood.MoodState moodState) {
         if (moodState == null) return R.color.white; //Default fallback color
         switch (moodState) {
-            case ANGER: return R.color.anger;
-            case CONFUSION: return R.color.confusion;
-            case DISGUST: return R.color.disgust;
-            case FEAR: return R.color.fear;
-            case HAPPINESS: return R.color.happiness;
-            case SADNESS: return R.color.sadness;
-            case SHAME: return R.color.shame;
-            case SURPRISE: return R.color.surprise;
-            case BOREDOM: return R.color.boredom;
-            default: return R.color.white;
+            case ANGER:
+                return R.color.anger;
+            case CONFUSION:
+                return R.color.confusion;
+            case DISGUST:
+                return R.color.disgust;
+            case FEAR:
+                return R.color.fear;
+            case HAPPINESS:
+                return R.color.happiness;
+            case SADNESS:
+                return R.color.sadness;
+            case SHAME:
+                return R.color.shame;
+            case SURPRISE:
+                return R.color.surprise;
+            case BOREDOM:
+                return R.color.boredom;
+            default:
+                return R.color.white;
         }
     }
 
@@ -107,16 +129,26 @@ public class MoodUtils {
     public static String getEmojiForMood(Mood.MoodState moodState) {
         if (moodState == null) return "🙂"; // Default emoji
         switch (moodState) {
-            case ANGER: return "😡";
-            case CONFUSION: return "😕";
-            case DISGUST: return "🤢";
-            case FEAR: return "😨";
-            case HAPPINESS: return "😃";
-            case SADNESS: return "😢";
-            case SHAME: return "😳";
-            case SURPRISE: return "😲";
-            case BOREDOM: return "😴";
-            default: return "🙂";
+            case ANGER:
+                return "😡";
+            case CONFUSION:
+                return "😕";
+            case DISGUST:
+                return "🤢";
+            case FEAR:
+                return "😨";
+            case HAPPINESS:
+                return "😃";
+            case SADNESS:
+                return "😢";
+            case SHAME:
+                return "😳";
+            case SURPRISE:
+                return "😲";
+            case BOREDOM:
+                return "😴";
+            default:
+                return "🙂";
         }
     }
 
@@ -125,9 +157,9 @@ public class MoodUtils {
      * Subtracts the time when a post was made from the current time
      * to determine the time since the post was made.
      * For visual display purposes.
+     *
      * @param postDate
-     * @return
-     *      Returns a string representing the time since a given post was made.
+     * @return Returns a string representing the time since a given post was made.
      */
     public static String timeSincePosting(Date postDate) {
         long diff = new Date().getTime() - postDate.getTime();
@@ -139,4 +171,38 @@ public class MoodUtils {
         long days = hours / 24;
         return days + " days ago";
     }
+
+
+    /**
+     * Fetches the current display name for a given username by querying the Firestore database based on the unique username
+     * of a user that is provided for the query. Necessary as display names can be changed by the user anytime.
+     * @param username
+     * @param listener
+     */
+    public static void getDisplayName(String username, OnDisplayNameFetchedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .whereEqualTo("username", username)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String displayName = querySnapshot.getDocuments().get(0).getString("displayName");
+                        if (displayName != null && !displayName.isEmpty()) {
+                            listener.onFetched(displayName);
+                        } else {
+                            // Fallback to username if displayName is missing
+                            listener.onFetched(username);
+                        }
+                    } else {
+                        // If no user found, return the username
+                        listener.onFetched(username);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("MoodUtils", "Error fetching displayName: " + e.getMessage());
+                    listener.onFetched(username); // Return username on failure
+                });
+    }
+
 }

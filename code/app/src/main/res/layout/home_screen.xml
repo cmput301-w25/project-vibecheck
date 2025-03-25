@@ -7,64 +7,67 @@
     android:background="@color/light_blue"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Toolbar by Seerat -->
+    <!-- Top Navigation Bar By Tito -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@android:color/white"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:contentInsetStartWithNavigation="0dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:title=""
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- App Name -->
+        <!-- Toolbar Title -->
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/salsa"
             android:text="VibeCheck"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black"
+            android:textSize="40sp" />
 
-        <!-- Layout to hold icon navigations -->
+        <!-- Layout for Icon Buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <!-- Search Icon -->
-            <ImageView
+            <!-- Search -->
+            <ImageButton
                 android:id="@+id/icon_search"
-                android:layout_width="31dp"
-                android:layout_height="24dp"
-                android:contentDescription="Search"
-                android:padding="8dp"
-                android:src="@drawable/search_icon" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/search_icon"
+                android:backgroundTint="@color/black"
+                android:contentDescription="Search"/>
 
-            <!-- Filter Icon -->
-            <ImageView
+            <!-- Filter -->
+            <ImageButton
                 android:id="@+id/icon_filter"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="8dp"
-                android:src="@drawable/filter_icon"
-                android:contentDescription="Filter" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/filter_icon"
+                android:backgroundTint="@color/black"
+                android:contentDescription="Filter"/>
 
-            <!-- Notification Icon -->
-            <ImageView
+            <!-- Notifications -->
+            <ImageButton
                 android:id="@+id/icon_notifications"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="8dp"
-                android:src="@drawable/notification_icon"
-                android:contentDescription="Notifications" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/notification_icon"
+                android:backgroundTint="@color/black"
+                android:contentDescription="Notifications"/>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
+
 
     <!-- RecyclerView for Feed -->
     <androidx.recyclerview.widget.RecyclerView

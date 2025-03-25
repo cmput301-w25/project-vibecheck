@@ -64,6 +64,7 @@ public class UserMoodDisplayFragment extends Fragment{
 
     private CommentAdapter commentAdapter;
     private List<Comment> commentList = new ArrayList<>();
+    private String moodEventUsername;
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -101,6 +102,12 @@ public class UserMoodDisplayFragment extends Fragment{
             return;
         }
         loadMoodEvent(moodEventId);
+
+        MoodUtils.getDisplayName(moodEventUsername, displayName -> {
+            if (displayName != null) {
+                usernameText.setText(displayName + "'s Mood");
+            }
+        });
 
         //Initialize UI elements
         usernameText = view.findViewById(R.id.username_mood_title);
@@ -164,6 +171,7 @@ public class UserMoodDisplayFragment extends Fragment{
                         username = "N/A";
                     }
                     usernameText.setText(username + "'s Mood");
+                    moodEventUsername = username;
 
                     //Attempts to find and set the display name of the user associated with the mood
                     db.collection("users")
