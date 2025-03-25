@@ -90,7 +90,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         holder.displayNameText.setText(mood.getUsername());
 
         //Set mood trigger text
-        holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No trigger");
+        holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No reason");
 
         //Set mood description text
         holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No description");

@@ -125,27 +125,50 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:spinnerMode="dropdown" />
-      
+
     </RelativeLayout>
 
     <!-- Save Button -->
+
+    <!-- Back Button -->
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/salsa"
+        android:text="Set Private or Public Mood Event"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <ToggleButton
+        android:id="@+id/is_public_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/salsa"
+
+        android:text="ToggleButton"
+        android:textOff="Private"
+        android:textOn="Public"
+        android:textSize="24sp" />
+
     <Button
         android:id="@+id/button_save_mood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:textColor="@color/black"
-        android:fontFamily="@font/salsa"
         android:layout_marginBottom="16dp"
-        android:text="Save Mood" />
+        android:background="@color/white"
+        android:fontFamily="@font/salsa"
+        android:text="Save Mood"
+        android:textColor="@color/black" />
 
-    <!-- Back Button -->
     <Button
         android:id="@+id/button_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:textColor="@color/black"
         android:fontFamily="@font/salsa"
-        android:text="Back" />
+        android:text="Back"
+        android:textColor="@color/black" />
+
 </LinearLayout>
