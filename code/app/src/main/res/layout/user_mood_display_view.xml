@@ -24,14 +24,14 @@
             android:fontFamily="@font/salsa"
             android:text="username's Mood"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <!-- Back Button -->
         <ImageView
             android:id="@+id/back_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="2dp"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/back_button"
             android:layout_alignStart="@id/back_button"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
             <TextView

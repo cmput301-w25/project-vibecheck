@@ -12,6 +12,7 @@
     </string-array>
 
     <string-array name="social_options">
+        <item>N/A</item>
         <item>Alone</item>
         <item>One-to-One</item>
         <item>Small Group</item>
