@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.vibecheck.ui.history.MoodHistory;
+import com.example.vibecheck.ui.history.MoodHistoryEntry;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,10 +20,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.vibecheck.databinding.MapFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback {
 
@@ -33,6 +43,10 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     private TextView label;
     private AppCompatToggleButton toggle;
     private BottomNavigationView bottomNavigationView;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private MoodHistory userHistory;
 
 
 
@@ -40,6 +54,11 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword("jo@gmail.com", "joel02");
+        db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         binding = MapFragmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -81,7 +100,37 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        ArrayList<MoodHistoryEntry> testList = new ArrayList<>();
+        CollectionReference moodHistoryRef = db.collection("users").document(currentUser.getUid()).collection("MoodHistory");
+
+        moodHistoryRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        ArrayList<MoodHistoryEntry> moodHistoryList = new ArrayList<>();
+                        userHistory = new MoodHistory(currentUser.getDisplayName(), moodHistoryList);
+
+                        // Iterate over the documents in the snapshot
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            // Convert each document to an Item object
+                            Mood mood = document.toObject(Mood.class);
+                            userHistory.addMoodEvent(mood);  // Add the Item to the list
+                        }
+                        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
+                            if(entry.getMood().getLatitude() != null) {
+                                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
+                                mMap.addMarker(new MarkerOptions().position(marker));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+                            }
+                        }
+                        Log.d("MapActivityFragment", "Success1");
+
+                    } else {
+                        // Handle error
+                        Log.e("MapActivityFragment", "Failure1");
+                    }
+                });
+
+        /*ArrayList<MoodHistoryEntry> testList = new ArrayList<>();
         Mood one = new Mood(Mood.MoodState.BOREDOM);
         one.setLocation(53.522778, -113.623055);
         Mood two = new Mood(Mood.MoodState.BOREDOM);
@@ -89,7 +138,7 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
         testList.add(new MoodHistoryEntry(one));
         testList.add(new MoodHistoryEntry(two));
         testList.add(new MoodHistoryEntry(new Mood(Mood.MoodState.ANGER)));
-        MoodHistory userHistory = new MoodHistory("Joel", testList);
+        MoodHistory userHistory = new MoodHistory("Joel", testList);*/
 
         Mood three= new Mood(Mood.MoodState.BOREDOM);
         three.setLocation(50.522778, -110.623055);
@@ -101,13 +150,13 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
 
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
-        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
+        /*for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
             if(entry.getMood().getLatitude() != null) {
                 LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
                 mMap.addMarker(new MarkerOptions().position(marker));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
             }
-        }
+        }*/
 
         toggle.setOnClickListener(v -> {
             if(toggle.isChecked()){
