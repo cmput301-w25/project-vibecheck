@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_contstraintEnd_toStartOf="@id/map_mood_title" />
+            app:layout_constraintEnd_toStartOf="@id/map_mood_title"/>
 
         <TextView
             android:id="@+id/map_mood_title"
@@ -139,7 +139,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/map"
-            app:layout_constraintBottomToBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             map:uiZoomControls="true"
             map:uiRotateGestures="true"
             tools:context=".MapActivityFragment" />
