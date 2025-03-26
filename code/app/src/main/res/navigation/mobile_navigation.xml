@@ -20,7 +20,7 @@
     <!-- User Mood Display Fragment -->
     <fragment
         android:id="@+id/userMoodDisplayFragment"
-        android:name="com.example.vibecheck.ui.viewmoodevents.UserMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.moodevents.UserMoodDisplayFragment"
         android:label="View Mood Event"
         tools:layout="@layout/user_mood_display_view" >
         <action
@@ -31,7 +31,7 @@
     <!-- My Mood Display Fragment -->
     <fragment
         android:id="@+id/myMoodDisplayFragment"
-        android:name="com.example.vibecheck.ui.viewmoodevents.MyMoodDisplayFragment"
+        android:name="com.example.vibecheck.ui.moodevents.MyMoodDisplayFragment"
         android:label="View My Mood Event"
         tools:layout="@layout/my_mood_display_view" />
 

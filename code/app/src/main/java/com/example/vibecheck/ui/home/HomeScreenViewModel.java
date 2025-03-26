@@ -15,12 +15,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.vibecheck.Mood;
+import com.example.vibecheck.ui.moodevents.Mood;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.EventListener;
 
@@ -62,7 +62,7 @@ public class HomeScreenViewModel extends ViewModel {
      * Listen for real time updates from firestore.
      */
     private void listenForMoodUpdates() {
-        moodsCollection.orderBy("timestamp")
+        moodsCollection.orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -78,8 +78,8 @@ public class HomeScreenViewModel extends ViewModel {
 
                                 Mood mood = document.toObject(Mood.class);
 
-                                if (mood != null) {
-                                    mood.setDocumentId(document.getId());
+                                if (mood != null && mood.isPublic()) {
+                                    mood.setMoodId(document.getId());
 
                                     // Check if timestamp is actually present
                                     if (document.contains("timestamp") && document.getTimestamp("timestamp") != null) {

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_mood_event_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue"
@@ -22,6 +23,21 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mood_description_card" />
+
+    <TextView
+        android:id="@+id/social_situation_label2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="3dp"
+        android:paddingTop="12dp"
+        android:text="Private or Public Mood Event Toggle:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/is_public_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/social_situation_card" />
 
     <ImageView
         android:id="@+id/cancel_button"
@@ -55,6 +71,7 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/salsa"
         app:layout_constraintEnd_toStartOf="@id/save_button"
         app:layout_constraintStart_toEndOf="@id/cancel_button"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,24 +100,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Spinner
-            android:id="@+id/mood_type_spinner"
+        <RelativeLayout
+            android:id="@+id/mood_background"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Mood Spinner -->
+            <Spinner
+                android:id="@+id/mood_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingEnd="48dp"
+                android:background="@android:color/transparent"
+                android:spinnerMode="dropdown" />
+
+            <!-- Emoji on the far right -->
+            <TextView
+                android:id="@+id/mood_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:text=""
+                android:textSize="24sp" />
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/mood_trigger_label"
+        android:id="@+id/mood_reason_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trigger (optional):"
-        android:textSize="14sp"
+        android:paddingTop="12dp"
+        android:text="Reason (optional):"
         android:textColor="@color/black"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/mood_type_card"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingTop="12dp"/>
+        app:layout_constraintTop_toBottomOf="@id/mood_type_card" />
 
     <TextView
         android:id="@+id/mood_description_label"
@@ -108,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="184dp"
         android:paddingTop="12dp"
-        android:text="Description:"
+        android:text="Description (optional):"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -121,7 +160,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:paddingTop="12dp"
-        android:text="Add Image:"
+        android:text="Add Image (optional):"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -132,11 +171,11 @@
         android:id="@+id/mood_trigger_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="Enter trigger (optional)"
+        android:hint="Enter reason (optional)"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mood_trigger_label" />
+        app:layout_constraintTop_toBottomOf="@id/mood_reason_label" />
 
     <ImageView
         android:id="@+id/add_image_button"
@@ -169,9 +208,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Enter description"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
             android:padding="12dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:scrollbars="vertical"
+            android:maxLength="200" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -199,6 +242,7 @@
         android:clickable="true"
         android:contentDescription="Delete Mood"
         android:focusable="true"
+        android:paddingBottom="12dp"
         android:src="@drawable/delete_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -214,5 +258,17 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cancel_button" />
+
+    <ToggleButton
+        android:id="@+id/is_public_button"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="37dp"
+        android:paddingBottom="20dp"
+        android:textOff="Private"
+        android:textOn="Public"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/social_situation_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.vibecheck.ui.signup.SignUpActivity;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CCE5FF"
-    tools:context=".HomeActivity">
+    tools:context=".ui.home.HomeActivity">
 
     <!-- Navigation Host -->
     <androidx.fragment.app.FragmentContainerView

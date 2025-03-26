@@ -1,4 +1,4 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.history;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.vibecheck.ui.moodevents.Mood;
+import com.example.vibecheck.R;
 
 import java.util.ArrayList;
 

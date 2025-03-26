@@ -1,4 +1,4 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.history;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.vibecheck.MoodUtils;
+import com.example.vibecheck.R;
 
 import java.util.ArrayList;
 

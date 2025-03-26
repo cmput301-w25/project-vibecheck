@@ -8,24 +8,25 @@ map functionality not implemented.
  */
 
 
-package com.example.vibecheck;
+package com.example.vibecheck.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
+import com.example.vibecheck.ui.history.MoodHistoryActivity;
+import com.example.vibecheck.ui.profile.ProfileActivity;
+import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.ActivityHomeBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,7 +41,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
+
+        // Top padding
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
 
         // Obtains the navController from the NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_home);
