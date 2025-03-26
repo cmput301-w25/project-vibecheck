@@ -145,7 +145,8 @@
         android:id="@+id/mood_description_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="116dp"
         android:paddingTop="12dp"
         android:text="Description (optional):"
         android:textColor="@color/black"
@@ -179,8 +180,8 @@
 
     <ImageView
         android:id="@+id/add_image_button"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="194dp"
+        android:layout_height="134dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
         android:contentDescription="Add Image"
@@ -234,6 +235,32 @@
             android:layout_width="match_parent"
             android:layout_height="50dp" />
     </androidx.cardview.widget.CardView>
+
+    <!-- NEW: Location Label -->
+    <!--
+    <TextView
+        android:id="@+id/location_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:text="Location:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/social_situation_card"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="382dp"
+        android:layout_height="42dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/social_situation_card"
+        tools:ignore="MissingClass" /> -->
+
+    <!-- A button to use current location -->
 
     <ImageView
         android:id="@+id/delete_button"

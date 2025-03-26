@@ -50,6 +50,8 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation("androidx.cardview:cardview:1.0.0")
 
+    //implementation(libs.places)
+
     testImplementation(libs.junit)
     testImplementation ("org.mockito:mockito-core:5.11.0")
     testImplementation ("org.mockito:mockito-inline:5.2.0")
@@ -58,4 +60,9 @@ dependencies {
 
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Google Places SDK for Android (Autocomplete support)
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
+    // Google Play Services Location (FusedLocationProvider)
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 }

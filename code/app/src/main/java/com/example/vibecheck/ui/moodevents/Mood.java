@@ -62,6 +62,8 @@ public class Mood {
                 default: return null;
             }
         }
+
+        //ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
@@ -154,6 +156,7 @@ public class Mood {
      * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
+/*
         // Check for null or empty description
         if (description == null || description.trim().isEmpty()) {
             this.description = null;
@@ -163,7 +166,8 @@ public class Mood {
         if (description.length() > 200) {
             throw new IllegalArgumentException("Description must not exceed 200 characters.");
         }
-
+CHECK ON THIS LATER*/
+        // Removed the strict constraint to avoid crashes during Firestore deserialization.
         this.description = description;
     }
 
@@ -259,4 +263,23 @@ public class Mood {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
         return sdf.format(timestamp);
     }
+/*
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+
+    public String socialSituationToString() {
+        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
+    }
+
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+
+    public String moodStateToString() {
+        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
+    }
+*/
 }

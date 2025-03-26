@@ -1,10 +1,15 @@
 package com.example.vibecheck.ui.moodevents;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
@@ -25,27 +32,31 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.ui.home.HomeActivity;
+import androidx.core.app.ActivityCompat;
+/*
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+*/
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.io.IOException;
+import java.util.Arrays;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
-
-/**
- * Activity for editing or deleting a mood event.
- * <p>
- * This activity loads the mood event data from Firestore, allows the user to update
- * fields (trigger, description, mood state, social situation), and provides options
- * to save the changes or delete the event.
- * </p>
- */
+import java.util.List;
+import java.util.Locale;
 
 public class EditMoodEventActivity extends AppCompatActivity {
 
-    // UI elements – note cancelButton is now an ImageView to match XML
-    private ImageView cancelButton;
-    private ImageView saveButton;
-    private ImageView deleteButton;
+    // UI elements
+    private ImageView cancelButton, saveButton, deleteButton, addImageButton, currentLocationButton;
     private TextView moodDate;
     private TextView moodEmoji;
     private Spinner moodTypeSpinner;
@@ -54,20 +65,22 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private RelativeLayout moodBackground;
     private ToggleButton isPublicButton;
-    private ImageView addImageButton;
+    //private ImageView addImageButton;
+    //private Spinner moodTypeSpinner, socialSituationSpinner;
+    //private EditText moodTriggerInput, moodDescriptionInput;
+    // Remove the old location EditText if it exists; now we use the Autocomplete fragment.
 
     // Firebase Firestore
     private FirebaseFirestore db;
     private String moodEventId;
 
+    // For current location access
+//    private FusedLocationProviderClient fusedLocationClient;
+
     // Arrays for spinner data using the enums from Mood class
     private Mood.MoodState[] moodStates = Mood.MoodState.values();
     private Mood.SocialSituation[] socialSituations = Mood.SocialSituation.values();
-    /**
-     * Called when the activity is starting.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied; otherwise, it is null.
-     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,12 +113,43 @@ public class EditMoodEventActivity extends AppCompatActivity {
         moodDescriptionInput = findViewById(R.id.mood_description_input);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         addImageButton = findViewById(R.id.add_image_button);
+//        currentLocationButton = findViewById(R.id.current_location_button);
         moodBackground = findViewById(R.id.mood_background);
         moodEmoji = findViewById(R.id.mood_emoji);
         isPublicButton = findViewById(R.id.is_public_button);
 
         db = FirebaseFirestore.getInstance();
 
+/*
+        // Initialize Places API (ensure you have added your API key in strings.xml)
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+        }
+        // Set up the AutocompleteSupportFragment for location suggestions.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        if (autocompleteFragment != null) {
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+            autocompleteFragment.setHint("Enter location");
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(@NonNull Place place) {
+                    // You can save the selected place name in a field or update the UI.
+                    // For example, you might store it in a member variable:
+                    selectedLocation = place.getName();
+                }
+                @Override
+                public void onError(@NonNull com.google.android.gms.common.api.Status status) {
+                    Toast.makeText(EditMoodEventActivity.this, "Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+*/
+        // Initialize FusedLocationProviderClient for current location
+        //ERROR     fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Populate spinners using ArrayAdapter (existing code)
+        //ArrayAdapter<Mood.MoodState> moodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, moodStates);
 
         // Populate spinners using ArrayAdapter, options defined in strings.xml
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -160,16 +204,17 @@ public class EditMoodEventActivity extends AppCompatActivity {
             new AlertDialog.Builder(EditMoodEventActivity.this)
                     .setTitle("Delete Mood Event")
                     .setMessage("Are you sure you want to delete this mood event?")
-                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            deleteMoodEvent();
-                        }
-                    })
+                    .setPositiveButton("Delete", (dialog, which) -> deleteMoodEvent())
                     .setNegativeButton("Cancel", null)
                     .show();
         });
+
+        // Set up current location button click
+//        currentLocationButton.setOnClickListener(view -> fetchCurrentLocation());
     }
+
+    // Variable to store the selected location from autocomplete
+    private String selectedLocation = "";
 
     /**
      * Loads the mood event data from Firestore and updates the UI.
@@ -184,6 +229,9 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 String description = documentSnapshot.getString("description");
                 Date timestamp = documentSnapshot.getDate("timestamp");
                 String socialSituationStr = documentSnapshot.getString("socialSituation");
+                // Get location field.
+                String location = documentSnapshot.getString("location");
+                Log.d("location", "location: " + location);
 
                 boolean isPublic = documentSnapshot.getBoolean("public");
 
@@ -198,6 +246,14 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 }
                 if (description != null) {
                     moodDescriptionInput.setText(description);
+                }
+
+                // Set location in the Autocomplete fragment if available.
+                if (location != null) {
+                    selectedLocation = location;
+                    // Optionally, update the Autocomplete fragment's text.
+                    // Note: The AutocompleteSupportFragment does not provide a direct API to set text.
+                    // You might need a custom solution if you require that.
                 }
 
                 // Format and display the timestamp.
@@ -255,6 +311,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
         String description = moodDescriptionInput.getText().toString().trim();
         String moodStateStr = moodTypeSpinner.getSelectedItem().toString();
         String socialSituationStr = socialSituationSpinner.getSelectedItem().toString();
+        // Use selectedLocation from autocomplete (if the user hasn't changed it, it remains the loaded value)
+        String location = selectedLocation;
         boolean isPublic = isPublicButton.isChecked();
 
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(socialSituationStr);
@@ -271,8 +329,9 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 .update(
                         "trigger", trigger,
                         "description", description,
-                        "moodState", moodState,
-                        "socialSituation", socialSituation,
+                        "moodState", moodStateStr,
+                        "socialSituation", socialSituationStr,
+                        "location", location,
                         "public", isPublic
                 )
                 .addOnSuccessListener(aVoid -> {
@@ -339,4 +398,46 @@ public class EditMoodEventActivity extends AppCompatActivity {
 
         */
     }
+
+    /**
+     * Uses FusedLocationProviderClient to fetch the current location and update the location variable.
+     */
+    /*
+    private void fetchCurrentLocation() {
+        // Check location permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
+            // You might want to request permission here.
+            return;
+        }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        // Use Geocoder to get a human-readable address from the coordinates.
+                        Geocoder geocoder = new Geocoder(EditMoodEventActivity.this, Locale.getDefault());
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            if (addresses != null && !addresses.isEmpty()) {
+                                String currentAddress = addresses.get(0).getAddressLine(0);
+                                selectedLocation = currentAddress;
+                                Toast.makeText(EditMoodEventActivity.this, "Current location set", Toast.LENGTH_SHORT).show();
+                                // Optionally, update the Autocomplete fragment hint (not straightforward)
+                            } else {
+                                Toast.makeText(EditMoodEventActivity.this, "Unable to retrieve address", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(EditMoodEventActivity.this, "Geocoder error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(EditMoodEventActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
+     */
 }
