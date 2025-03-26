@@ -28,4 +28,5 @@
     <string name="title_my_mood_event_display">My Mood Event Display"</string>
     <string name="title_add_mood_event">Create Mood Event</string>
     <string name="title_mood_history">Mood History</string>
+    <string name="google_maps_key">AIzaSyDOvapion_glRNHcgncyCqoQSZrpoR28Lc</string>
 </resources>
