@@ -30,7 +30,7 @@ public class Mood {
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE
+        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
@@ -121,11 +121,10 @@ public class Mood {
      * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
-        if (description != null && (description.length() > 20 || description.split("\\s+").length > 3)) {
-            throw new IllegalArgumentException("Description must not exceed 20 characters or 3 words.");
-        }
+        // Removed the strict constraint to avoid crashes during Firestore deserialization.
         this.description = description;
     }
+
 
     public byte[] getImage() {
         return image;
