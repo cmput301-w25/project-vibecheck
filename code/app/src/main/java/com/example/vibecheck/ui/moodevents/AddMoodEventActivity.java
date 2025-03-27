@@ -67,7 +67,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private RelativeLayout moodBackground;
     private ToggleButton isPublicButton;
     private Toolbar addMoodToolbar;
-    private Switch locationSwitch;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -108,7 +107,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
         imagePreview = findViewById(R.id.image_preview);
         addPhotoButton = findViewById(R.id.button_add_photo);
         removePhotoButton = findViewById(R.id.button_remove_photo);
-        locationSwitch = findViewById(R.id.location_switch);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
