@@ -60,6 +60,7 @@ dependencies {
 
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
     // Google Places SDK for Android (Autocomplete support)
     implementation("com.google.android.libraries.places:places:3.3.0")
 

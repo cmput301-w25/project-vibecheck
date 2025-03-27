@@ -40,11 +40,6 @@
             android:name=".ui.moodevents.AddMoodEventActivity"
             android:exported="true" />
 
-        <activity
-            android:name=".EditMoodEventActivity"
-            android:exported="true"
-            />
-
         <!-- Mood History Activity -->
         <activity
             android:name=".ui.history.MoodHistoryActivity"

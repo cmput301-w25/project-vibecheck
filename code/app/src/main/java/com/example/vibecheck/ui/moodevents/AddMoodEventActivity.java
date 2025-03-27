@@ -26,6 +26,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 //import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,6 +35,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
+
 
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
@@ -48,6 +61,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -67,14 +81,14 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private RelativeLayout moodBackground;
     private ToggleButton isPublicButton;
     private Toolbar addMoodToolbar;
-    private Switch locationSwitch;
-
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
     private String imageData = null;
     private Uri imageUri;
+
+    private String selectedLocation = "";
 
     /**
      * Initializes the activity, sets up UI components, and populates dropdowns.
@@ -108,11 +122,38 @@ public class AddMoodEventActivity extends AppCompatActivity {
         imagePreview = findViewById(R.id.image_preview);
         addPhotoButton = findViewById(R.id.button_add_photo);
         removePhotoButton = findViewById(R.id.button_remove_photo);
-        locationSwitch = findViewById(R.id.location_switch);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+
+        // Initialize Places API
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+        }
+
+        // Set up the Autocomplete fragment
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        if (autocompleteFragment != null) {
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+            autocompleteFragment.setHint("Enter location");
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(@NonNull Place place) {
+                    selectedLocation = place.getName();  // Save location string
+                }
+
+                @Override
+                public void onError(@NonNull Status status) {
+                    Toast.makeText(AddMoodEventActivity.this, "Error: " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
 
         // Populate Mood Dropdown
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -179,7 +220,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
      */
     private void openImageSelection() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        //intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
 
@@ -252,6 +292,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
         String selectedSocial = socialDropdown.getSelectedItem().toString();
         boolean isPublic = isPublicButton.isChecked();
 
+        // Use selectedLocation from autocomplete (if the user hasn't changed it, it remains the loaded value)
+        String location = selectedLocation;
+
         //Converts user inputs to enums
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(selectedSocial);
         Mood.MoodState moodState = Mood.MoodState.moodStateToEnum(selectedMood);
@@ -321,7 +364,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             .add(newMood)
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
-                                docRef.update("moodId", moodId);
+                                docRef.update("moodId", moodId,
+                                        "location", location);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })
