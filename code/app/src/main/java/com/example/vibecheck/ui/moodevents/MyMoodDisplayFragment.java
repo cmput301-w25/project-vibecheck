@@ -128,7 +128,6 @@ public class MyMoodDisplayFragment extends Fragment {
         //locationLabel = view.findViewById(R.id.location_label); COMMENTED OUT UNTIL LOCATION ADDED TO VIEW MOOD EVENT
         moodDate = view.findViewById(R.id.mood_date);
         moodType = view.findViewById(R.id.mood_type);
-        //moodTrigger = view.findViewById(R.id.mood_trigger);
         moodDescription = view.findViewById(R.id.mood_description);
         socialSituation = view.findViewById(R.id.social_situation);
         backButton = view.findViewById(R.id.back_button);
@@ -148,12 +147,6 @@ public class MyMoodDisplayFragment extends Fragment {
         commentAdapter = new CommentAdapter(commentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(commentAdapter);
-
-        //This is the original trigger/reason, the description has been updated to be the reason.
-        //Hiding the text view is quicker than going through the entire process of updating it.
-        //Only using this method due to limited remaining time.
-        //moodTrigger.setVisibility(View.GONE);
-
 
         //Set optional attribute labels as invisible initially, then make them visible when their elements are present in the mood event
         moodReasonLabel.setVisibility(View.GONE);

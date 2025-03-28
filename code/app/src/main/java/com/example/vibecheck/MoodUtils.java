@@ -44,6 +44,7 @@ public class MoodUtils {
     //Mood history variable to story the current user's mood history
     private static MoodHistory moodHistory;
 
+
     //Interface for getting display name
     public interface OnDisplayNameFetchedListener {
         void onFetched(String displayName);

@@ -2,7 +2,7 @@
  * Mood.java
  *
  * This class represents a mood event recorded by the user, including details such as
- * emotional state, social situation, timestamp, optional trigger, description, location,
+ * emotional state, social situation, timestamp, optional reason (description), location,
  * and an optional image. It is designed to be stored in Firestore and supports serialization.
  *
  * Outstanding Issues:
@@ -66,7 +66,6 @@ public class Mood {
 
     private Date timestamp;
     private MoodState moodState;
-    private String trigger;
     private SocialSituation socialSituation;
     private String description; //This is the mood Reason
     private List<Integer> image;
@@ -126,14 +125,6 @@ public class Mood {
 
     public void setMoodState(MoodState moodState) {
         this.moodState = moodState;
-    }
-
-    public String getTrigger() {
-        return trigger;
-    }
-
-    public void setTrigger(String trigger) {
-        this.trigger = trigger;
     }
 
     public SocialSituation getSocialSituation() {
@@ -242,7 +233,6 @@ public class Mood {
         return "Mood{" +
                 "timestamp=" + timestamp +
                 ", moodState=" + moodState +
-                ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
                 ", image=" + (image != null ? "attached" : "none") +

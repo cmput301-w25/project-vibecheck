@@ -103,6 +103,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         //Set emoji based on mood state
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
 
+        //Set date text
+        holder.dateText.setText(mood.getFormattedTimestamp());
+
         //Handle click on mood post
         holder.homeScreenMoodPost.setOnClickListener(v -> {
             Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getMoodId());
@@ -133,7 +136,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      * ViewHolder for the home screen recycler view.
      */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
-        TextView displayNameText, moodDescriptionText, moodEmoji;
+        TextView displayNameText, moodDescriptionText, moodEmoji, dateText;
         RelativeLayout moodPostContainer;
         LinearLayout homeScreenMoodPost;
 
@@ -146,9 +149,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             super(itemView);
             homeScreenMoodPost = itemView.findViewById(R.id.home_screen_mood_post);
             displayNameText = itemView.findViewById(R.id.username);
-            //moodTriggerText = itemView.findViewById(R.id.moodReasonText);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
+            dateText = itemView.findViewById(R.id.mood_date);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);
         }
     }

@@ -111,29 +111,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Trigger -->
-            <!--
-            <TextView
-                android:id="@+id/mood_reason_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reason:"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/mood_trigger"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="N/A"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="italic"/>
-            -->
-
             <!-- Image -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/mood_image_card"
@@ -225,6 +202,7 @@
                 android:scrollbars="vertical" />
         </LinearLayout>
     </ScrollView>
+
     <!-- Comment Input Bar -->
     <LinearLayout
         android:id="@+id/comment_input_bar"

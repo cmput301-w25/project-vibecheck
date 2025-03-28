@@ -18,11 +18,13 @@ import java.util.ArrayList;
 
 public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
 
-    private TextView username;
+    private TextView displayNameText;
     private TextView location;
     private TextView description;
     private LinearLayout moodPostContainer;
     private TextView moodEmoji;
+
+    private TextView dateText;
 
     public MoodHistoryEntryAdapter(Context context, ArrayList<MoodHistoryEntry> moodHistory) {
         super(context, 0, moodHistory);
@@ -42,13 +44,19 @@ public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
 
         MoodHistoryEntry entry = getItem(position);
 
-        username = view.findViewById(R.id.username);
+        displayNameText = view.findViewById(R.id.username);
         location = view.findViewById(R.id.location);
         description = view.findViewById(R.id.moodDescriptionText);
         moodPostContainer = view.findViewById(R.id.description_background);
         moodEmoji = view.findViewById(R.id.moodEmoji);
+        dateText = view.findViewById(R.id.mood_date);
 
-        username.setText(entry.getMood().getUsername());
+        String username = entry.getMood().getUsername();
+        MoodUtils.getDisplayName(username, displayName -> {
+            displayNameText.setText(displayName);
+        });
+
+        dateText.setText(entry.getMood().getFormattedTimestamp());
 
         if(entry.getMood().getLatitude() == null || entry.getMood().getLongitude() == null){
             location.setText("");
