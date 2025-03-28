@@ -16,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,6 +41,9 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     private ArrayList<Mood.MoodState> states = new ArrayList<>();
     private MoodHistory history;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private MoodHistory userHistory;
 
 
     @Override
@@ -45,6 +51,8 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.mood_history);
+
+
 
         //Top padding
         View root = findViewById(R.id.mood_history_root_layout);
@@ -61,9 +69,12 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
 
         dataList = new ArrayList<MoodHistoryEntry>();
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        String username = "TestUser"; //MainActivity.getUsername();
-        Task<QuerySnapshot> collection = db.collection("users/"+username+"/MoodHistory").get();
+        String username = currentUser.getDisplayName();
+        Task<QuerySnapshot> collection = db.collection("users/"+currentUser.getUid()+"/MoodHistory").get();
+        //CollectionReference collection = db.collection("users").document(currentUser.getUid()).collection("MoodHistory");
         collection.addOnSuccessListener(querySnapshot -> {
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 Date timestamp = document.getTimestamp("timestamp").toDate();
