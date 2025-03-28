@@ -5,11 +5,14 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.vibecheck.ui.history.MoodFilterFragment;
 import com.example.vibecheck.ui.history.MoodHistory;
 import com.example.vibecheck.ui.history.MoodHistoryEntry;
+import com.example.vibecheck.ui.history.MoodHistoryEntryAdapter;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +35,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback, MoodFilterFragment.MoodFilterDialogListener {
 
     private GoogleMap mMap;
     private MapFragmentBinding binding;
@@ -47,6 +50,9 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private MoodHistory userHistory;
+    private ArrayList<Mood.MoodState> states = new ArrayList<>();
+
+
 
 
 
@@ -82,7 +88,10 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
             Log.d("HomeActivity", "BottomNavigationView found successfully.");
         }
 
-
+        filterButton.setOnClickListener(v -> {
+            MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
+            fragment.show(getSupportFragmentManager(), "");
+        });
 
 
     }
@@ -183,6 +192,21 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
         });
 
 
+
+    }
+
+    @Override
+    public void filter(ArrayList<Mood.MoodState> states) {
+        this.states = states;
+        userHistory.filterByMood(states);
+        mMap.clear();
+        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
+            if(entry.getMood().getLatitude() != null) {
+                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
+                mMap.addMarker(new MarkerOptions().position(marker));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+            }
+        }
 
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -12,10 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
+import com.example.vibecheck.ui.moodevents.MyMoodDisplayFragment;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,8 +34,8 @@ import java.util.Date;
 public class MoodHistoryActivity extends AppCompatActivity implements MoodFilterFragment.MoodFilterDialogListener{
 
     private ArrayList<MoodHistoryEntry> dataList;
-    private ListView moodEntryList;
-    private ArrayAdapter<MoodHistoryEntry> moodHistoryEntryAdapter;
+    private RecyclerView moodEntryList;
+    private MoodHistoryEntryAdapter moodHistoryEntryAdapter;
     private ImageButton sortButton;
     private  ImageButton filterButton;
     private ImageButton backButton;
@@ -55,32 +62,36 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
             return insets;
         });
 
+        dataList = new ArrayList<MoodHistoryEntry>();
+        db = FirebaseFirestore.getInstance();
 
         sortButton = findViewById(R.id.mood_history_sort_button);
         filterButton = findViewById(R.id.mood_history_filter_button);
         backButton = findViewById(R.id.navbar_back_button);
-        moodEntryList = findViewById(R.id.mood_history_list);
+        moodEntryList = findViewById(R.id.mood_history_recyclerview);
 
-        dataList = new ArrayList<MoodHistoryEntry>();
-
-        db = FirebaseFirestore.getInstance();
-
-
-        String username = MoodUtils.getCurrentUsername();
+        // Get current user's mood history
         MoodHistory userMoodHistory = MoodUtils.getUserMoodHistory();
 
         if(userMoodHistory != null){
             history = userMoodHistory;
             history.sortByDate(); //Displays most recent moods by default
-            moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
-            moodEntryList.setAdapter(moodHistoryEntryAdapter);
         } else {
-            history = new MoodHistory(username, dataList);
-            //PUT AN ERROR HERE?????
+            Toast.makeText(this, "No mood history found for the current user.", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
-
-
+        // Set up mood history adapter
+        moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList(), new MoodHistoryEntryAdapter.OnMoodClickListener() {
+            @Override
+            public void onMoodClick(Mood mood) {
+                if (mood.getMoodId() != null) {
+                    openMyMoodDisplayFragment(mood.getMoodId());
+                }
+            }
+        });
+        moodEntryList.setLayoutManager(new LinearLayoutManager(this));
+        moodEntryList.setAdapter(moodHistoryEntryAdapter);
 
 
         /*
@@ -134,9 +145,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
             }else{
                 history.sortByDateReverse();
             }
-            moodHistoryEntryAdapter.clear();
-            moodHistoryEntryAdapter.addAll(history.getFilteredMoodList());
-            moodHistoryEntryAdapter.notifyDataSetChanged();
+            moodHistoryEntryAdapter.updateData(history.getFilteredMoodList());
         });
 
         filterButton.setOnClickListener(v -> {
@@ -155,8 +164,20 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;
         history.filterByMood(states);
-        moodHistoryEntryAdapter.clear();
-        moodHistoryEntryAdapter.addAll(history.getFilteredMoodList());
-        moodHistoryEntryAdapter.notifyDataSetChanged();
+        moodHistoryEntryAdapter.updateData(history.getFilteredMoodList());
+    }
+
+
+    //I WILL LIKELY REMOVE THIS METHOD IN FAVOUR OF CHANGING THIS ACTIVITY TO A FRAGMENT
+    private void openMyMoodDisplayFragment(String moodEventId) {
+        Fragment fragment = new MyMoodDisplayFragment();
+        Bundle args = new Bundle();
+        args.putString("moodEventId", moodEventId);
+        fragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.history_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

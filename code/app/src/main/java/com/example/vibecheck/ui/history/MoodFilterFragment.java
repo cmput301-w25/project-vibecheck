@@ -41,7 +41,7 @@ public class MoodFilterFragment extends DialogFragment {
         return strings;
     }
 
-    interface MoodFilterDialogListener {
+    public interface MoodFilterDialogListener {
         void filter(ArrayList<Mood.MoodState> states);
     }
 
@@ -91,6 +91,7 @@ public class MoodFilterFragment extends DialogFragment {
             switch(s){
                 case "ANGER":
                     angerBox.setChecked(true);
+                    break;
                 case "CONFUSION":
                     confusionBox.setChecked(true);
                     break;
