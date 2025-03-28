@@ -57,7 +57,7 @@ import java.util.List;
  * Saves the data to Firestore upon submission.
  */
 public class AddMoodEventActivity extends AppCompatActivity {
-    private EditText inputTrigger;
+    //private EditText inputTrigger;
     private EditText inputDescription;
     private Spinner moodDropdown;
     private Spinner socialDropdown;
@@ -96,7 +96,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Initialize UI components
         addMoodToolbar = findViewById(R.id.add_mood_toolbar);
         moodDropdown = findViewById(R.id.dropdown_mood);
-        inputTrigger = findViewById(R.id.input_trigger);
+        //inputTrigger = findViewById(R.id.input_trigger);
         inputDescription = findViewById(R.id.input_description);
         socialDropdown = findViewById(R.id.dropdown_social);
         saveMoodButton = findViewById(R.id.button_save_mood);
@@ -245,7 +245,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     public void SaveMood() {
         //Obtains user inputs
         String selectedMood = moodDropdown.getSelectedItem().toString();
-        String triggerText = inputTrigger.getText().toString().trim();
+        //String triggerText = inputTrigger.getText().toString().trim();
         String descriptionText = inputDescription.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
         boolean isPublic = isPublicButton.isChecked();
@@ -288,9 +288,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     Mood newMood = new Mood();
                     newMood.setMoodState(moodState);
                     newMood.setTimestamp(new Date());
-                    if (!triggerText.isEmpty()) {
-                        newMood.setTrigger(triggerText);
-                    }
                     if (!descriptionText.isEmpty()) {
                         newMood.setDescription(descriptionText);
                     }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.ui.home.HomeActivity;
 import com.example.vibecheck.ui.login.LoginActivity;
@@ -67,6 +68,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         logoutButton.setOnClickListener(view -> {
+            MoodUtils.setCurrentUsername(null);
+            MoodUtils.clearUserMoodHistory();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();

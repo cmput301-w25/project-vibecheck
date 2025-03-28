@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
 import com.google.android.gms.tasks.Task;
@@ -58,11 +59,32 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         sortButton = findViewById(R.id.mood_history_sort_button);
         filterButton = findViewById(R.id.mood_history_filter_button);
         backButton = findViewById(R.id.navbar_back_button);
+        moodEntryList = findViewById(R.id.mood_history_list);
 
         dataList = new ArrayList<MoodHistoryEntry>();
 
         db = FirebaseFirestore.getInstance();
-        String username = "TestUser"; //MainActivity.getUsername();
+
+
+        String username = MoodUtils.getCurrentUsername();
+        MoodHistory userMoodHistory = MoodUtils.getUserMoodHistory();
+
+        if(userMoodHistory != null){
+            history = userMoodHistory;
+            history.sortByDate(); //Displays most recent moods by default
+            moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
+            moodEntryList.setAdapter(moodHistoryEntryAdapter);
+        } else {
+            history = new MoodHistory(username, dataList);
+            //PUT AN ERROR HERE?????
+        }
+
+
+
+
+
+        /*
+        //String username = "TestUser"; //MainActivity.getUsername();
         Task<QuerySnapshot> collection = db.collection("users/"+username+"/MoodHistory").get();
         collection.addOnSuccessListener(querySnapshot -> {
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
@@ -103,6 +125,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         moodEntryList = findViewById(R.id.mood_history_list);
         moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
         moodEntryList.setAdapter(moodHistoryEntryAdapter);
+        */
 
         sortButton.setOnClickListener(v -> {
             toggleSort = !toggleSort;

@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 String username = documentSnapshot.getString("username");
                                                 if (username != null) {
                                                     MoodUtils.setCurrentUsername(username);
+                                                    MoodUtils.populateUserMoodHistory();
                                                 }
                                             })
                                             .addOnFailureListener(e -> {

@@ -89,6 +89,7 @@
                 android:padding="12dp">
 
                 <!-- Mood Trigger Text  -->
+                <!--
                 <TextView
                     android:id="@+id/moodReasonText"
                     android:layout_width="match_parent"
@@ -97,13 +98,14 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+                    -->
 
-                <!-- Mood Description Text -->
+                <!-- Mood Reason Text -->
                 <TextView
                     android:id="@+id/moodDescriptionText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mood Description"
+                    android:hint="Mood Reason"
                     android:textColor="@color/dark_gray"
                     android:textSize="12sp" />
             </LinearLayout>

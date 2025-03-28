@@ -68,7 +68,7 @@ public class Mood {
     private MoodState moodState;
     private String trigger;
     private SocialSituation socialSituation;
-    private String description;
+    private String description; //This is the mood Reason
     private List<Integer> image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;

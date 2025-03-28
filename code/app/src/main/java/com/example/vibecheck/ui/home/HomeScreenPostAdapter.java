@@ -94,11 +94,8 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             holder.displayNameText.setText(displayName);
         });
 
-        //Set mood trigger text
-        holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No reason");
-
-        //Set mood description text
-        holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No description");
+        //Set mood reason text
+        holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No reason");
 
         //Change background color based on mood state
         holder.moodPostContainer.setBackgroundColor(MoodUtils.getMoodColor(holder.itemView.getContext(), mood.getMoodState()));
@@ -136,7 +133,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      * ViewHolder for the home screen recycler view.
      */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
-        TextView displayNameText, moodTriggerText, moodDescriptionText, moodEmoji;
+        TextView displayNameText, moodDescriptionText, moodEmoji;
         RelativeLayout moodPostContainer;
         LinearLayout homeScreenMoodPost;
 
@@ -149,7 +146,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             super(itemView);
             homeScreenMoodPost = itemView.findViewById(R.id.home_screen_mood_post);
             displayNameText = itemView.findViewById(R.id.username);
-            moodTriggerText = itemView.findViewById(R.id.moodReasonText);
+            //moodTriggerText = itemView.findViewById(R.id.moodReasonText);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);

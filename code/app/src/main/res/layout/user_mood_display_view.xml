@@ -103,6 +103,7 @@
             android:orientation="vertical">
 
             <!-- Trigger -->
+            <!--
             <TextView
                 android:id="@+id/mood_reason_label"
                 android:layout_width="wrap_content"
@@ -111,6 +112,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/mood_trigger"
@@ -121,6 +123,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"/>
+            -->
 
             <!-- Image -->
             <androidx.cardview.widget.CardView
@@ -142,11 +145,11 @@
 
             <!-- Description Label -->
             <TextView
-                android:id="@+id/mood_description_label"
+                android:id="@+id/mood_reason_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Description:"
+                android:text="Reason:"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -164,10 +167,10 @@
                     android:id="@+id/mood_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No description available."
-                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:text="No reason available."
                     android:textColor="@color/black"
-                    android:padding="12dp"/>
+                    android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
             <!-- Social Situation -->
@@ -207,40 +210,42 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comment_list"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="8dp"
                 android:overScrollMode="always"
                 android:scrollbars="vertical" />
-
-            <!-- Comment Input Bar -->
-            <LinearLayout
-                android:id="@+id/comment_input_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/comment_input"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="Write a comment..."
-                    android:maxLength="200"
-                    android:background="@color/white"
-                    android:padding="10dp"
-                    android:textColor="@color/black" />
-
-                <ImageButton
-                    android:id="@+id/send_comment_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/send_icon"
-                    android:contentDescription="Send"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Comment Input Bar -->
+    <LinearLayout
+        android:id="@+id/comment_input_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/comment_input"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="Write a comment..."
+            android:maxLength="200"
+            android:padding="10dp"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/send_comment_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Send"
+            android:padding="8dp"
+            android:src="@drawable/send_icon" />
+    </LinearLayout>
 </LinearLayout>
 

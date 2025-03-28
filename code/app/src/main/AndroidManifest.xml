@@ -37,10 +37,13 @@
             android:name=".MapActivityFragment"
             android:exported="true"
             android:label="@string/title_activity_mood_map" />
+
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" /> <!-- Login Activity -->
+            android:exported="true" />
+
+        <!-- Login Activity -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
@@ -49,15 +52,26 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Home (inner app) Activity -->
+        </activity>
+
+        <!-- Home (inner app) Activity -->
         <activity
             android:name=".ui.home.HomeActivity"
-            android:exported="true" /> <!-- Add Mood Event Activity -->
+            android:exported="true" />
+
+        <!-- Add Mood Event Activity -->
         <activity
             android:name=".ui.moodevents.AddMoodEventActivity"
-            android:exported="true" /> <!-- Mood History Activity -->
+            android:exported="true" />
+
+        <!-- Mood History Activity -->
         <activity
             android:name=".ui.history.MoodHistoryActivity"
+            android:exported="true" />
+
+        <!-- Edit Mood Event Activity -->
+        <activity
+            android:name=".ui.moodevents.EditMoodEventActivity"
             android:exported="true" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />

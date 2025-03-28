@@ -43,14 +43,10 @@ import java.util.Date;
 public class EditMoodEventActivity extends AppCompatActivity {
 
     // UI elements – note cancelButton is now an ImageView to match XML
-    private ImageView cancelButton;
-    private ImageView saveButton;
-    private ImageView deleteButton;
-    private TextView moodDate;
-    private TextView moodEmoji;
+    private ImageView cancelButton, saveButton, deleteButton;
+    private TextView moodDate, moodEmoji;
     private Spinner moodTypeSpinner;
-    private EditText moodTriggerInput;
-    private EditText moodDescriptionInput;
+    private EditText moodReasonInput;
     private Spinner socialSituationSpinner;
     private RelativeLayout moodBackground;
     private ToggleButton isPublicButton;
@@ -96,8 +92,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.delete_button);
         moodDate = findViewById(R.id.mood_date);
         moodTypeSpinner = findViewById(R.id.mood_type_spinner);
-        moodTriggerInput = findViewById(R.id.mood_trigger_input);
-        moodDescriptionInput = findViewById(R.id.mood_description_input);
+        moodReasonInput = findViewById(R.id.mood_reason_input);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         addImageButton = findViewById(R.id.add_image_button);
         moodBackground = findViewById(R.id.mood_background);
@@ -180,7 +175,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 // Extract fields from the document.
                 String moodStateStr = documentSnapshot.getString("moodState");
-                String trigger = documentSnapshot.getString("trigger");
                 String description = documentSnapshot.getString("description");
                 Date timestamp = documentSnapshot.getDate("timestamp");
                 String socialSituationStr = documentSnapshot.getString("socialSituation");
@@ -192,12 +186,9 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 //isPublicBool = isPublic != null && isPublic.equals("true");
                 isPublicButton.setChecked(Boolean.TRUE.equals(isPublic));
 
-                // Set trigger and description.
-                if (trigger != null) {
-                    moodTriggerInput.setText(trigger);
-                }
+                // Set mood reason if it exists.
                 if (description != null) {
-                    moodDescriptionInput.setText(description);
+                    moodReasonInput.setText(description);
                 }
 
                 // Format and display the timestamp.
@@ -251,8 +242,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
      * Saves the updated mood event data back to Firestore.
      */
     private void saveMoodEvent() {
-        String trigger = moodTriggerInput.getText().toString().trim();
-        String description = moodDescriptionInput.getText().toString().trim();
+        String description = moodReasonInput.getText().toString().trim();
         String moodStateStr = moodTypeSpinner.getSelectedItem().toString();
         String socialSituationStr = socialSituationSpinner.getSelectedItem().toString();
         boolean isPublic = isPublicButton.isChecked();
@@ -269,7 +259,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
 
         db.collection("moods").document(moodEventId)
                 .update(
-                        "trigger", trigger,
                         "description", description,
                         "moodState", moodState,
                         "socialSituation", socialSituation,
