@@ -160,7 +160,8 @@
                 android:text="Choose Photo"
                 android:layout_marginTop="8dp"
                 android:background="@color/white"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/button_remove_photo"
@@ -170,6 +171,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/white"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:visibility="gone"/>
 
 <!--
@@ -226,18 +228,9 @@
                 android:text="Save Mood"
                 android:background="@color/white"
                 android:textColor="@color/black"
-                android:layout_marginTop="12dp" />
+                android:layout_marginTop="12dp"
+                android:textSize="18sp" />
 
-            <!--
-            <Button
-                android:id="@+id/button_back_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:background="@color/white"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp" />
-                -->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

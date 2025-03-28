@@ -92,7 +92,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Initialize UI components
         addMoodToolbar = findViewById(R.id.add_mood_toolbar);
         moodDropdown = findViewById(R.id.dropdown_mood);
-        //inputTrigger = findViewById(R.id.input_trigger);
         inputDescription = findViewById(R.id.input_description);
         socialDropdown = findViewById(R.id.dropdown_social);
         saveMoodButton = findViewById(R.id.button_save_mood);
@@ -159,7 +158,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
             imagePreview.setImageResource(R.drawable.add_post_icon);  // Reset to default icon
             imageData = null;                                         // Clear the Base64 image data
             imageUri = null;                                          // Clear the stored URI
-            removePhotoButton.setVisibility(View.GONE);               // Hide the button again
+            removePhotoButton.setVisibility(View.GONE);               // Hide the remove photo button
+            imagePreview.setVisibility(View.GONE);                    // Hide the image preview again
         });
 
         // Handle Save Button Click
@@ -175,7 +175,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
      */
     private void openImageSelection() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        //intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
 

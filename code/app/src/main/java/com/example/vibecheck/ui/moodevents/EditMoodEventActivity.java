@@ -3,11 +3,15 @@ package com.example.vibecheck.ui.moodevents;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,6 +34,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Activity for editing or deleting a mood event.
@@ -50,7 +55,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private RelativeLayout moodBackground, editMoodTopbar;
     private ToggleButton isPublicButton;
-    private ImageView addImageButton;
+    private ImageView addImagePreview;
+    private Button addImage, removeImage;
+    private String imageData = null;
+    private Uri imageUri;
 
     // Firebase Firestore
     private FirebaseFirestore db;
@@ -86,6 +94,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
             return;
         }
 
+        db = FirebaseFirestore.getInstance();
+
         // Bind UI elements (IDs must match your XML)
         editMoodTopbar = findViewById(R.id.edit_mood_topbar);
         cancelButton = findViewById(R.id.cancel_button);
@@ -95,13 +105,15 @@ public class EditMoodEventActivity extends AppCompatActivity {
         moodTypeSpinner = findViewById(R.id.mood_type_spinner);
         moodReasonInput = findViewById(R.id.mood_reason_input);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
-        addImageButton = findViewById(R.id.add_image_button);
+        addImagePreview = findViewById(R.id.add_image_preview);
         moodBackground = findViewById(R.id.mood_background);
         moodEmoji = findViewById(R.id.mood_emoji);
         isPublicButton = findViewById(R.id.is_public_button);
+        addImage = findViewById(R.id.button_add_photo);
+        removeImage = findViewById(R.id.button_remove_photo);
 
-        db = FirebaseFirestore.getInstance();
-
+        //Set image preview to invisible initially
+        addImagePreview.setVisibility(View.GONE);
 
         // Populate spinners using ArrayAdapter, options defined in strings.xml
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -149,6 +161,18 @@ public class EditMoodEventActivity extends AppCompatActivity {
         // Set Cancel button click: finish activity without saving changes.
         cancelButton.setOnClickListener(view -> finish());
 
+        // Set Add Image button click: open image picker.
+        //IMPLEMENT IMAGE PICKER HERE
+
+        // Set Remove Image button click: remove image.
+        removeImage.setOnClickListener(v -> {
+            addImagePreview.setImageResource(R.drawable.add_post_icon);  // Reset to default icon
+            imageData = null;                                            // Clear the Base64 image data
+            imageUri = null;                                             // Clear the stored URI
+            removeImage.setVisibility(View.GONE);                        // Hide the remove photo button
+            addImagePreview.setVisibility(View.GONE);                    // Hide the image preview again
+        });
+
         // Set Save button click: update mood event in Firestore.
         saveButton.setOnClickListener(view -> saveMoodEvent());
 
@@ -175,6 +199,15 @@ public class EditMoodEventActivity extends AppCompatActivity {
         DocumentReference docRef = db.collection("moods").document(moodEventId);
         docRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
+
+                //Get the mood object from the document, if it exists, for updating the image later in this method
+                Mood foundMood = documentSnapshot.toObject(Mood.class);
+                if (foundMood == null) {
+                    Toast.makeText(EditMoodEventActivity.this, "Error loading mood event", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+
                 // Extract fields from the document.
                 String moodStateStr = documentSnapshot.getString("moodState");
                 String description = documentSnapshot.getString("description");
@@ -226,6 +259,21 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     } catch (IllegalArgumentException e) {
                         // Do nothing if the value isn't found.
                     }
+
+
+                    //LOCATION GOES HERE FROM SEERAT BRANCH I THINK
+
+
+                    //set the image if there is one
+                    if (foundMood.getImage() != null) {
+                        byte[] imageBytes = foundMood.getImage();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        addImagePreview.setImageBitmap(bitmap);
+                        addImagePreview.setVisibility(View.VISIBLE);
+                    } else {
+                        removeImage.setVisibility(View.GONE);
+                    }
+
                 }
             } else {
                 Toast.makeText(EditMoodEventActivity.this, "Mood event not found", Toast.LENGTH_SHORT).show();
