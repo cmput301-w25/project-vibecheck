@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -37,12 +36,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -111,6 +107,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        imagePreview.setVisibility(View.GONE);
 
         // Populate Mood Dropdown
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -211,8 +209,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
                         // Store as Base64 string
                         imageData = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-                        // Show the Remove button after selecting an image
+                        // Show the Remove button and image preview after selecting an image
                         removePhotoButton.setVisibility(View.VISIBLE);
+                        imagePreview.setVisibility(View.VISIBLE);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         Toast.makeText(this, "Failed to convert image", Toast.LENGTH_SHORT).show();
@@ -317,6 +317,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
                                 docRef.update("moodId", moodId);
+                                MoodUtils.addMoodToUserMoodHistory(newMood);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })

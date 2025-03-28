@@ -84,30 +84,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </RelativeLayout>
 
             <!-- Reason Input -->
-            <!--
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reason (optional):"
-                android:textSize="18sp"
-                android:fontFamily="@font/salsa"
-                android:layout_marginTop="12dp" />
-
-
-            <EditText
-                android:id="@+id/input_trigger"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Enter reason"
-                android:background="@drawable/login_rounded_rectangle"
-                android:padding="8dp" />
-            -->
-
-            <!-- Description Input -->
             <TextView
                 android:id="@+id/add_reason_label"
                 android:layout_width="wrap_content"
@@ -165,10 +145,10 @@
 
             <ImageView
                 android:id="@+id/image_preview"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:background="@color/white"
+                android:background="#D4EAFF"
                 android:layout_gravity="center"
                 android:src="@drawable/add_post_icon"
                 android:layout_marginTop="8dp" />

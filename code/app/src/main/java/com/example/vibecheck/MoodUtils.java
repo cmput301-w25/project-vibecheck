@@ -20,15 +20,11 @@ import androidx.navigation.NavController;
 import com.example.vibecheck.ui.history.MoodHistory;
 import com.example.vibecheck.ui.history.MoodHistoryEntry;
 import com.example.vibecheck.ui.moodevents.Mood;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Utility class for colour-coding moods and emojis, determining if a mood event is owned by the current user,
@@ -264,11 +260,35 @@ public class MoodUtils {
         moodHistory = null;
     }
 
-
+    /**
+     * @return
+     *      Returns the user's mood history.
+     */
     public static MoodHistory getUserMoodHistory() {
         return moodHistory;
     }
 
+    /**
+     * Uses the history class to add a mood to the current user's mood history.
+     * @param mood
+     */
+    public static void addMoodToUserMoodHistory(Mood mood) {
+        moodHistory.addMoodEvent(mood);
+    }
+
+    /**
+     * Uses the history class to remove a mood from the current user's mood history.
+     * Designed to work with how the delete mood event function is set up.
+     * @param moodEventId
+     */
+    public static void removeMoodFromUserMoodHistory(String moodEventId) {
+        for(MoodHistoryEntry historyEntry : moodHistory.getMoodList()) {
+            if(historyEntry.getMood().getMoodId().equals(moodEventId)) {
+                moodHistory.removeMoodEvent(historyEntry.getMood());
+                return;
+            }
+        }
+    }
 
 
 }

@@ -48,7 +48,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private Spinner moodTypeSpinner;
     private EditText moodReasonInput;
     private Spinner socialSituationSpinner;
-    private RelativeLayout moodBackground;
+    private RelativeLayout moodBackground, editMoodTopbar;
     private ToggleButton isPublicButton;
     private ImageView addImageButton;
 
@@ -87,6 +87,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         }
 
         // Bind UI elements (IDs must match your XML)
+        editMoodTopbar = findViewById(R.id.edit_mood_topbar);
         cancelButton = findViewById(R.id.cancel_button);
         saveButton = findViewById(R.id.save_button);
         deleteButton = findViewById(R.id.delete_button);
@@ -129,6 +130,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 // Change Background Color
                 int moodColor = MoodUtils.getMoodColor(EditMoodEventActivity.this, moodState);
                 moodBackground.setBackgroundColor(moodColor);
+                editMoodTopbar.setBackgroundColor(moodColor);
 
                 // Change Emoji
                 String emoji = MoodUtils.getEmojiForMood(moodState);
@@ -179,11 +181,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 Date timestamp = documentSnapshot.getDate("timestamp");
                 String socialSituationStr = documentSnapshot.getString("socialSituation");
 
+                // Set public/private mood event toggle.
                 boolean isPublic = documentSnapshot.getBoolean("public");
-
-                //String isPublic = documentSnapshot.getString("isPublic");
-                //boolean isPublicBool;
-                //isPublicBool = isPublic != null && isPublic.equals("true");
                 isPublicButton.setChecked(Boolean.TRUE.equals(isPublic));
 
                 // Set mood reason if it exists.
@@ -294,6 +293,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     db.collection("moods").document(moodEventId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
+                                MoodUtils.removeMoodFromUserMoodHistory(moodEventId);
                                 Toast.makeText(EditMoodEventActivity.this, "Mood event and comments deleted", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
