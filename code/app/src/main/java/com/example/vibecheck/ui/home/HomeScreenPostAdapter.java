@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +88,11 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     public void onBindViewHolder(@NonNull HomeScreenPostViewHolder holder, int position) {
         Mood mood = moodPosts.get(position);
 
-        //Set user information
-        holder.displayNameText.setText(mood.getUsername());
+        //Set user information, looks for display name, if not found, uses username
+        String username = mood.getUsername();
+        MoodUtils.getDisplayName(username, displayName -> {
+            holder.displayNameText.setText(displayName);
+        });
 
         //Set mood trigger text
         holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No reason");
@@ -102,7 +107,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
 
         //Handle click on mood post
-        holder.moodPostContainer.setOnClickListener(v -> {
+        holder.homeScreenMoodPost.setOnClickListener(v -> {
             Log.d("HomeScreenPostAdapter", "Mood Post Clicked. MoodEventId: " + mood.getMoodId());
 
             if (mood.getMoodId() == null || mood.getMoodId().isEmpty()) {
@@ -133,6 +138,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
         TextView displayNameText, moodTriggerText, moodDescriptionText, moodEmoji;
         RelativeLayout moodPostContainer;
+        LinearLayout homeScreenMoodPost;
 
         /**
          * Constructor for the ViewHolder
@@ -141,6 +147,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
          */
         public HomeScreenPostViewHolder(@NonNull View itemView) {
             super(itemView);
+            homeScreenMoodPost = itemView.findViewById(R.id.home_screen_mood_post);
             displayNameText = itemView.findViewById(R.id.username);
             moodTriggerText = itemView.findViewById(R.id.moodReasonText);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);

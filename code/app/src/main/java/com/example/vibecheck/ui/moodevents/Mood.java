@@ -12,6 +12,7 @@ package com.example.vibecheck.ui.moodevents;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -38,10 +39,11 @@ public class Mood {
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, LARGE_GROUP;
+        NOINPUT, ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE;
 
         public String socialSituationToString() {
             switch (this) {
+                case NOINPUT: return "N/A";
                 case ALONE: return "Alone";
                 case ONE_TO_ONE: return "One-to-One";
                 case SMALL_GROUP: return "Small Group";
@@ -52,6 +54,7 @@ public class Mood {
 
         public static SocialSituation socialSituationToEnum(String socialSituationString) {
             switch (socialSituationString) {
+                case "N/A": return NOINPUT;
                 case "Alone": return ALONE;
                 case "One-to-One": return ONE_TO_ONE;
                 case "Small Group": return SMALL_GROUP;
@@ -59,6 +62,8 @@ public class Mood {
                 default: return null;
             }
         }
+
+        //ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
@@ -66,13 +71,13 @@ public class Mood {
     private String trigger;
     private SocialSituation socialSituation;
     private String description;
-    private byte[] image;
+    private List<Integer> image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
     private String username;
     private String moodId;
-    private boolean isPublic; //Use in implementation of public/private mood events later
+    private boolean isPublic; //if the mood is public or not
 
     /**
      * No-argument constructor required by Firestore for serialization.
@@ -151,6 +156,7 @@ public class Mood {
      * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
+/*
         // Check for null or empty description
         if (description == null || description.trim().isEmpty()) {
             this.description = null;
@@ -160,21 +166,38 @@ public class Mood {
         if (description.length() > 200) {
             throw new IllegalArgumentException("Description must not exceed 200 characters.");
         }
-
+CHECK ON THIS LATER*/
+        // Removed the strict constraint to avoid crashes during Firestore deserialization.
         this.description = description;
     }
 
+    /**
+     * Retrieves the mood image, stored as a list of integers in firestore, and converts it to a byte array.
+     * @return
+     *      Returns a byte array representing the mood image.
+     */
     public byte[] getImage() {
-        return image;
+        // If the mood doesn't have an image, return null
+        if (image == null) {
+            return null;
+        }
+
+        // Convert the List<Integer> to a byte array
+        byte[] byteArray = new byte[image.size()];
+        // Convert each Integer in the List to a byte and store in the byte array
+        for (int i = 0; i < image.size(); i++) {
+            byteArray[i] = (byte) (image.get(i) & 0xFF);
+        }
+        return byteArray;
     }
 
     /**
      * Sets the mood image while ensuring it adheres to the size limit.
-     * @param image A byte array representing the image.
+     * @param image A list of integers representing the image.
      * @throws IllegalArgumentException if the image size exceeds the allowed limit.
      */
-    public void setImage(byte[] image) {
-        if (image != null && image.length > MAX_IMAGE_SIZE) {
+    public void setImage(List<Integer> image) {
+        if (image != null && image.size() > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("Image must be under 65536 bytes.");
         }
         this.image = image;
@@ -240,4 +263,23 @@ public class Mood {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
         return sdf.format(timestamp);
     }
+/*
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+
+    public String socialSituationToString() {
+        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
+    }
+
+    /**
+     * Converts the mood state to a string representation.
+     * @return
+     *      Returns a string representation of the mood state, with the first letter capitalized.
+
+    public String moodStateToString() {
+        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
+    }
+*/
 }

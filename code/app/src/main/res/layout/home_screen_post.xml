@@ -8,26 +8,27 @@
     app:cardElevation="4dp">
 
     <LinearLayout
+        android:id="@+id/home_screen_mood_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@color/white">
+        android:padding="10dp">
 
         <!-- User Info (Profile Image + Name + Location + Emoji) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/user_profile_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/circle_profile_icon"
+                android:contentDescription="User Profile"
                 android:scaleType="centerCrop"
-                android:contentDescription="User Profile"/>
+                android:src="@drawable/circle_profile_icon" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -39,18 +40,18 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:hint="Username"
                     android:textColor="@color/black"
-                    android:hint="Username"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:hint="Location"
                     android:textColor="@color/gray"
-                    android:hint="Location"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <!-- Spacer pushes emoji to right -->
@@ -64,10 +65,10 @@
                 android:id="@+id/moodEmoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="😃"
-                android:textSize="24sp"
                 android:layout_marginEnd="6dp"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="😃"
+                android:textSize="24sp" />
         </LinearLayout>
 
         <!-- Mood Post Container (Background Color Set Dynamically) -->
@@ -76,15 +77,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:padding="0dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:padding="0dp">
 
             <!-- Mood Text Container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:padding="12dp">
 
                 <!-- Mood Trigger Text  -->
@@ -102,9 +103,9 @@
                     android:id="@+id/moodDescriptionText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:hint="Mood Description"
                     android:textColor="@color/dark_gray"
-                    android:hint="Mood Description"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -112,25 +113,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
             android:gravity="end"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/btn_like"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/like_empty_icon"
+                android:contentDescription="Like"
                 android:padding="5dp"
-                android:contentDescription="Like"/>
+                android:src="@drawable/like_empty_icon" />
 
             <ImageView
                 android:id="@+id/btn_comment"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/comment_icon"
+                android:contentDescription="Comment"
                 android:padding="5dp"
-                android:contentDescription="Comment"/>
+                android:src="@drawable/comment_icon" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

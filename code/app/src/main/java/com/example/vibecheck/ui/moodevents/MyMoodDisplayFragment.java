@@ -19,6 +19,8 @@ MysteryChimp
 package com.example.vibecheck.ui.moodevents;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -60,7 +63,7 @@ import java.util.List;
 public class MyMoodDisplayFragment extends Fragment {
 
     private TextView moodDate, moodType, moodTrigger, moodDescription, socialSituation, commentsLabel;
-    private ImageView backButton, editButton;
+    private ImageView backButton, editButton, moodImage;
     private RelativeLayout topBar;
     private ListenerRegistration moodListener;
     private androidx.cardview.widget.CardView moodTypeCard, moodDescriptionCard;
@@ -68,6 +71,7 @@ public class MyMoodDisplayFragment extends Fragment {
     private RecyclerView recyclerView;
     private EditText commentInput;
     private ImageButton sendButton;
+    private CardView moodImageCard;
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -96,7 +100,8 @@ public class MyMoodDisplayFragment extends Fragment {
     }
 
     /**
-     * Initializes and handles UI elements.
+     * Initializes ui elements, loads the mood event and comments from Firestore,
+     * Handles edit mood, post comment and back button presses.
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
@@ -125,17 +130,26 @@ public class MyMoodDisplayFragment extends Fragment {
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
         topBar = view.findViewById(R.id.view_mood_topbar);
         commentsLabel = view.findViewById(R.id.comments_label);
+        moodImageCard = view.findViewById(R.id.mood_image_card);
+        moodImage = view.findViewById(R.id.mood_image);
 
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
         sendButton = view.findViewById(R.id.send_comment_button);
 
+        //
         commentAdapter = new CommentAdapter(commentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(commentAdapter);
 
+        //Make mood image card invisible initially, then make it visible when an image is loaded
+        moodImageCard.setVisibility(View.GONE);
+        moodImage.setVisibility(View.GONE);
+
+        //Handle send button click
         sendButton.setOnClickListener(v -> saveComment());
 
+        //Load comments
         loadComments();
         if (commentList.isEmpty()) {
             commentsLabel.setText("Comments (No Comments Yet)");
@@ -204,6 +218,15 @@ public class MyMoodDisplayFragment extends Fragment {
                         if (foundSocialSituation != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
                             socialSituation.setText(foundSocialSituation.socialSituationToString());
                         }
+
+                        //Set mood image if it exists
+                        if (mood.getImage() != null) {
+                            byte[] imageBytes = mood.getImage();
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            moodImage.setImageBitmap(bitmap);
+                            moodImageCard.setVisibility(View.VISIBLE);
+                            moodImage.setVisibility(View.VISIBLE);
+                        }
                     });
                 }
             }
@@ -222,6 +245,7 @@ public class MyMoodDisplayFragment extends Fragment {
             return;
         }
 
+        //Query the database for comments associated with the mood ID
         db.collection("comments")
                 .whereEqualTo("moodEventId", moodId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -232,6 +256,7 @@ public class MyMoodDisplayFragment extends Fragment {
                         return;
                     }
 
+                    //Clear the comment list and add the new comments
                     commentList.clear();
                     for (QueryDocumentSnapshot doc : snapshots) {
                         try {
@@ -242,8 +267,8 @@ public class MyMoodDisplayFragment extends Fragment {
                         } catch (Exception e) {
                             Log.e("Comments", "Failed to parse comment document: " + doc.getId(), e);
                         }
-
                     }
+                    //Update the UI
                     commentAdapter.notifyDataSetChanged();
                     if (commentList.isEmpty()) {
                         commentsLabel.setText("Comments (No Comments Yet)");
