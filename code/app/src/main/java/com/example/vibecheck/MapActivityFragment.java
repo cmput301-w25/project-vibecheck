@@ -55,10 +55,6 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     private ArrayList<Mood.MoodState> states = new ArrayList<>();
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +145,7 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
                         DocumentSnapshot documentSnapshot = task.getResult();
                         List <String> followers = (List<String>) documentSnapshot.get("followers");
                         ArrayList<MoodHistoryEntry> friends = new ArrayList<>();
-                        MoodHistory friendsHistory = new MoodHistory("Friends", friends);
+                        friendsHistory = new MoodHistory("Friends", friends);
 
                         // Iterate over the documents in the snapshot
                         for (String follower : followers) {
@@ -174,13 +170,6 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
                                             Log.e("MapActivityFragment", "Failed to obtain User's Mood History obtained succesfully");
                                         }
                                     });
-                        }
-                        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
-                            if(entry.getMood().getLatitude() != null) {
-                                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(marker));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-                            }
                         }
                         Log.d("MapActivityFragment", "User's Mood History obtained succesfully");
 
