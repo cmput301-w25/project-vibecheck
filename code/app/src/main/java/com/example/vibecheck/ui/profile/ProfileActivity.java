@@ -89,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
                             String displayName = documentSnapshot.getString("displayName");
                             if (displayName != null && !displayName.isEmpty()) {
                                 tvDisplayName.setText(displayName);
-                                tvUsername.setText("@" + displayName);
+                                tvUsername.setText("@" + MoodUtils.getCurrentUsername());
                             } else {
                                 tvDisplayName.setText("No Display Name");
                                 tvUsername.setText("@NoDisplayName");

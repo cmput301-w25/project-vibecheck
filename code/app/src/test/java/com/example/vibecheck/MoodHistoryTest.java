@@ -113,10 +113,10 @@ public class MoodHistoryTest {
     }
 
     @Test
-    public void testSortByDate(){
+    public void testSortByDateOldestFirst(){
         MoodHistory history = mockHistory();
         history.addMoodEvent(new Mood(new Date(1500),Mood.MoodState.SADNESS));
-        history.sortByDate();
+        history.sortByDateOldestFirst();
         Date currentDate = new Date(0);
         boolean isSorted = true;
 
@@ -133,10 +133,10 @@ public class MoodHistoryTest {
     }
 
     @Test
-    public void testSortByDateReverse(){
+    public void testSortByDateNewestFirst(){
         MoodHistory history = mockHistory();
         history.addMoodEvent(new Mood(new Date(1500),Mood.MoodState.SADNESS));
-        history.sortByDateReverse();
+        history.sortByDateNewestFirst();
         Date currentDate = new Date(7000);
         boolean isSorted = true;
 

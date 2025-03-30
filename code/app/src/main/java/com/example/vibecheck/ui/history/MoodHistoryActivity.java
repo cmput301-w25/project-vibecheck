@@ -2,9 +2,7 @@ package com.example.vibecheck.ui.history;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,8 +12,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,13 +19,9 @@ import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.R;
 import com.example.vibecheck.ui.moodevents.MyMoodDisplayFragment;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MoodHistoryActivity extends AppCompatActivity implements MoodFilterFragment.MoodFilterDialogListener{
 
@@ -75,7 +67,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
 
         if(userMoodHistory != null){
             history = userMoodHistory;
-            history.sortByDate(); //Displays most recent moods by default
+            history.sortByDateNewestFirst(); //Displays most recent moods by default
         } else {
             Toast.makeText(this, "No mood history found for the current user.", Toast.LENGTH_SHORT).show();
             finish();
@@ -141,9 +133,9 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         sortButton.setOnClickListener(v -> {
             toggleSort = !toggleSort;
             if(toggleSort){
-                history.sortByDate();
+                history.sortByDateNewestFirst();
             }else{
-                history.sortByDateReverse();
+                history.sortByDateOldestFirst();
             }
             moodHistoryEntryAdapter.updateData(history.getFilteredMoodList());
         });

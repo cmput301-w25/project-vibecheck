@@ -5,6 +5,7 @@ import com.example.vibecheck.ui.moodevents.Mood;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * This is a class that keeps track of a list of mood events and a list of mood event
@@ -32,12 +33,23 @@ public class MoodHistory implements Serializable {
      *      This is the mood event to be removed
      */
     public void removeMoodEvent(Mood moodEvent){
+        //Use an iterator to safely remove the mood event from the list, original for loop caused a ConcurrentModificationException
+        Iterator<MoodHistoryEntry> iterator = moodList.iterator();
+        while (iterator.hasNext()) {
+            MoodHistoryEntry entry = iterator.next();
+            if (entry.getMood().getMoodId().equals(moodEvent.getMoodId())) {
+                iterator.remove();
+                break;
+            }
+        }
+        /*
         for(MoodHistoryEntry entry: moodList){
-            if(entry.getMood().equals(moodEvent)){
+            if(entry.getMood().getMoodId().equals(moodEvent.getMoodId())){
                 moodList.remove(entry);
                 break;
             }
         }
+         */
     }
 
     /**
@@ -105,19 +117,17 @@ public class MoodHistory implements Serializable {
     }
 
     /**
-     * Sorts the mood list in descending order
-     *
+     * Sorts the mood list in order from newest to oldest
      */
-    public void sortByDateReverse(){
+    public void sortByDateNewestFirst(){
         Collections.sort(moodList);
         Collections.reverse(moodList);
     }
 
     /**
-     * Sorts the mood list in ascending order
-     *
+     * Sorts the mood list in order from oldest to newest
      */
-    public void sortByDate(){
+    public void sortByDateOldestFirst(){
         Collections.sort(moodList);
     }
 

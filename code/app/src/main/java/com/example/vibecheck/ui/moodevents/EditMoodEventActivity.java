@@ -69,6 +69,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
     // Firebase Firestore
     private FirebaseFirestore db;
     private String moodEventId;
+    private Mood moodToEdit;
 
     // Arrays for spinner data using the enums from Mood class
     private Mood.MoodState[] moodStates = Mood.MoodState.values();
@@ -118,7 +119,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
         addImageButton = findViewById(R.id.button_add_photo);
         removeImageButton = findViewById(R.id.button_remove_photo);
 
-        //Set image preview to invisible initially
+        //Set image preview to invisible initially, only visible after image is confirmed present
         addImagePreview.setVisibility(View.GONE);
 
         // Set image picker launcher
@@ -128,12 +129,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 removeImageButton,
                 encoded -> imageData = encoded
         );
-
-        // Photo picker click
-        addImageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePickerLauncher.launch(intent);
-        });
 
         // Populate spinners using ArrayAdapter, options defined in strings.xml
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -182,7 +177,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(view -> finish());
 
         // Set Add Image button click: open image picker.
-        //IMPLEMENT IMAGE PICKER HERE
+        addImageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            imagePickerLauncher.launch(intent);
+        });
 
         // Set Remove Image button click: remove image.
         removeImageButton.setOnClickListener(v -> {
@@ -221,8 +219,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
 
                 //Get the mood object from the document, if it exists, for updating the image later in this method
-                Mood foundMood = documentSnapshot.toObject(Mood.class);
-                if (foundMood == null) {
+                moodToEdit = documentSnapshot.toObject(Mood.class);
+                if (moodToEdit == null) {
                     Toast.makeText(EditMoodEventActivity.this, "Error loading mood event", Toast.LENGTH_SHORT).show();
                     finish();
                     return;
@@ -285,8 +283,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
 
 
                     //set the image if there is one
-                    if (foundMood.getImageByteArr() != null) {
-                        byte[] imageBytes = foundMood.getImageByteArr();
+                    if (moodToEdit.getImageByteArr() != null) {
+                        byte[] imageBytes = moodToEdit.getImageByteArr();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         imageData = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
                         addImagePreview.setImageBitmap(bitmap);
@@ -372,7 +370,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
      * from Firestore as well.
      */
     private void deleteMoodEvent() {
-        // First we have to delete all comments attached to this mood event
+        // First we remove the mood event from the current user's mood history
+        MoodUtils.removeMoodFromUserMoodHistory(moodToEdit);
+
+        // Then we have to delete all comments attached to this mood event
         db.collection("comments")
                 .whereEqualTo("moodEventId", moodEventId)
                 .get()
@@ -383,11 +384,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     }
 
 
-                    // Once all comments are deleted, we can safely delete the mood event
+                    // Once all comments are deleted, we can safely delete the mood event and finish the activity
                     db.collection("moods").document(moodEventId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
-                                //MoodUtils.removeMoodFromUserMoodHistory(moodEventId);
                                 Toast.makeText(EditMoodEventActivity.this, "Mood event and comments deleted", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

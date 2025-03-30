@@ -272,13 +272,14 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     moodData.put("public", isPublic);
                     moodData.put("image", imageIntList);
 
-                    //Saves mood event to Firestore
+                    //Saves mood event to Firestore, update the moodID to the document ID, and add the mood to the user's mood history
                     db.collection("moods")
                             .add(moodData)
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
                                 docRef.update("moodId", moodId);
-                                //MoodUtils.addMoodToUserMoodHistory(newMood);
+                                newMood.setMoodId(moodId);
+                                MoodUtils.addMoodToUserMoodHistory(newMood);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })

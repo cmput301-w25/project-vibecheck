@@ -267,24 +267,41 @@ public class MoodUtils {
     /**
      * Uses the history class to add a mood to the current user's mood history.
      * @param mood
-
+     */
     public static void addMoodToUserMoodHistory(Mood mood) {
         moodHistory.addMoodEvent(mood);
-    }*/
+    }
 
     /**
      * Uses the history class to remove a mood from the current user's mood history.
      * Designed to work with how the delete mood event function is set up.
-     * @param moodEventId
+     * @param moodToRemove
+     */
+    public static void removeMoodFromUserMoodHistory(Mood moodToRemove) {
+        moodHistory.removeMoodEvent(moodToRemove);
 
-    public static void removeMoodFromUserMoodHistory(String moodEventId) {
+
+
+
+        //moodHistoryEntryAdapter.updateData(moodHistory.getFilteredMoodList());
+        /*
+        moodHistory.getMoodList().removeIf(historyEntry ->
+                historyEntry.getMood().getMoodId().equals(moodEventId)
+        );
+
+
         for(MoodHistoryEntry historyEntry : moodHistory.getMoodList()) {
             if(historyEntry.getMood().getMoodId().equals(moodEventId)) {
-                moodHistory.removeMoodEvent(historyEntry.getMood());
+                //moodHistory.removeMoodEvent(historyEntry.getMood());
+
+                moodHistory.getMoodList().remove(historyEntry);
+
                 return;
             }
         }
-    }*/
+
+         */
+    }
 
 
 }
