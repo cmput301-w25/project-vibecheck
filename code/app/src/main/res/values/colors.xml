@@ -36,4 +36,8 @@
     <color name="shame">#D49AC8</color>
     <color name="surprise">#E5A25D</color>
     <color name="boredom">#BFBFBF</color>
+
+    <!-- Accept/Decline follow request colours -->
+    <color name="accept_green">#4CAF50</color>
+    <color name="decline_red">#F44336</color>
 </resources>

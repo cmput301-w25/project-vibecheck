@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_background_blue">
+
+    <!-- Search Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center|fill_horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/search_back_arrow"
+            android:contentDescription="Back To Home"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/back_arrow" />
+
+        <SearchView
+            android:id="@+id/search_for_users_searchview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="fill_horizontal"
+            android:layout_weight="1"
+            android:fontFamily="@font/salsa"
+            android:textSize="50sp"
+            android:padding="4dp"
+            android:inputType="textAutoComplete"
+            android:textColor="@color/black"
+            android:background="@drawable/edit_text_border_white"
+            android:hint="search for users..." />
+
+    </LinearLayout>
+
+    <!-- Search Results -->
+    <!-- Should only be shown when the user searches -->
+    <ListView
+        android:id="@+id/search_users_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:padding="16dp"
+        tools:listitem="@layout/fragment_user_search"/>
+
+</LinearLayout>
