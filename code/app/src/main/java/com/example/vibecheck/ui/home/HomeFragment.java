@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment {
 
     // Declare UI elements
     private Toolbar toolbar;
-    private ImageView iconSearch;
+    private SearchView iconSearch;
     private ImageView iconFilter;
     private ImageView iconNotifications;
 
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
 
         // Initialize Toolbar components
         TextView title = toolbar.findViewById(R.id.title);
-        iconSearch = view.findViewById(R.id.icon_search);
+        iconSearch = view.findViewById(R.id.searchview);
         iconFilter = view.findViewById(R.id.icon_filter);
         iconNotifications = view.findViewById(R.id.icon_notifications);
 
@@ -95,8 +96,28 @@ public class HomeFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
 
         // Set click listeners for toolbar icons
-        iconSearch.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Search clicked", Toast.LENGTH_SHORT).show();
+        iconSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                homeScreenPostAdapter.filter(newText);
+                return false;
+            }
+
+
+        });
+        ImageView searchViewXBtn = iconSearch.findViewById(androidx.appcompat.R.id.search_close_btn);
+        TextView searchViewText = iconSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchViewXBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                searchViewText.setText("");
+            }
         });
 
         iconFilter.setOnClickListener(v -> {

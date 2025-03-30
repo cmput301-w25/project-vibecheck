@@ -5,21 +5,18 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.vibecheck.ui.history.MoodFilterFragment;
 import com.example.vibecheck.ui.history.MoodHistory;
 import com.example.vibecheck.ui.history.MoodHistoryEntry;
-import com.example.vibecheck.ui.history.MoodHistoryEntryAdapter;
 import com.example.vibecheck.ui.moodevents.Mood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.vibecheck.databinding.MapFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,12 +28,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback, MoodFilterFragment.MoodFilterDialogListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, MoodFilterFragment.MoodFilterDialogListener {
 
     private GoogleMap mMap;
     private MapFragmentBinding binding;

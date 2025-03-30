@@ -142,7 +142,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             map:uiZoomControls="true"
             map:uiRotateGestures="true"
-            tools:context=".MapActivityFragment" />
+            tools:context=".MapActivity" />
     </LinearLayout>
 
     <!-- Bottom Navigation Bar -->
