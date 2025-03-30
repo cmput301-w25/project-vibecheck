@@ -99,6 +99,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private Mood.MoodState[] moodStates = Mood.MoodState.values();
     private Mood.SocialSituation[] socialSituations = Mood.SocialSituation.values();
 
+    // Variable to store the selected location from autocomplete
+    private String selectedLocation = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,8 +257,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
         });
     }
 
-    // Variable to store the selected location from autocomplete
-    private String selectedLocation = "";
 
     /**
      * Loads the mood event data from Firestore and updates the UI.

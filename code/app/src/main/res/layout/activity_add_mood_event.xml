@@ -174,7 +174,7 @@
                 android:textSize="18sp"
                 android:visibility="gone"/>
 
-<!--THIS IS WHAT I NEED TO UPDATE FOR THIS VERSION
+            <!-- Location Label -->
             <TextView
                 android:id="@+id/location_label"
                 android:layout_width="wrap_content"
@@ -184,13 +184,14 @@
                 android:fontFamily="@font/salsa"
                 android:layout_marginTop="12dp" />
 
+            <!-- Location Autocomplete Fragment -->
             <fragment
                 android:id="@+id/autocomplete_fragment"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 tools:ignore="MissingClass" />
--->
+
             <!-- Public or Private Setting Label -->
             <TextView
                 android:layout_width="wrap_content"

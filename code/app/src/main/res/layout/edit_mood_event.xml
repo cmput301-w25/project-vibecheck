@@ -276,6 +276,32 @@
                         android:layout_height="50dp" />
                 </androidx.cardview.widget.CardView>
 
+
+                <!-- Location Label -->
+                <TextView
+                    android:id="@+id/location_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:text="Location (optional):"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/social_situation_card"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Location Autocomplete Fragment -->
+                <fragment
+                    android:id="@+id/autocomplete_fragment"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/location_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="MissingClass" />
+
                 <!-- Public/Private Mood Event Label -->
                 <TextView
                     android:id="@+id/public_private_label"
@@ -286,7 +312,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/social_situation_card"
+                    app:layout_constraintTop_toBottomOf="@id/autocomplete_fragment"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <!-- Public/Private Mood Event Toggle -->
@@ -301,31 +327,6 @@
                     app:layout_constraintTop_toBottomOf="@id/public_private_label"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <!-- Location Label
-                <TextView
-                    android:id="@+id/location_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:text="Location (optional):"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/is_public_button"
-                    app:layout_constraintStart_toStartOf="parent" />
-                -->
-
-                <!-- Location Autocomplete Fragment
-                <fragment
-                    android:id="@+id/autocomplete_fragment"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="12dp"
-                    app:layout_constraintTop_toBottomOf="@id/location_label"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:ignore="MissingClass" />-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

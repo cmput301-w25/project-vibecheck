@@ -257,23 +257,4 @@ CHECK ON THIS LATER*/
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
         return sdf.format(timestamp);
     }
-/*
-    /**
-     * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
-
-    public String socialSituationToString() {
-        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
-    }
-
-    /**
-     * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
-
-    public String moodStateToString() {
-        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
-    }
-*/
 }
