@@ -174,7 +174,7 @@
                 android:textSize="18sp"
                 android:visibility="gone"/>
 
-<!--
+<!--THIS IS WHAT I NEED TO UPDATE FOR THIS VERSION
             <TextView
                 android:id="@+id/location_label"
                 android:layout_width="wrap_content"
@@ -191,18 +191,7 @@
                 android:layout_height="50dp"
                 tools:ignore="MissingClass" />
 -->
-
-            <!-- Include Location Switch -->
-            <!--
-            <Switch
-                android:id="@+id/location_switch"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/salsa"
-                android:text="Include Current Location"
-                android:textSize="18sp" />
-                -->
-
+            <!-- Public or Private Setting Label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -36,11 +36,14 @@
             android:id="@+id/cancel_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:clickable="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="2dp"
             android:contentDescription="Cancel"
+            android:focusable="true"
             android:padding="4dp"
             android:src="@drawable/backarrow_icon" />
+    <!-- android:src="@drawable/cancel_icon" -->
 
         <!-- Date Label and Mood Date -->
         <LinearLayout
@@ -77,6 +80,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="2dp"
             android:contentDescription="Save"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="4dp"
             android:src="@drawable/save_icon" />
     </RelativeLayout>
@@ -126,6 +131,7 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp">
 
+                        <!-- Mood Spinner -->
                         <Spinner
                             android:id="@+id/mood_type_spinner"
                             android:layout_width="match_parent"
@@ -134,6 +140,7 @@
                             android:background="@android:color/transparent"
                             android:spinnerMode="dropdown" />
 
+                        <!-- Emoji on the far right -->
                         <TextView
                             android:id="@+id/mood_emoji"
                             android:layout_width="wrap_content"
@@ -250,7 +257,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/mood_description_card" />
 
-                <!-- Social Situation Spinner -->
+                <!-- Social Situation Cardview For Spinner -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/social_situation_card"
                     android:layout_width="0dp"
@@ -262,6 +269,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
+                    <!-- Social Situation Spinner -->
                     <Spinner
                         android:id="@+id/social_situation_spinner"
                         android:layout_width="match_parent"
