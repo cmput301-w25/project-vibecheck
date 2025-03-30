@@ -35,6 +35,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.vibecheck.MoodUtils;
+import com.example.vibecheck.PhotoUtils;
 import com.example.vibecheck.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,7 +46,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Activity for adding a new mood event.
@@ -70,6 +73,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
     private String imageData = null;
     private Uri imageUri;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     /**
      * Initializes the activity, sets up UI components, and populates dropdowns.
@@ -108,6 +112,14 @@ public class AddMoodEventActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         imagePreview.setVisibility(View.GONE);
+
+        // Set image picker launcher
+        imagePickerLauncher = PhotoUtils.createImagePickerLauncher(
+                this,
+                imagePreview,
+                removePhotoButton,
+                encoded -> imageData = encoded
+        );
 
         // Populate Mood Dropdown
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -179,66 +191,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches the image selection dialog and handles the selected image.
-     */
-    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Uri selectedImageUri = result.getData().getData();
-                    imagePreview.setImageURI(selectedImageUri);
-
-                    // Convert image to byte array
-                    try {
-                        InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
-                        byte[] byteArray = convertStreamToByteArray(inputStream);
-
-                        // Ensure the image size is under 65536 bytes, returns if it is too large
-                        if (byteArray.length > 65536) {
-                            //Toast error message
-                            Toast.makeText(this, "Image is too large! Max size: 65536 bytes.", Toast.LENGTH_SHORT).show();
-
-                            // Reset image preview to default, ensure remove button is hidden
-                            imagePreview.setImageResource(R.drawable.add_post_icon);
-                            imageData = null;
-                            imageUri = null;
-                            removePhotoButton.setVisibility(View.GONE);
-                            return;
-                        }
-
-                        // Store as Base64 string
-                        imageData = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                        // Show the Remove button and image preview after selecting an image
-                        removePhotoButton.setVisibility(View.VISIBLE);
-                        imagePreview.setVisibility(View.VISIBLE);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Failed to convert image", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-    );
-
-
-    /**
-     * Converts an input stream to a byte array.
-     * @param inputStream
-     * @return
-     *      Returns a byte array of the image
-     * @throws IOException
-     */
-    private byte[] convertStreamToByteArray(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            byteArrayOutputStream.write(buffer, 0, bytesRead);
-        }
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    /**
      * Builds the mood event, then saves it to Firestore.
      */
     public void SaveMood() {
@@ -247,6 +199,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         String descriptionText = inputDescription.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
         boolean isPublic = isPublicButton.isChecked();
+        Date moodTimestamp = new Date();
 
         //Converts user inputs to enums
         Mood.SocialSituation socialSituation = Mood.SocialSituation.socialSituationToEnum(selectedSocial);
@@ -285,7 +238,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     //Creates new mood event
                     Mood newMood = new Mood();
                     newMood.setMoodState(moodState);
-                    newMood.setTimestamp(new Date());
+                    newMood.setTimestamp(moodTimestamp);
                     if (!descriptionText.isEmpty()) {
                         newMood.setDescription(descriptionText);
                     }
@@ -295,25 +248,33 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
 
                     // If there is an image, convert to Base64 and convert to byte array so it can be saved to firestore
+                    List<Integer> imageIntList = null;
                     if (imageData != null) {
                         byte[] imageBytes = Base64.decode(imageData, Base64.DEFAULT);
 
                         // Convert byte[] to List<Integer>
-                        List<Integer> imageIntList = new ArrayList<>();
+                        imageIntList = new ArrayList<>();
                         for (byte b : imageBytes) {
                             imageIntList.add((int) b & 0xFF); // Convert byte to unsigned int
                         }
                         newMood.setImage(imageIntList);
-                        Toast.makeText(this, "Saved an image", Toast.LENGTH_SHORT).show();
                     } else {
                         newMood.setImage(null);
-                        Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
                     }
 
+                    //Saves mood event data as a hashmap
+                    Map<String, Object> moodData = new HashMap<>();
+                    moodData.put("moodState", moodState);
+                    moodData.put("timestamp", moodTimestamp);
+                    moodData.put("description", descriptionText);
+                    moodData.put("socialSituation", socialSituation);
+                    moodData.put("username", username);
+                    moodData.put("public", isPublic);
+                    moodData.put("image", imageIntList);
 
                     //Saves mood event to Firestore
                     db.collection("moods")
-                            .add(newMood)
+                            .add(moodData)
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
                                 docRef.update("moodId", moodId);

@@ -259,8 +259,8 @@ public class UserMoodDisplayFragment extends Fragment{
                     //DO LOCATION HERE
 
                     //Set mood image if it exists
-                    if (mood.getImage() != null) {
-                        byte[] imageBytes = mood.getImage();
+                    if (mood.getImageByteArr() != null) {
+                        byte[] imageBytes = mood.getImageByteArr();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         moodImage.setImageBitmap(bitmap);
                         moodImageCard.setVisibility(View.VISIBLE);

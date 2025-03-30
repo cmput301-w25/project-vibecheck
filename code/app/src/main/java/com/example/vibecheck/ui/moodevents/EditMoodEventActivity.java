@@ -285,8 +285,8 @@ public class EditMoodEventActivity extends AppCompatActivity {
 
 
                     //set the image if there is one
-                    if (foundMood.getImage() != null) {
-                        byte[] imageBytes = foundMood.getImage();
+                    if (foundMood.getImageByteArr() != null) {
+                        byte[] imageBytes = foundMood.getImageByteArr();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                         imageData = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
                         addImagePreview.setImageBitmap(bitmap);

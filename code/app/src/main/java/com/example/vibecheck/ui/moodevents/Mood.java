@@ -163,7 +163,7 @@ public class Mood {
      * @return
      *      Returns a byte array representing the mood image.
      */
-    public byte[] getImage() {
+    public byte[] getImageByteArr() {
         // If the mood doesn't have an image, return null
         if (image == null) {
             return null;
@@ -176,6 +176,10 @@ public class Mood {
             byteArray[i] = (byte) (image.get(i) & 0xFF);
         }
         return byteArray;
+    }
+
+    public List<Integer> getImage() {
+        return image;
     }
 
     /**
