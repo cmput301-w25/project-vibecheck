@@ -43,7 +43,6 @@
             android:focusable="true"
             android:padding="4dp"
             android:src="@drawable/backarrow_icon" />
-    <!-- android:src="@drawable/cancel_icon" -->
 
         <!-- Date Label and Mood Date -->
         <LinearLayout
@@ -158,8 +157,8 @@
                     android:id="@+id/mood_image_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="36dp"
-                    android:paddingTop="12dp"
+                    android:layout_marginTop="26dp"
+                    android:paddingTop="1dp"
                     android:text="Add Image (Optional):"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -173,7 +172,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:clickable="true"
                     android:contentDescription="Image Preview"
                     android:focusable="true"
                     android:src="@drawable/add_post_icon"

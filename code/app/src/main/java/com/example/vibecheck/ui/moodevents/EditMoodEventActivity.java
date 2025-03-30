@@ -74,18 +74,18 @@ import java.util.Locale;
 public class EditMoodEventActivity extends AppCompatActivity {
 
     // UI elements
-    private ImageView cancelButton, saveButton, deleteButton;
+    private ImageView cancelButton, saveButton, deleteButton, addImagePreview;
     private TextView moodDate, moodEmoji;
     private Spinner moodTypeSpinner, socialSituationSpinner;
     private EditText moodReasonInput;
     private RelativeLayout moodBackground, editMoodTopbar;
     private ToggleButton isPublicButton;
-    private ImageView addImagePreview;
     private Button addImageButton, removeImageButton;
+
+    // Image data, URI, and image picker launcher
     private String imageData = null;
     private Uri imageUri;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    // Remove the old location EditText if it exists; now we use the Autocomplete fragment.
 
     // Firebase Firestore
     private FirebaseFirestore db;
@@ -207,7 +207,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 String selectedMood = parent.getItemAtPosition(position).toString().toUpperCase();
                 Mood.MoodState moodState = Mood.MoodState.valueOf(selectedMood);
 
-                // Change Background Color
+                // Change Background And Topbar Colour
                 int moodColor = MoodUtils.getMoodColor(EditMoodEventActivity.this, moodState);
                 moodBackground.setBackgroundColor(moodColor);
                 editMoodTopbar.setBackgroundColor(moodColor);
@@ -239,7 +239,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
             addImagePreview.setImageResource(R.drawable.add_post_icon);  // Reset to default icon
             imageData = null;                                            // Clear the Base64 image data
             imageUri = null;                                             // Clear the stored URI
-            removeImageButton.setVisibility(View.GONE);                        // Hide the remove photo button
+            removeImageButton.setVisibility(View.GONE);                  // Hide the remove photo button
             addImagePreview.setVisibility(View.GONE);                    // Hide the image preview again
         });
 

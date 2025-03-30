@@ -100,10 +100,10 @@ public class MoodHistoryEntryAdapter extends RecyclerView.Adapter<MoodHistoryEnt
 
         holder.dateText.setText(mood.getFormattedTimestamp());
 
-        if (mood.getLatitude() == null || mood.getLongitude() == null) {
-            holder.location.setText("");
+        if (mood.getLocation() == null) {
+            holder.location.setText("Location: N/A");
         } else {
-            String locationString = "(" + mood.getLatitude() + ", " + mood.getLongitude() + ")";
+            String locationString = mood.getLocation();
             holder.location.setText(locationString);
         }
 

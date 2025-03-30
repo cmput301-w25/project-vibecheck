@@ -9,13 +9,6 @@ belongs to the logged in user is not implemented. We need to be able to compare 
 to the user id of the selected post, and Top needs padding to access back button on certain devices
  */
 
-/*
-QUICK LOGIN INFO
-oliverrlmoore@gmail.com
-MysteryChimp
- */
-
-
 package com.example.vibecheck.ui.moodevents;
 
 import android.content.Intent;
@@ -63,10 +56,10 @@ import java.util.List;
 public class MyMoodDisplayFragment extends Fragment {
 
     //TextViews for labels
-    private TextView moodReasonLabel, socialSituationLabel, locationLabel;
+    private TextView moodReasonLabel, socialSituationLabel, locationLabel, commentsLabel;
 
     //TextViews for mood event data
-    private TextView moodDate, moodType, moodDescription, socialSituation, commentsLabel;
+    private TextView moodDate, moodType, moodDescription, socialSituation, locationText;
     private ImageView backButton, editButton, moodImage;
     private RelativeLayout topBar;
     private ListenerRegistration moodListener;
@@ -125,7 +118,8 @@ public class MyMoodDisplayFragment extends Fragment {
         //Initialize UI elements
         moodReasonLabel = view.findViewById(R.id.mood_reason_label);
         socialSituationLabel = view.findViewById(R.id.social_situation_label);
-        //locationLabel = view.findViewById(R.id.location_label); COMMENTED OUT UNTIL LOCATION ADDED TO VIEW MOOD EVENT
+        locationLabel = view.findViewById(R.id.location_label);
+        locationText = view.findViewById(R.id.location_text);
         moodDate = view.findViewById(R.id.mood_date);
         moodType = view.findViewById(R.id.mood_type);
         moodDescription = view.findViewById(R.id.mood_description);
@@ -151,13 +145,14 @@ public class MyMoodDisplayFragment extends Fragment {
         //Set optional attribute labels as invisible initially, then make them visible when their elements are present in the mood event
         moodReasonLabel.setVisibility(View.GONE);
         socialSituationLabel.setVisibility(View.GONE);
-        //locationLabel.setVisibility(View.GONE); COMMENTED OUT UNTIL LOCATION ADDED TO VIEW MOOD EVENT
+        locationLabel.setVisibility(View.GONE);
 
         //Set optional attributes as invisible initially, then make them visible when they are not null or empty
         moodDescription.setVisibility(View.GONE);
         socialSituation.setVisibility(View.GONE);
         moodImageCard.setVisibility(View.GONE);
         moodImage.setVisibility(View.GONE);
+        locationText.setVisibility(View.GONE);
 
         //Handle send button click
         sendButton.setOnClickListener(v -> saveComment());
@@ -236,7 +231,13 @@ public class MyMoodDisplayFragment extends Fragment {
                             socialSituation.setText("N/A");
                         }
 
-                        //DO LOCATION HERE
+                        // Obtain the location from the snapshot if available
+                        String location = snapshot.getString("location");
+                        if (location != null && !location.trim().isEmpty()) {
+                            locationText.setText(location);
+                            locationLabel.setVisibility(View.VISIBLE);
+                            locationText.setVisibility(View.VISIBLE);
+                        }
 
                         //Set mood image if it exists
                         if (mood.getImageByteArr() != null) {

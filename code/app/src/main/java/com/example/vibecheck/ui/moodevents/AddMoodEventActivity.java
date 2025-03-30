@@ -292,6 +292,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     newMood.setSocialSituation(socialSituation);
                     newMood.setUsername(username);
                     newMood.setPublic(isPublic);
+                    newMood.setLocation(location);
 
 
                     // If there is an image, convert to Base64 and convert to byte array so it can be saved to firestore
@@ -318,15 +319,13 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     moodData.put("username", username);
                     moodData.put("public", isPublic);
                     moodData.put("image", imageIntList);
-                    //moodData.put("location", location);
+                    moodData.put("location", location);
 
                     //Saves mood event to Firestore, update the moodID to the document ID, and add the mood to the user's mood history
                     db.collection("moods")
                             .add(moodData)
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
-                                //docRef.update("moodId", moodId,
-                                //        "location", location);
                                 docRef.update("moodId", moodId);
 
                                 // Add the mood to the user's mood history

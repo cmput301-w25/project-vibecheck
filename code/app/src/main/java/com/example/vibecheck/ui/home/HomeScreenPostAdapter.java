@@ -94,6 +94,9 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             holder.displayNameText.setText(displayName);
         });
 
+        //Set location text
+        holder.locationText.setText(mood.getLocation() != null ? mood.getLocation() : "Location: N/A");
+
         //Set mood reason text
         holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No reason");
 
@@ -136,7 +139,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      * ViewHolder for the home screen recycler view.
      */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
-        TextView displayNameText, moodDescriptionText, moodEmoji, dateText;
+        TextView displayNameText, moodDescriptionText, moodEmoji, dateText, locationText;
         RelativeLayout moodPostContainer;
         LinearLayout homeScreenMoodPost;
 
@@ -149,6 +152,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             super(itemView);
             homeScreenMoodPost = itemView.findViewById(R.id.home_screen_mood_post);
             displayNameText = itemView.findViewById(R.id.username);
+            locationText = itemView.findViewById(R.id.location);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
             dateText = itemView.findViewById(R.id.mood_date);

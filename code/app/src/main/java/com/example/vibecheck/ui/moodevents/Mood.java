@@ -62,8 +62,6 @@ public class Mood {
                 default: return null;
             }
         }
-
-        //ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
@@ -74,6 +72,7 @@ public class Mood {
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
+    private String location;
     private String username;
     private String moodId;
     private boolean isPublic; //if the mood is public or not
@@ -211,11 +210,16 @@ CHECK ON THIS LATER*/
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
-    public void setLocation(Double latitude, Double longitude) {
+    public void setLatAndLong(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
     public String getUsername() {
         return username;
     }

@@ -179,6 +179,26 @@
                 android:textColor="@color/black"
                 android:textSize="17sp" />
 
+            <!-- Location -->
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Location:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/location_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:hint="N/A"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
             <!-- Comments Header -->
             <TextView
                 android:id="@+id/comments_label"
