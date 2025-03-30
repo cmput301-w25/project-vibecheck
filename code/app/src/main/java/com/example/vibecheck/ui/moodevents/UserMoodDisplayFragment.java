@@ -153,11 +153,6 @@ public class UserMoodDisplayFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(commentAdapter);
 
-        //This is the original trigger/reason, the description has been updated to be the reason.
-        //Hiding the text view is quicker than going through the entire process of updating it.
-        //Only using this method due to limited remaining time.
-        //moodTrigger.setVisibility(View.GONE);
-
         //Set optional attribute labels as invisible initially, then make them visible when their elements are present in the mood event
         moodReasonLabel.setVisibility(View.GONE);
         socialSituationLabel.setVisibility(View.GONE);

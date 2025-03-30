@@ -244,7 +244,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
     public void SaveMood() {
         //Obtains user inputs
         String selectedMood = moodDropdown.getSelectedItem().toString();
-        //String triggerText = inputTrigger.getText().toString().trim();
         String descriptionText = inputDescription.getText().toString().trim();
         String selectedSocial = socialDropdown.getSelectedItem().toString();
         boolean isPublic = isPublicButton.isChecked();
@@ -305,8 +304,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             imageIntList.add((int) b & 0xFF); // Convert byte to unsigned int
                         }
                         newMood.setImage(imageIntList);
+                        Toast.makeText(this, "Saved an image", Toast.LENGTH_SHORT).show();
                     } else {
                         newMood.setImage(null);
+                        Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -316,7 +317,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
                                 docRef.update("moodId", moodId);
-                                MoodUtils.addMoodToUserMoodHistory(newMood);
+                                //MoodUtils.addMoodToUserMoodHistory(newMood);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })

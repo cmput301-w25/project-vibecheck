@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,18 +23,21 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.vibecheck.MoodUtils;
+import com.example.vibecheck.PhotoUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.ui.home.HomeActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,9 +61,10 @@ public class EditMoodEventActivity extends AppCompatActivity {
     private RelativeLayout moodBackground, editMoodTopbar;
     private ToggleButton isPublicButton;
     private ImageView addImagePreview;
-    private Button addImage, removeImage;
+    private Button addImageButton, removeImageButton;
     private String imageData = null;
     private Uri imageUri;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     // Firebase Firestore
     private FirebaseFirestore db;
@@ -109,11 +115,25 @@ public class EditMoodEventActivity extends AppCompatActivity {
         moodBackground = findViewById(R.id.mood_background);
         moodEmoji = findViewById(R.id.mood_emoji);
         isPublicButton = findViewById(R.id.is_public_button);
-        addImage = findViewById(R.id.button_add_photo);
-        removeImage = findViewById(R.id.button_remove_photo);
+        addImageButton = findViewById(R.id.button_add_photo);
+        removeImageButton = findViewById(R.id.button_remove_photo);
 
         //Set image preview to invisible initially
         addImagePreview.setVisibility(View.GONE);
+
+        // Set image picker launcher
+        imagePickerLauncher = PhotoUtils.createImagePickerLauncher(
+                this,
+                addImagePreview,
+                removeImageButton,
+                encoded -> imageData = encoded
+        );
+
+        // Photo picker click
+        addImageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            imagePickerLauncher.launch(intent);
+        });
 
         // Populate spinners using ArrayAdapter, options defined in strings.xml
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -165,11 +185,11 @@ public class EditMoodEventActivity extends AppCompatActivity {
         //IMPLEMENT IMAGE PICKER HERE
 
         // Set Remove Image button click: remove image.
-        removeImage.setOnClickListener(v -> {
+        removeImageButton.setOnClickListener(v -> {
             addImagePreview.setImageResource(R.drawable.add_post_icon);  // Reset to default icon
             imageData = null;                                            // Clear the Base64 image data
             imageUri = null;                                             // Clear the stored URI
-            removeImage.setVisibility(View.GONE);                        // Hide the remove photo button
+            removeImageButton.setVisibility(View.GONE);                        // Hide the remove photo button
             addImagePreview.setVisibility(View.GONE);                    // Hide the image preview again
         });
 
@@ -268,10 +288,11 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     if (foundMood.getImage() != null) {
                         byte[] imageBytes = foundMood.getImage();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        imageData = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
                         addImagePreview.setImageBitmap(bitmap);
                         addImagePreview.setVisibility(View.VISIBLE);
                     } else {
-                        removeImage.setVisibility(View.GONE);
+                        removeImageButton.setVisibility(View.GONE);
                     }
 
                 }
@@ -303,21 +324,46 @@ public class EditMoodEventActivity extends AppCompatActivity {
             return;
         }
 
+        if (imageData != null) {
+            byte[] imageBytes = Base64.decode(imageData, Base64.DEFAULT);
+            // Convert byte[] to List<Integer>
+            List<Integer> imageIntList = new ArrayList<>();
+            for (byte b : imageBytes) {
+                imageIntList.add((int) b & 0xFF); // Convert byte to unsigned int
+            }
 
-        db.collection("moods").document(moodEventId)
-                .update(
-                        "description", description,
-                        "moodState", moodState,
-                        "socialSituation", socialSituation,
-                        "public", isPublic
-                )
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(EditMoodEventActivity.this, "Error updating mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+            db.collection("moods").document(moodEventId)
+                    .update(
+                            "description", description,
+                            "moodState", moodState,
+                            "socialSituation", socialSituation,
+                            "public", isPublic,
+                            "image", imageIntList
+                    )
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(EditMoodEventActivity.this, "Error updating mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            db.collection("moods").document(moodEventId)
+                    .update(
+                            "description", description,
+                            "moodState", moodState,
+                            "socialSituation", socialSituation,
+                            "public", isPublic,
+                            "image", null
+                    )
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(EditMoodEventActivity.this, "Mood event updated", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(EditMoodEventActivity.this, "Error updating mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     /**
@@ -341,7 +387,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     db.collection("moods").document(moodEventId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
-                                MoodUtils.removeMoodFromUserMoodHistory(moodEventId);
+                                //MoodUtils.removeMoodFromUserMoodHistory(moodEventId);
                                 Toast.makeText(EditMoodEventActivity.this, "Mood event and comments deleted", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -355,25 +401,5 @@ public class EditMoodEventActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(EditMoodEventActivity.this, "Failed to delete comments: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-
-
-       /*
-       db.collection("moods").document(moodEventId)
-               .delete()
-               .addOnSuccessListener(aVoid -> {
-                   Toast.makeText(EditMoodEventActivity.this, "Mood event deleted", Toast.LENGTH_SHORT).show();
-
-
-                   Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
-                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                   startActivity(intent);
-                   finish();
-               })
-               .addOnFailureListener(e -> {
-                   Toast.makeText(EditMoodEventActivity.this, "Error deleting mood event: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-               });
-
-
-        */
     }
 }
