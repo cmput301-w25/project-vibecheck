@@ -1,11 +1,6 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.search_for_users;
 
-import android.graphics.drawable.Icon;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import com.example.vibecheck.R;
 
 /*
  * Represents a search result in a user search fragment.
@@ -45,6 +40,7 @@ public class SearchUserResult {
         this.numberOfFollowers = (Integer) numberOfFollowers;
     }
 
+    /*
     public int getProfileImageResourceId() {
         return profileImageResourceId;
     }
@@ -52,4 +48,5 @@ public class SearchUserResult {
     public void setProfileImageResourceId(int profileImageResourceId) {
         this.profileImageResourceId = profileImageResourceId;
     }
+    */
 }

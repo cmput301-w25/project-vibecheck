@@ -1,4 +1,4 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.search_for_users;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.vibecheck.R;
 
 import java.util.ArrayList;
 
@@ -45,13 +47,16 @@ public class SearchUserResultAdapter extends ArrayAdapter<SearchUserResult> {
         visitProfile = view.findViewById(R.id.search_visit_profile);
 
         if (searchResult != null) {
-            userProfileImage.setImageResource(searchResult.getProfileImageResourceId());
+            //userProfileImage.setImageResource(searchResult.getProfileImageResourceId());
             username.setText(searchResult.getUsername());
             numberOfFollowers.setText(String.format("%d", searchResult.getNumberOfFollowers()));
             visitProfile.setText("Visit Profile");
         }
 
+        visitProfile.setOnClickListener(v -> {
+            //todo: add visit profile functionality
+        });
+
         return view;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.vibecheck;
+package com.example.vibecheck.ui.search_for_users;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +10,11 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import com.example.vibecheck.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,17 +44,20 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //Top padding
+        View root = findViewById(R.id.search_users_layout);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
+
         // initialize views
         searchBackArrow = findViewById(R.id.search_back_arrow);
         searchUsersSearchView = findViewById(R.id.search_for_users_searchview);
         searchUsersListView = findViewById(R.id.search_users_listview);
 
-        searchBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: go back to the home screen
-            }
-        });
+        searchBackArrow.setOnClickListener(view -> finish());
 
         db = FirebaseFirestore.getInstance();
         list = new ArrayList<>();

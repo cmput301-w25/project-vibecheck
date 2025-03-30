@@ -7,6 +7,7 @@ between user posts and logged in user posts.
 
 package com.example.vibecheck.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.example.vibecheck.ui.moodevents.Mood;
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.databinding.HomeScreenBinding;
+import com.example.vibecheck.ui.search_for_users.SearchActivity;
 
 /**
  * Fragment for the home screen.
@@ -96,7 +98,8 @@ public class HomeFragment extends Fragment {
 
         // Set click listeners for toolbar icons
         iconSearch.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Search clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(requireContext(), SearchActivity.class);
+            startActivity(intent);
         });
 
         iconFilter.setOnClickListener(v -> {

@@ -85,11 +85,14 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
             Log.d("HomeActivity", "BottomNavigationView found successfully.");
         }
 
+        // Handle filter button press
         filterButton.setOnClickListener(v -> {
             MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
             fragment.show(getSupportFragmentManager(), "");
         });
 
+        // Handle back button press///////////////////////////////////////////////////////////THIS WILL HAVE TO CHANGE IF I TURN THIS INTO A FRAGMENT
+        backButton.setOnClickListener(view -> finish());
 
     }
 
@@ -137,7 +140,7 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
                 });
 
         DocumentReference followersRef = db.collection("users").document(currentUser.getUid());
-
+/*
         followersRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -180,6 +183,8 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
 
 
 
+
+
 //      mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         toggle.setOnClickListener(v -> {
             if(toggle.isChecked()){
@@ -204,6 +209,8 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
 
 
         });
+
+ */
 
 
 

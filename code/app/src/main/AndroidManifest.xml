@@ -33,6 +33,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA5r6vzhP36KkbP1UNJnzhzBFSTanbaFbU" />
 
+        <!-- Mood Map Activity -->
         <activity
             android:name=".MapActivityFragment"
             android:exported="true"
@@ -72,6 +73,11 @@
         <!-- Edit Mood Event Activity -->
         <activity
             android:name=".ui.moodevents.EditMoodEventActivity"
+            android:exported="true" />
+
+        <!-- Search Activity -->
+        <activity
+            android:name=".ui.search_for_users.SearchActivity"
             android:exported="true" />
 
         <activity android:name=".ui.signup.SignUpActivity" />

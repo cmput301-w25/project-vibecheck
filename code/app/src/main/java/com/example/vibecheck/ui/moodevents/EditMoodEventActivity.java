@@ -146,10 +146,12 @@ public class EditMoodEventActivity extends AppCompatActivity {
         //Set image preview to invisible initially, only visible after image is confirmed present
         addImagePreview.setVisibility(View.GONE);
 
+
         // Initialize Places API (ensure you have added your API key in strings.xml)
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
+
         // Set up the AutocompleteSupportFragment for location suggestions.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);

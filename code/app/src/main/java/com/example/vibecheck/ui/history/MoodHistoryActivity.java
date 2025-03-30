@@ -56,7 +56,6 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         setContentView(R.layout.mood_history);
 
 
-
         //Top padding
         View root = findViewById(R.id.mood_history_root_layout);
         ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
