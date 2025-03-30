@@ -279,28 +279,6 @@ public class MoodUtils {
      */
     public static void removeMoodFromUserMoodHistory(Mood moodToRemove) {
         moodHistory.removeMoodEvent(moodToRemove);
-
-
-
-
-        //moodHistoryEntryAdapter.updateData(moodHistory.getFilteredMoodList());
-        /*
-        moodHistory.getMoodList().removeIf(historyEntry ->
-                historyEntry.getMood().getMoodId().equals(moodEventId)
-        );
-
-
-        for(MoodHistoryEntry historyEntry : moodHistory.getMoodList()) {
-            if(historyEntry.getMood().getMoodId().equals(moodEventId)) {
-                //moodHistory.removeMoodEvent(historyEntry.getMood());
-
-                moodHistory.getMoodList().remove(historyEntry);
-
-                return;
-            }
-        }
-
-         */
     }
 
 

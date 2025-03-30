@@ -370,10 +370,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
      * from Firestore as well.
      */
     private void deleteMoodEvent() {
-        // First we remove the mood event from the current user's mood history
-        MoodUtils.removeMoodFromUserMoodHistory(moodToEdit);
-
-        // Then we have to delete all comments attached to this mood event
+        // First we have to delete all comments attached to this mood event
         db.collection("comments")
                 .whereEqualTo("moodEventId", moodEventId)
                 .get()
@@ -384,11 +381,12 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     }
 
 
-                    // Once all comments are deleted, we can safely delete the mood event and finish the activity
+                    // Once all comments are deleted, we can safely delete the mood event, remove it from the user's mood history, and finish the activity
                     db.collection("moods").document(moodEventId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(EditMoodEventActivity.this, "Mood event and comments deleted", Toast.LENGTH_SHORT).show();
+                                MoodUtils.removeMoodFromUserMoodHistory(moodToEdit);
                                 Intent intent = new Intent(EditMoodEventActivity.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);

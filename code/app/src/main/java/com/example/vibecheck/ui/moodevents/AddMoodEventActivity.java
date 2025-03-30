@@ -278,6 +278,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
                             .addOnSuccessListener(docRef -> {
                                 String moodId = docRef.getId();
                                 docRef.update("moodId", moodId);
+
+                                // Add the mood to the user's mood history
                                 newMood.setMoodId(moodId);
                                 MoodUtils.addMoodToUserMoodHistory(newMood);
                                 Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
