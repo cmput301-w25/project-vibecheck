@@ -44,6 +44,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private MoodHistory userHistory;
+    private Singleton singleton;
 
 
     @Override
@@ -51,7 +52,6 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.mood_history);
-
 
 
         //Top padding
@@ -74,7 +74,6 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         db = FirebaseFirestore.getInstance();
         String username = currentUser.getDisplayName();
         Task<QuerySnapshot> collection = db.collection("users/"+currentUser.getUid()+"/MoodHistory").get();
-        //CollectionReference collection = db.collection("users").document(currentUser.getUid()).collection("MoodHistory");
         collection.addOnSuccessListener(querySnapshot -> {
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 Date timestamp = document.getTimestamp("timestamp").toDate();
@@ -115,6 +114,11 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
         moodEntryList.setAdapter(moodHistoryEntryAdapter);
 
+        // Singleton for passing "states" between activities
+        singleton = Singleton.getINSTANCE();
+        this.states = singleton.getStates();
+        filter(states);
+
         sortButton.setOnClickListener(v -> {
             toggleSort = !toggleSort;
             if(toggleSort){
@@ -142,6 +146,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     @Override
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;
+        singleton.setStates(states);
         history.filterByMood(states);
         moodHistoryEntryAdapter.clear();
         moodHistoryEntryAdapter.addAll(history.getFilteredMoodList());

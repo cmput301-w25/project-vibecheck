@@ -2,16 +2,25 @@ package com.example.vibecheck;
 
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vibecheck.ui.history.MoodFilterFragment;
 import com.example.vibecheck.ui.history.MoodHistory;
+import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.history.MoodHistoryEntry;
+import com.example.vibecheck.ui.history.Singleton;
+import com.example.vibecheck.ui.home.HomeActivity;
+import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.moodevents.Mood;
+import com.example.vibecheck.ui.profile.ProfileActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,20 +51,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private TextView label;
     private AppCompatToggleButton toggle;
     private BottomNavigationView bottomNavigationView;
+    private NavController navController;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private MoodHistory userHistory;
     private MoodHistory friendsHistory;
     private ArrayList<Mood.MoodState> states = new ArrayList<>();
+    private Singleton singleton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("jo@gmail.com", "joel02");
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
 
@@ -73,6 +82,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         label = findViewById(R.id.mood_date_label);
         toggle = findViewById(R.id.toggle);
 
+        // Obtains the navController from the NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_home);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+            Log.d("HomeActivity", "NavController found successfully.");
+        }
+
         // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (bottomNavigationView == null) {
@@ -80,6 +96,48 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         } else {
             Log.d("HomeActivity", "BottomNavigationView found successfully.");
         }
+
+        // Set up the navigation listener
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Log.d("HomeActivity", "Bottom Navigation Clicked: " + item.getItemId());
+
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navigation_home) {
+                if (navController.getCurrentDestination().getId() == R.id.navigation_home) {
+                    Toast.makeText(this, "You are already on this page.", Toast.LENGTH_SHORT).show();
+                } else {
+                    navController.navigate(R.id.navigation_home);
+                }
+                return true;
+
+            } else if (itemId == R.id.navigation_history) {
+                Log.d("HomeActivity", "Opening MoodHistoryActivity...");
+                Intent intent = new Intent(MapActivity.this, MoodHistoryActivity.class);
+                startActivity(intent);
+                return true;
+
+            } else if (itemId == R.id.navigation_post) {
+                Log.d("HomeActivity", "Opening AddMoodEventActivity...");
+                Intent intent = new Intent(MapActivity.this, AddMoodEventActivity.class);
+                startActivity(intent);
+                return true;
+
+            } else if (itemId == R.id.navigation_map) {
+                Log.d("HomeActivity", "Opening MapActivity...");
+                Intent intent = new Intent(MapActivity.this, MapActivity.class);
+                startActivity(intent);
+                return true;
+
+            } else if (itemId == R.id.navigation_profile) {
+                Log.d("HomeActivity", "Opening ProfileActivity...");
+                Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            } else {
+                return false;
+            }
+        });
 
         filterButton.setOnClickListener(v -> {
             MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
@@ -124,6 +182,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                             }
                         }
+
+                        // Singleton for passing "states" between activities
+                        singleton = Singleton.getINSTANCE();
+                        this.states = singleton.getStates();
+                        filter(states);
+
                         Log.d("MapActivityFragment", "User's Mood History obtained succesfully");
 
                     } else {
@@ -131,6 +195,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         Log.e("MapActivityFragment", "Failed to obtain User's Mood History obtained succesfully");
                     }
                 });
+
+
 
         DocumentReference followersRef = db.collection("users").document(currentUser.getUid());
 
@@ -206,6 +272,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;
+        singleton.setStates(states);
         userHistory.filterByMood(states);
         mMap.clear();
         for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
