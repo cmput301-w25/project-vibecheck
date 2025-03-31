@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,16 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        // Retrieve views from the layout.
-        // Our layout is a ScrollView with a LinearLayout child.
-        View rootView = findViewById(android.R.id.content);
-        ScrollView scrollView = (ScrollView) ((ViewGroup) rootView).getChildAt(0);
-        ViewGroup mainLinearLayout = (ViewGroup) scrollView.getChildAt(0);
-
-        // Profile Header (child index 0 of main layout):
-        // Child order:
-        // 0: back_arrow, 1: display_name_edit_text, 2: edit_icon, 3: username TextView.
-        ViewGroup profileHeader = (ViewGroup) mainLinearLayout.getChildAt(0);
+        // Bind UI elements (make sure these IDs match your XML)
         backArrow = findViewById(R.id.back_arrow);
         displayNameEditText = findViewById(R.id.display_name_edit_text); //(EditText) profileHeader.getChildAt(1);
         editIcon = findViewById(R.id.edit_icon);
@@ -103,13 +92,9 @@ public class ProfileActivity extends AppCompatActivity {
         followingCountText = findViewById(R.id.following_count);
         notificationsSwitch = findViewById(R.id.notifications_switch);
         publicSwitch = findViewById(R.id.public_switch);
-
         followRequestsTitle = findViewById(R.id.follow_requests_title);
         followRequestsContainer = findViewById(R.id.follow_requests_container);
-
-        // Personal Info EditText (child index 3 of main layout)
         personalInfoEditText = findViewById(R.id.personalInfoEditText);
-        // Logout Button (child index 6 of main layout)
         logoutButton = findViewById(R.id.logout_button);
 
         // Load profile data
@@ -153,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
 
-        // Logout button
+        // Handle logout
         logoutButton.setOnClickListener(view -> {
             MoodUtils.setCurrentUsername(null);
             MoodUtils.clearUserMoodHistory();
@@ -175,8 +160,6 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("ProfileActivity", "User not logged in");
             return;
         }
-
-
 
         String uid = currentUser.getUid();
         db.collection("users")
@@ -220,32 +203,6 @@ public class ProfileActivity extends AppCompatActivity {
                     if (followingCount != null) {
                         followingCountText.setText(String.valueOf(followingCount));
                     }
-
-                    /*
-                    if (documentSnapshot.exists()) {
-                        String displayName = documentSnapshot.getString("displayName");
-                        Log.d("ProfileActivity", "Firestore returned displayName: " + displayName);
-                        if (displayName != null && !displayName.isEmpty()) {
-                            displayNameEditText.setText(displayName);
-                            tvUsername.setText("@" + MoodUtils.getCurrentUsername());
-                            originalDisplayName = displayName;
-                        } else {
-                            displayNameEditText.setText("No Display Name");
-                            tvUsername.setText("@NoDisplayName");
-                            originalDisplayName = "No Display Name";
-                        }
-
-                        String personalInfo = documentSnapshot.getString("personalInfo");
-                        if (personalInfo != null) {
-                            personalInfoEditText.setText(personalInfo);
-                        }
-                    } else {
-                        displayNameEditText.setText("No Document");
-                        tvUsername.setText("@NoDocument");
-                        Log.d("ProfileActivity", "No document found for user");
-                    }
-
-                    */
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(ProfileActivity.this,

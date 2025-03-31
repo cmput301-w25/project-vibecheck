@@ -267,7 +267,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Loads the mood event data from Firestore and updates the UI.
      */

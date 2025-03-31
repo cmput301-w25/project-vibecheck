@@ -1,3 +1,15 @@
+/**
+ * Custom ArrayAdapter for displaying mood history entries.
+ * <p>
+ * Inflates the layout for each mood event and populates UI components:
+ * - Sets the username from the mood event.
+ * - Displays location coordinates if available.
+ * - Shows the mood description.
+ * - Applies a background color based on the mood state via MoodUtils.
+ * - Displays an emoji corresponding to the mood state.
+ * </p>
+ */
+
 package com.example.vibecheck.ui.history;
 
 import android.content.Context;

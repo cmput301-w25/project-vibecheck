@@ -41,9 +41,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -184,7 +182,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
         moodDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Get selected mood, changes string to uppercase
                 String selectedMood = parent.getItemAtPosition(position).toString().toUpperCase();
                 Mood.MoodState moodState = Mood.MoodState.valueOf(selectedMood);
 
@@ -193,7 +190,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                 moodBackground.setBackgroundColor(moodColor);
                 addMoodToolbar.setBackgroundColor(moodColor);
 
-                // Change emoji
+                // Change Emoji
                 String emoji = MoodUtils.getEmojiForMood(moodState);
                 moodEmoji.setText(emoji);
             }
@@ -205,7 +202,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Populate Social Situation Dropdown
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.social_options,  // Defined in XML
+                R.array.social_options,
                 android.R.layout.simple_spinner_item
         );
         socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -225,7 +222,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         });
 
         // Handle Save Button Click
-        saveMoodButton.setOnClickListener(v -> SaveMood());
+        saveMoodButton.setOnClickListener(v -> saveMood());
 
         // Handle Back Button Click
         backButton.setOnClickListener(v -> finish());
@@ -241,9 +238,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Builds the mood event, then saves it to Firestore and the user's mood history.
+     * Validates user input, builds the mood event, then saves it to firestory
+     * and the user's mood history. Displays a success or failure message.
      */
-    public void SaveMood() {
+    private void saveMood() {
         //Obtains user inputs
         String selectedMood = moodDropdown.getSelectedItem().toString();
         String descriptionText = inputDescription.getText().toString().trim();
@@ -348,14 +346,5 @@ public class AddMoodEventActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to fetch user profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-    }
-
-    // Helper methods for tests
-    public void setAuth(FirebaseAuth auth) {
-        this.mAuth = auth;
-    }
-
-    public void setDb(FirebaseFirestore db) {
-        this.db = db;
     }
 }

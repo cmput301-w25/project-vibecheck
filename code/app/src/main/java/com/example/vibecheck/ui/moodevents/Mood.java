@@ -93,7 +93,20 @@ public class Mood {
         this.moodState = moodState;
     }
 
-    /** TAKE A LOOK AT THE ADD MOOD EVENT CLASS TO SEE WHAT CHANGED
+    /**
+     * Constructs a mood entry with a specified mood state and the logged user's username.
+     * Use this constructor to ensure the mood event records the username of the user who added it.
+     *
+     * @param moodState The emotional state of the user.
+     * @param username The username (or display name) of the logged-in user.
+     */
+    public Mood(MoodState moodState, String username) {
+        this.timestamp = new Date();
+        this.moodState = moodState;
+        this.username = username;
+    }
+
+    /**
      * Constructs a mood entry with a specified mood state and the logged user's username.
      * Use this constructor to ensure the mood event records the username of the user who added it.
      *
@@ -257,7 +270,6 @@ public class Mood {
                 ", moodState=" + moodState +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
-                ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 ", username='" + username + '\'' +
                 '}';
