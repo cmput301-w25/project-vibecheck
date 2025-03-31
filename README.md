@@ -4,12 +4,15 @@
 
 | Name        | CCID   | GitHub Username |
 | ----------- | ------ | --------------- |
-| Mohammed Al Robiay | malrobia | moeongit     |
+|  - |-  |   -   |
 | Seeratpreet Kaur | seeratpr | seeratkaursamra     |
-| Shza El Maadawy | shza | SamyKader     |
+| - | - | -     |
 | Joel Omari | mwananko | Joel-III     |
 | Oliver Moore | ormoore | OliverMoore13     |
 | Titobiloluwa Adeniji | titobilo | tadeniji3     |
+
+Mohammed Al Robiay (malrobia):moeongit Contributed till Project Part 3
+Shza El Maadawy (shza): SamyKader Contributed till Project Part 2
 
 ## Project Description
 
