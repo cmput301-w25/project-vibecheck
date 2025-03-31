@@ -10,6 +10,7 @@
 
 package com.example.vibecheck;
 
+import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,7 +31,7 @@ public class Mood {
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE
+        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
@@ -38,11 +39,12 @@ public class Mood {
     private String trigger;
     private SocialSituation socialSituation;
     private String description;
-    private byte[] image;
+    // The image field remains commented out; if you use image storage, consider using Blob.
+    // private byte[] image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
-    private String username;
+    private String username;  // The username of the logged user who created the mood event.
     private String documentId;
 
     /**
@@ -59,6 +61,19 @@ public class Mood {
     public Mood(MoodState moodState) {
         this.timestamp = new Date();
         this.moodState = moodState;
+    }
+
+    /**
+     * Constructs a mood entry with a specified mood state and the logged user's username.
+     * Use this constructor to ensure the mood event records the username of the user who added it.
+     *
+     * @param moodState The emotional state of the user.
+     * @param username The username (or display name) of the logged-in user.
+     */
+    public Mood(MoodState moodState, String username) {
+        this.timestamp = new Date();
+        this.moodState = moodState;
+        this.username = username;
     }
 
     /**
@@ -116,31 +131,24 @@ public class Mood {
     }
 
     /**
-     * Assigns a description to the mood while ensuring it follows length constraints.
-     * @param description A brief description of the mood event (max 20 characters, 3 words).
-     * @throws IllegalArgumentException if the description exceeds constraints.
+     * Assigns a description to the mood while checking constraints.
+     * If the description is too long (more than 20 characters or more than 3 words), it logs a warning
+     * and truncates the description.
+     *
+     * @param description A brief description of the mood event.
      */
     public void setDescription(String description) {
-        if (description != null && (description.length() > 20 || description.split("\\s+").length > 3)) {
-            throw new IllegalArgumentException("Description must not exceed 20 characters or 3 words.");
+        if (description == null) {
+            this.description = "";
+            return;
         }
-        this.description = description;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    /**
-     * Sets the mood image while ensuring it adheres to the size limit.
-     * @param image A byte array representing the image.
-     * @throws IllegalArgumentException if the image size exceeds the allowed limit.
-     */
-    public void setImage(byte[] image) {
-        if (image != null && image.length > MAX_IMAGE_SIZE) {
-            throw new IllegalArgumentException("Image must be under 65536 bytes.");
+        if (description.length() > 20 || description.trim().split("\\s+").length > 3) {
+            Log.w("Mood", "Description exceeds limits: " + description);
+            // Truncate to first 20 characters and the first word (example strategy)
+            this.description = description.substring(0, Math.min(20, description.length())).split("\\s+")[0];
+        } else {
+            this.description = description;
         }
-        this.image = image;
     }
 
     public Double getLatitude() {
@@ -165,6 +173,11 @@ public class Mood {
         return username;
     }
 
+    /**
+     * Sets the username of the user who created the mood event.
+     * This should be the logged user's username or display name.
+     * @param username The username of the user.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -177,15 +190,14 @@ public class Mood {
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
-                ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
+                ", username='" + username + '\'' +
                 '}';
     }
 
     /**
      * Formats the timestamp for display.
-     * @return
-     *      Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hour:min am/pm".
+     * @return Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hh:mm a".
      */
     public String getFormattedTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
@@ -193,9 +205,8 @@ public class Mood {
     }
 
     /**
-     * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
+     * Converts the social situation to a string representation.
+     * @return Returns a string representation of the social situation.
      */
     public String socialSituationToString() {
         return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
@@ -203,8 +214,7 @@ public class Mood {
 
     /**
      * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
+     * @return Returns a string representation of the mood state.
      */
     public String moodStateToString() {
         return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
