@@ -1,6 +1,10 @@
 package com.example.vibecheck.ui.search_for_users;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.vibecheck.R;
+import com.example.vibecheck.ui.profile.PublicProfileActivity;
 
 import java.util.ArrayList;
 
@@ -71,8 +77,16 @@ public class SearchUserResultAdapter extends ArrayAdapter<SearchUserResult> {
             visitProfile.setText("Visit Profile");
         }
 
+        final SearchUserResult finalSearchResult = searchResult;
+
         visitProfile.setOnClickListener(v -> {
-            //todo: add visit profile functionality
+            if (finalSearchResult == null) {
+                Toast.makeText(getContext(), "Username is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(getContext(), PublicProfileActivity.class);
+            intent.putExtra("username", finalSearchResult.getUsername());
+            startActivity(getContext(), intent, null);
         });
 
         return view;

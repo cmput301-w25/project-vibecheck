@@ -5,6 +5,10 @@ import static org.junit.Assert.*;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.vibecheck.ui.search_for_users.SearchActivity;
+import com.example.vibecheck.ui.search_for_users.SearchUserResult;
+import com.example.vibecheck.ui.search_for_users.SearchUserResultAdapter;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

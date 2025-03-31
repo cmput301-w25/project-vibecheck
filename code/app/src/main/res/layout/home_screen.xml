@@ -20,6 +20,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="">
+        <!--app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintTop_toTopOf="parent"> -->
+
 
         <!-- Vertical Linear Layout to Make Two Rows of Toolbar Items -->
         <LinearLayout

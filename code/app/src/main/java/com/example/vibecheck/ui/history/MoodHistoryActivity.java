@@ -1,3 +1,12 @@
+/**
+ * Activity for displaying and managing a user's mood history.
+ * <p>
+ * Loads mood events from Firestore for a given user, displays them in a ListView,
+ * and supports sorting (by date) and filtering by mood states. Implements
+ * MoodFilterDialogListener to update the list based on selected filters.
+ * </p>
+ */
+
 package com.example.vibecheck.ui.history;
 
 import android.os.Bundle;
@@ -29,6 +38,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Class for MoodHistoryActivity
+ */
 public class MoodHistoryActivity extends AppCompatActivity implements MoodFilterFragment.MoodFilterDialogListener{
 
     private ArrayList<MoodHistoryEntry> dataList;
@@ -47,8 +59,15 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private MoodHistory userHistory;
+    private Singleton singleton;
 
-
+    /**
+     * Method that is run when Dialog is about to be created
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,54 +114,10 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         moodEntryList.setLayoutManager(new LinearLayoutManager(this));
         moodEntryList.setAdapter(moodHistoryEntryAdapter);
 
-
-        /*
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        String username = currentUser.getDisplayName();
-        Task<QuerySnapshot> collection = db.collection("users/"+currentUser.getUid()+"/MoodHistory").get();
-        //CollectionReference collection = db.collection("users").document(currentUser.getUid()).collection("MoodHistory");
-        collection.addOnSuccessListener(querySnapshot -> {
-            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                Date timestamp = document.getTimestamp("timestamp").toDate();
-                Mood.MoodState moodState = Mood.MoodState.valueOf((String) document.get("moodState"));
-                String trigger =(String) document.get("trigger");
-                Mood.SocialSituation socialSituation = Mood.SocialSituation.valueOf((String) document.get("socialSituation"));
-                String description = (String) document.get("description");
-                Double latitude = document.getDouble("latitude");
-                Double longitude = document.getDouble("longitude");
-                String documentId = document.getId();
-
-                Mood mood = new Mood(timestamp,moodState);
-                mood.setTrigger(trigger);
-                mood.setSocialSituation(socialSituation);
-                mood.setDescription(description);
-                mood.setLocation(latitude, longitude);
-                mood.setMoodId(documentId);
-
-                // Ensure Mood Entries Load with Colors and Emojis
-                moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
-                dataList.add(new MoodHistoryEntry(mood));
-
-                // Need to add mood to adapter else mood history not displayed
-                //until after sorting or filtering.
-                // Need to add mood to data list as well else, the list will be cleared
-                // after soring or filtering
-                moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
-                dataList.add(new MoodHistoryEntry(mood));
-            }
-            moodHistoryEntryAdapter.notifyDataSetChanged();
-        }).addOnFailureListener(e -> {
-            System.err.println("Error retrieving mood history" + e.getMessage());
-        });
-
-        history = new MoodHistory(username,dataList);
-        history.sortByDate(); //Displays most recent moods by default
-        moodEntryList = findViewById(R.id.mood_history_list);
-        moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
-        moodEntryList.setAdapter(moodHistoryEntryAdapter);
-        */
+        // Singleton for passing "states" between activities
+        singleton = Singleton.getINSTANCE();
+        this.states = singleton.getStates();
+        filter(states);
 
         sortButton.setOnClickListener(v -> {
             toggleSort = !toggleSort;
@@ -166,9 +141,15 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
 
     }
 
+    /**
+     * Filters MoodHistory based on states
+     * @param states
+     *      Mood states to filter the MoodHistory on
+     */
     @Override
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;
+        singleton.setStates(states);
         history.filterByMood(states);
         moodHistoryEntryAdapter.updateData(history.getFilteredMoodList());
     }

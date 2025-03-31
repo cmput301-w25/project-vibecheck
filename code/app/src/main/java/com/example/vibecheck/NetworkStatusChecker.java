@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class NetworkStatusChecker {
     private final Context appContext;
     private final Handler mainHandler;
-    private Runnable networkCheckTask;
+    Runnable networkCheckTask;  // default access for testing via reflection
     private static final long INTERVAL_MS = 10000; // 10 seconds
     private Boolean lastConnectionState = null; // Null at start to force first-time message
 
@@ -30,7 +30,7 @@ public class NetworkStatusChecker {
             public void run() {
                 boolean isConnected = checkNetworkAvailability();
 
-                // Show message at least once when app starts
+                // Show message at least once when app starts or when state changes.
                 if (lastConnectionState == null || isConnected != lastConnectionState) {
                     showNetworkToast(isConnected);
                     lastConnectionState = isConnected;
@@ -48,7 +48,7 @@ public class NetworkStatusChecker {
         }
     }
 
-    private boolean checkNetworkAvailability() {
+    protected boolean checkNetworkAvailability() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -68,7 +68,7 @@ public class NetworkStatusChecker {
         }
     }
 
-    private void showNetworkToast(boolean isConnected) {
+    protected void showNetworkToast(boolean isConnected) {
         String statusMessage = isConnected ? "Connected to the Internet" : "No Internet Connection";
         Toast.makeText(appContext, statusMessage, Toast.LENGTH_SHORT).show();
     }

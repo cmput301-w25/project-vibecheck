@@ -142,10 +142,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             map:uiZoomControls="true"
             map:uiRotateGestures="true"
-            tools:context=".MapActivity" />
+            tools:context=".ui.map.MapActivity" />
     </LinearLayout>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -156,7 +156,8 @@
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
-
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>

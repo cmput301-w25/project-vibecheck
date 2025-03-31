@@ -1,3 +1,10 @@
+/**
+ * SearchActivity.java
+ * This activity is responsible for searching for users.
+ *
+ * Outstanding issues: App crashes when attempting to visit a profile.
+ */
+
 package com.example.vibecheck.ui.search_for_users;
 
 import android.os.Bundle;
@@ -90,10 +97,13 @@ public class SearchActivity extends AppCompatActivity {
                     listOfResults.clear();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         String username = documentSnapshot.getString("username");
-                        int numberOfFollowers = 0; // TODO: make this the actual number of followers
+                        if (username == null || username.trim().isEmpty()) {
+                            continue;
+                        }
+                        int numberOfFollowers = 0; // Placeholder
                         listOfResults.add(new SearchUserResult(username, numberOfFollowers));
-                        arrayAdapter.notifyDataSetChanged();
                     }
+                    arrayAdapter.notifyDataSetChanged();
                 }
             }
         });

@@ -50,6 +50,14 @@ public class MoodHistoryEntry implements Comparable<MoodHistoryEntry>{
         return entry.getValue();
     }
 
+    /**
+     * Determines which MoodHistory entry is more recent
+     * @param entry the object to be compared.
+     * @return
+     *      0 if the mood history entries have the same timestamp,
+     *      a value less that 0 if this entry is older than the other entry.
+     *      a value greater than 0 if this entry is younger than the other entry
+     */
     @Override
     public int compareTo(MoodHistoryEntry entry) {
         return this.getEntry().getKey().getTimestamp().compareTo(entry.getEntry().getKey().getTimestamp());

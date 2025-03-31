@@ -30,6 +30,8 @@ public class PhotoUtils {
 
     /**
      * Converts an image as an input stream to a byte array.
+     * Method was adapted from examples found in stackoverflow:
+     * https://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-array-in-java
      * @param inputStream
      * @return
      * @throws IOException

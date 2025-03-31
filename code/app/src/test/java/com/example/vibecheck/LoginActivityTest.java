@@ -8,30 +8,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.vibecheck.ui.login.LoginActivity;
-import com.example.vibecheck.ui.signup.SignUpActivity;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowToast;
 
+import com.example.vibecheck.ui.login.LoginActivity;
+import com.example.vibecheck.ui.signup.SignUpActivity;
+import com.google.firebase.FirebaseApp;
+import androidx.test.core.app.ApplicationProvider;
+
+
 /**
- * Unit tests for LoginActivity.
+ * Unit tests for LoginActivity using Robolectric.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = 30)  // or whichever SDK version you want
 public class LoginActivityTest {
 
     private LoginActivity loginActivity;
 
-    /**
-     * Sets up the LoginActivity instance before each test.
-     */
     @Before
     public void setUp() {
+        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext());
         loginActivity = Robolectric.buildActivity(LoginActivity.class)
                 .create()
                 .start()
@@ -39,10 +42,6 @@ public class LoginActivityTest {
                 .get();
     }
 
-    /**
-     * Tests that clicking the login button with empty email and password fields
-     * shows the toast "Please fill all fields".
-     */
     @Test
     public void testEmptyFieldsShowsToast() {
         EditText etEmail = loginActivity.findViewById(R.id.edit_text_login_username);
@@ -61,14 +60,6 @@ public class LoginActivityTest {
         assertEquals("Please fill all fields", toastMessage);
     }
 
-    /**
-     * Tests that when valid non‑empty email and password fields are provided,
-     * the toast message is not the "Please fill all fields" error.
-     * <p>
-     * Note: Since Firebase sign‑in is asynchronous and external, this test only
-     * verifies that the empty-fields error toast is not shown.
-     * </p>
-     */
     @Test
     public void testValidFieldsDoNotShowEmptyFieldsToast() {
         EditText etEmail = loginActivity.findViewById(R.id.edit_text_login_username);
@@ -76,8 +67,8 @@ public class LoginActivityTest {
         Button btnLogin = loginActivity.findViewById(R.id.login_button);
 
         // Set valid email and password
-        etEmail.setText("user@example.com");
-        etPassword.setText("password123");
+        etEmail.setText("swayam@ualberta.ca");
+        etPassword.setText("Seth@2460");
 
         // Simulate button click
         btnLogin.performClick();
@@ -88,9 +79,6 @@ public class LoginActivityTest {
         assertTrue(!"Please fill all fields".equals(toastMessage));
     }
 
-    /**
-     * Tests that clicking the sign‑up link navigates to SignUpActivity.
-     */
     @Test
     public void testSignUpLinkNavigatesToSignUpActivity() {
         TextView tvSignUp = loginActivity.findViewById(R.id.link_to_signup);
