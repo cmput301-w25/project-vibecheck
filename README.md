@@ -21,13 +21,12 @@ The project for CMPUT 301 in Winter 2025 involves designing and implementing an 
 
 Here’s a breakdown of the app’s purpose and features:
 
-Core Purpose
-
+**Core Purpose**
 The app enables users to:
 
-Log and Reflect: Record mood events to track their emotional experiences over time.
-Share and Connect: Share moods with others (optionally) to foster a sense of community or gain support.
-Analyze Patterns: Use filters and maps to identify trends or triggers in their emotional states, which can support mental health awareness.
+1. **Log and Reflect:** Record mood events to track their emotional experiences over time.
+2. **Share and Connect:** Share moods with others (optionally) to foster a sense of community or gain support.
+3. **Analyze Patterns:** Use filters and maps to identify trends or triggers in their emotional states, which can support mental health awareness.
 It’s tailored for the university context, where stress and emotional fluctuations are common, making it a valuable tool for students and staff alike.
 
 
