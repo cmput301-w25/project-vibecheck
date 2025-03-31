@@ -30,7 +30,7 @@
                 android:src="@drawable/back_arrow" />
 
             <TextView
-                android:id="@+id/public_profile_display_name"
+                android:id="@+id/public_profile_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -63,6 +63,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/follower_count"
                     android:fontFamily="@font/salsa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,11 +71,12 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:fontFamily="@font/salsa"
+                    android:id="@+id/follower_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follower"
-                    android:textColor="#666666" />
+                    android:text="Followers"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/salsa" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,18 +87,20 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:fontFamily="@font/salsa"
+                    android:id="@+id/following_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/salsa" />
 
                 <TextView
-                    android:fontFamily="@font/salsa"
+                    android:id="@+id/following_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Following"
-                    android:textColor="#666666" />
+                    android:textColor="#666666"
+                    android:fontFamily="@font/salsa" />
 
             </LinearLayout>
 

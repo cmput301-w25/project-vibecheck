@@ -1,10 +1,9 @@
-/*
-This class is the fragment that operates to display a user's mood event as a fragment on the home activity.
-Simple functionality, populates the fields with the mood event's information, colour-codes the mood type and description,
-emoji-codes the mood type, and handles the back button click.
-
-Outstanding issues: Top needs padding so the back button is pressable (on certain devices). Bottom navigation still works
-to change page is back button inaccessable
+/**
+ * This fragment class is used to display a user's mood event as a fragment on the home activity.
+ * It has simple functionality, populating the fields with the mood event's information and the mood event's creator's
+ * information. It also colour-codes the mood type and description, emoji-codes the mood type, and handles the back button click.
+ *
+ * This class has no outstanding issues.
  */
 
 package com.example.vibecheck.ui.moodevents;
@@ -93,14 +92,12 @@ public class UserMoodDisplayFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.user_mood_display_view, container, false);
-        //View view = inflater.inflate(R.layout.user_mood_display_view, container, false);
-        //return view;
     }
 
 
     /**
      * Initializes ui elements, loads the mood event from Firestore, dynamically fetches the display name of the mood post's creator.
-     * Loads comments from Firestore. Handles post comment and back button presses.
+     * Loads comments from Firestore. Handles post comment and back button presses. Updates the UI accordingly, handles colour and emoji coding.
      *
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
@@ -119,6 +116,8 @@ public class UserMoodDisplayFragment extends Fragment{
             Toast.makeText(getContext(), "Error loading mood event.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //Load the mood event
         loadMoodEvent(moodEventId);
 
         MoodUtils.getDisplayName(moodEventUsername, displayName -> {
@@ -144,6 +143,8 @@ public class UserMoodDisplayFragment extends Fragment{
         commentsLabel = view.findViewById(R.id.comments_label);
         moodImageCard = view.findViewById(R.id.mood_image_card);
         moodImage = view.findViewById(R.id.mood_image);
+
+        //Initialize comment UI elements
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
         sendButton = view.findViewById(R.id.send_comment_button);

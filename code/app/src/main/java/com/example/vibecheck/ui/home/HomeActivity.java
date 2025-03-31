@@ -1,12 +1,10 @@
-/*
-This Java file operates most of the front end of the app after logging in, mainly to display the home screen
-feed, user posts, and logged in user posts. Will eventually have the map fragment implemented to match
-our storyboards.
-
-Outstanding issues: Distinguishing user posts from the logged in user posts, only separate user mood event viewing functionality currently,
-map functionality not implemented.
+/**
+ * This Java class is the activity for the home screen which doubles as the main activity for the app once a user is logged in.
+ * It holds the fragments to display above the bottom navigation bar, and handles navigation to other activities when an icon
+ * in the bottom navigation bar is clicked.
+ *
+ * This class itself has no outstanding issues, though currently there are problems in other activities this class navigates to.
  */
-
 
 package com.example.vibecheck.ui.home;
 
@@ -23,7 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.vibecheck.MapActivityFragment;
+import com.example.vibecheck.MapActivity;
+//import com.example.vibecheck.MapActivityFragment;
 import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.profile.ProfileActivity;
@@ -37,6 +36,13 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private NavController navController;
 
+    /**
+     * The onCreate function initializes the ui elements, binding, and navigation through the bottom nav menu.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +101,10 @@ public class HomeActivity extends AppCompatActivity {
 
             } else if (itemId == R.id.navigation_map) {
                 Log.d("HomeActivity", "Opening MapActivity...");
-                Intent intent = new Intent(HomeActivity.this, MapActivityFragment.class);
+                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
                 startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, MapActivityFragment.class);
+                //startActivity(intent);
                 return true;
 
             } else if (itemId == R.id.navigation_profile) {

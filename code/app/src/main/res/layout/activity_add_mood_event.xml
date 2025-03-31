@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="#D4EAFF">
 
+
     <!-- Top Bar with Back Button -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/add_mood_toolbar"
@@ -42,6 +43,7 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
+
     <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
@@ -69,14 +71,16 @@
                 android:background="@color/white"
                 android:padding="4dp">
 
-                <Spinner
-                    android:id="@+id/dropdown_mood"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:paddingEnd="48dp"
-                    android:background="@android:color/transparent"
-                    android:spinnerMode="dropdown" />
+            <!-- Mood Dropdown, padding leaves space for emoji -->
+            <Spinner
+                android:id="@+id/dropdown_mood"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingEnd="48dp"
+                android:background="@android:color/transparent"
+                android:spinnerMode="dropdown" />
 
+                <!-- Mood Emoji Display -->
                 <TextView
                     android:id="@+id/mood_emoji"
                     android:layout_width="wrap_content"
@@ -199,6 +203,17 @@
                 android:layout_height="50dp"
                 tools:ignore="MissingClass" />
 
+            <!-- Spotify Song Input (optional) -->
+            <EditText
+                android:id="@+id/spotify_song_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Paste Spotify song link (optional)"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:padding="12dp" />
+
             <!-- Public or Private Setting Label -->
             <TextView
                 android:layout_width="wrap_content"
@@ -230,4 +245,12 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- ProgressBar centered on the screen -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 </LinearLayout>

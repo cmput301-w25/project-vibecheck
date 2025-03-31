@@ -1,11 +1,14 @@
-/*
-This is a small utility class to provide helper functions useable by any class they may be needed in.
-It holds a static global variable to store the current username of the user who is logged in, and handles
-matching the username of mood events with the current user's username.
-
-It also handles navigation to the appropriate fragment for viewing a mood event as a result.
-
-Finally this class also handles consistent colour-coding of moods and consistent emoji-coding as well.
+/**
+ * This is the main utility class of the application, originally meant to only handle colour and emoji coding throughout the app
+ * wherever that feature is needed, it expanded to hold numerous utiltiy methods that are needed throughout the app.
+ * Also holds a variable to store the current username of the user who is logged in, and that user's mood history.
+ *
+ * Uses include colour and emoji coding for moods, determining if a mood event is owned by the current user, setting/getting
+ * the current user's username and populating the user's mood history, determining if a mood event was made by the current user,
+ * handling navigation to the appropriate fragment for viewing a mood event, gets and formats the time since posting for comments,
+ * and also fetches and returns the display name of a user.
+ *
+ * This class has no outstanding issues.
  */
 
 package com.example.vibecheck;
@@ -28,8 +31,9 @@ import java.util.Date;
 
 /**
  * Utility class for colour-coding moods and emojis, determining if a mood event is owned by the current user,
- * handling navigation to the appropriate fragment for viewing a mood event, obtaining the time since a post was made,
- * and holds the current username of the user who is logged in.
+ * handling navigation to the appropriate fragment for viewing a mood event, obtaining the time since a comment was made,
+ * and holds the current username and mood history of the user who is logged in. Also populates the current user's mood history,
+ * fetches and returns the display name of a given user, and sets/gets the current username.
  */
 public class MoodUtils {
 
@@ -162,6 +166,7 @@ public class MoodUtils {
     /**
      * Subtracts the time when a post was made from the current time
      * to determine the time since the post was made.
+     * Formats the result in a human-readable way.
      * For visual display purposes.
      *
      * @param postDate
@@ -173,8 +178,10 @@ public class MoodUtils {
         if (minutes < 1) return "Just now";
         if (minutes < 60) return minutes + " minutes ago";
         long hours = minutes / 60;
+        if (hours < 2) return "1 hour ago";
         if (hours < 24) return hours + " hours ago";
         long days = hours / 24;
+        if (days < 2) return "1 day ago";
         return days + " days ago";
     }
 
@@ -280,6 +287,4 @@ public class MoodUtils {
     public static void removeMoodFromUserMoodHistory(Mood moodToRemove) {
         moodHistory.removeMoodEvent(moodToRemove);
     }
-
-
 }

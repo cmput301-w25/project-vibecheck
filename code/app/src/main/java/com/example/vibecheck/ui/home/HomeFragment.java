@@ -1,8 +1,8 @@
-/*
-This class is the fragment for the home screen, which displays the top tool bar and the home feed for mood event posts.
-
-Outstanding issues: Top tool bar functionality not implemented and may need layout adjustment, need to distinguish
-between user posts and logged in user posts.
+/**
+ * This class is the fragment for the home screen, which displays the home screen top tool bar and the home feed for mood event posts.
+ * Handles navigation to search for users, follow requests, the filter button, and the search filter.
+ *
+ * This class has no outstanding issues.
  */
 
 package com.example.vibecheck.ui.home;
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
 
     // Declare UI elements
     private Toolbar toolbar;
+    private SearchView searchViewMoodEvents;
     private ImageView iconSearch;
     private ImageView iconFilter;
     private ImageView iconNotifications;
@@ -89,6 +91,7 @@ public class HomeFragment extends Fragment {
 
         // Initialize Toolbar components
         TextView title = toolbar.findViewById(R.id.title);
+        searchViewMoodEvents = view.findViewById(R.id.searchview);
         iconSearch = view.findViewById(R.id.icon_search);
         iconFilter = view.findViewById(R.id.icon_filter);
         iconNotifications = view.findViewById(R.id.icon_notifications);
@@ -96,10 +99,37 @@ public class HomeFragment extends Fragment {
         // Initialize NavController
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
 
+        // Set up search view for mood events
+        searchViewMoodEvents.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                homeScreenPostAdapter.filter(newText);
+                return false;
+            }
+
+
+        });
+        ImageView searchViewXBtn = searchViewMoodEvents.findViewById(androidx.appcompat.R.id.search_close_btn);
+        TextView searchViewText = searchViewMoodEvents.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchViewXBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                searchViewText.setText("");
+            }
+        });
+
+
         // Set click listeners for toolbar icons
         iconSearch.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), SearchActivity.class);
             startActivity(intent);
+
         });
 
         iconFilter.setOnClickListener(v -> {

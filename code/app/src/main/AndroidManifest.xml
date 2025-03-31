@@ -35,7 +35,7 @@
 
         <!-- Mood Map Activity -->
         <activity
-            android:name=".MapActivityFragment"
+            android:name=".MapActivity"
             android:exported="true"
             android:label="@string/title_activity_mood_map" />
 

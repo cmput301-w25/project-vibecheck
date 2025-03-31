@@ -1,9 +1,8 @@
-/*
-This class is the view model for the home screen. Obtains and handles the mood event data
-from the firestore database.
-
-Outstanding issues: Null values in mood info from firebase can cause crashes, temporary fix implemented
-but will need to deal with root cause later
+/**
+ * This class is the view model for the home screen. Obtains and handles the mood event data from the firestore database.
+ * Also handles real time updates from the firestore database.
+ *
+ * This class has no outstanding issues
  */
 
 package com.example.vibecheck.ui.home;
@@ -38,7 +37,7 @@ public class HomeScreenViewModel extends ViewModel {
     private final CollectionReference moodsCollection;
 
     /**
-     * Constructor for the view model.
+     * Constructor for the view model, obtains the mood posts to display as MutableLiveData.
      */
     public HomeScreenViewModel() {
         moodPosts = new MutableLiveData<>();

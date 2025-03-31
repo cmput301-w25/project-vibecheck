@@ -1,3 +1,11 @@
+/**
+ * This activity class handles editing a mood event, allowing the user to update all inputs to the mood event.
+ * The mood event is updated in the Firestore database upon saving, or the user can press the back button to cancel.
+ * The user can also delete the mood event, deleting all comments attached to the event along with it.
+ *
+ * This class has no outstanding issues.
+ */
+
 package com.example.vibecheck.ui.moodevents;
 
 import android.Manifest;
@@ -67,8 +75,8 @@ import java.util.Locale;
  * Activity for editing or deleting a mood event.
  * <p>
  * This activity loads the mood event data from Firestore, allows the user to update
- * fields (trigger, description, mood state, social situation), and provides options
- * to save the changes or delete the event.
+ * fields (reason, mood state, social situation, location, photo, privacy), and provides options
+ * to save the changes, cancel the changes, or delete the event.
  * </p>
  */
 public class EditMoodEventActivity extends AppCompatActivity {
@@ -339,10 +347,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
                         // Do nothing if the value isn't found.
                     }
 
-
-                    //LOCATION GOES HERE FROM SEERAT BRANCH I THINK
-
-
                     //set the image if there is one
                     if (moodToEdit.getImageByteArr() != null) {
                         byte[] imageBytes = moodToEdit.getImageByteArr();
@@ -385,6 +389,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
             return;
         }
 
+        // Mood event is updated differently based on if there is an image or not
         if (imageData != null) {
             byte[] imageBytes = Base64.decode(imageData, Base64.DEFAULT);
             // Convert byte[] to List<Integer>
@@ -432,7 +437,7 @@ public class EditMoodEventActivity extends AppCompatActivity {
     /**
      * Deletes all the comments associated with a mood event from the Firestore database
      * Upon success of deleting the comments, the mood event is then deleted
-     * from Firestore as well.
+     * from Firestore and the user's mood history as well.
      */
     private void deleteMoodEvent() {
         // First we have to delete all comments attached to this mood event
@@ -444,7 +449,6 @@ public class EditMoodEventActivity extends AppCompatActivity {
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         doc.getReference().delete();
                     }
-
 
                     // Once all comments are deleted, we can safely delete the mood event, remove it from the user's mood history, and finish the activity
                     db.collection("moods").document(moodEventId)

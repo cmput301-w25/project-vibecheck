@@ -4,70 +4,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/home_screen"
     android:background="@color/light_blue"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Top Navigation Bar By Tito -->
+    <!-- Top Navigation Bar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="4dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title=""
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="">
 
-        <!-- Toolbar Title -->
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/salsa"
-            android:text="VibeCheck"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/black"
-            android:textSize="40sp" />
-
-        <!-- Layout for Icon Buttons -->
+        <!-- Vertical Linear Layout to Make Two Rows of Toolbar Items -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="start"
+            android:orientation="vertical">
 
-            <!-- Search -->
-            <ImageButton
-                android:id="@+id/icon_search"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/search_icon"
-                android:backgroundTint="@color/black"
-                android:contentDescription="Search"/>
+            <!-- Horizontal Linear Layout for Top Row Toolbar Elements -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <!-- Filter -->
-            <ImageButton
-                android:id="@+id/icon_filter"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/filter_icon"
-                android:backgroundTint="@color/black"
-                android:contentDescription="Filter"/>
+                <!-- App Name -->
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/salsa"
+                    android:text="VibeCheck"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/black"
+                    android:textSize="45sp" />
 
-            <!-- Notifications -->
-            <ImageButton
-                android:id="@+id/icon_notifications"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/notification_icon"
-                android:backgroundTint="@color/black"
-                android:contentDescription="Notifications"/>
+                <!-- Horizontal Linear Layout for Icon Button Linear Layout Alignment -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <!-- Horizontal Linear Layout for Icon Buttons -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Search (For Users) Button -->
+                        <ImageButton
+                            android:id="@+id/icon_search"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="end"
+                            android:background="@drawable/search_icon"
+                            android:backgroundTint="@color/black"
+                            android:contentDescription="Search" />
+
+                        <!-- Notifications Button-->
+                        <ImageButton
+                            android:id="@+id/icon_notifications"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/notification_icon"
+                            android:backgroundTint="@color/black"
+                            android:contentDescription="Notifications" />
+
+                        <!-- Filter Button -->
+                        <ImageButton
+                            android:id="@+id/icon_filter"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/filter_icon"
+                            android:backgroundTint="@color/black"
+                            android:contentDescription="Filter" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Linear Layout for Bottom Row Toolbar Elements -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Searchview Filter (For Mood Events) -->
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-
 
     <!-- RecyclerView for Feed -->
     <androidx.recyclerview.widget.RecyclerView
@@ -79,4 +121,5 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/home_screen_post"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
