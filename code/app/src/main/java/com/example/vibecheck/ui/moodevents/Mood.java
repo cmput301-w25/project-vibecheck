@@ -10,6 +10,7 @@
 
 package com.example.vibecheck.ui.moodevents;
 
+import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -66,11 +67,12 @@ public class Mood {
     private String trigger;
     private SocialSituation socialSituation;
     private String description;
-    private byte[] image;
+    // The image field remains commented out; if you use image storage, consider using Blob.
+    // private byte[] image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
-    private String username;
+    private String username; // The username of the logged user who created the mood event.
     private String moodId;
     private boolean isPublic; //Use in implementation of public/private mood events later
 
@@ -88,6 +90,19 @@ public class Mood {
     public Mood(MoodState moodState) {
         this.timestamp = new Date();
         this.moodState = moodState;
+    }
+
+    /**
+     * Constructs a mood entry with a specified mood state and the logged user's username.
+     * Use this constructor to ensure the mood event records the username of the user who added it.
+     *
+     * @param moodState The emotional state of the user.
+     * @param username The username (or display name) of the logged-in user.
+     */
+    public Mood(MoodState moodState, String username) {
+        this.timestamp = new Date();
+        this.moodState = moodState;
+        this.username = username;
     }
 
     /**
@@ -146,9 +161,11 @@ public class Mood {
     }
 
     /**
-     * Assigns a description to the mood while ensuring it follows length constraints.
-     * @param description A brief description of the mood event (max 20 characters, 3 words).
-     * @throws IllegalArgumentException if the description exceeds constraints.
+     * Assigns a description to the mood while checking constraints.
+     * If the description is too long (more than 20 characters or more than 3 words), it logs a warning
+     * and truncates the description.
+     *
+     * @param description A brief description of the mood event.
      */
     public void setDescription(String description) {
         // Check for null or empty description
@@ -163,10 +180,12 @@ public class Mood {
 
         this.description = description;
     }
-
+/*
     public byte[] getImage() {
         return image;
     }
+
+ */
 
     /**
      * Sets the mood image while ensuring it adheres to the size limit.
@@ -177,7 +196,6 @@ public class Mood {
         if (image != null && image.length > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("Image must be under 65536 bytes.");
         }
-        this.image = image;
     }
 
     public Double getLatitude() {
@@ -202,6 +220,11 @@ public class Mood {
         return username;
     }
 
+    /**
+     * Sets the username of the user who created the mood event.
+     * This should be the logged user's username or display name.
+     * @param username The username of the user.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -218,15 +241,14 @@ public class Mood {
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
-                ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
+                ", username='" + username + '\'' +
                 '}';
     }
 
     /**
      * Formats the timestamp for display.
-     * @return
-     *      Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hour:min am/pm".
+     * @return Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hh:mm a".
      */
     public String getFormattedTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
