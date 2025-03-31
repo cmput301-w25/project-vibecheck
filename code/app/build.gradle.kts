@@ -19,6 +19,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,14 +34,17 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
+
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
@@ -52,12 +61,17 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation("androidx.cardview:cardview:1.0.0")
     implementation(libs.play.services.maps)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.14")
+    testImplementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    testImplementation("com.google.firebase:firebase-auth")
+    testImplementation("androidx.test:core:1.5.0")
 }
+
 
 secrets {
     propertiesFileName = "secrets.properties"
