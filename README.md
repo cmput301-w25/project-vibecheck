@@ -34,16 +34,27 @@ It’s tailored for the university context, where stress and emotional fluctuati
 
 1. **Mood Events**
 - Users can add mood events to their history, including:
+- 
 -- Current date and time (automatically added).
+  
 -- Emotional state (required), chosen from a predefined list: anger, confusion, disgust, fear, happiness, sadness, shame, and surprise.
+
 -- Trigger reason (optional), expressed as:
+
 --- A short text (up to 200 characters or possibly requiring at least 3 words—needs clarification).
+
 --- A photograph (under 64 KB).
+
 -- Social situation (optional), selected from: alone, with one other person, with two to several people, or with a crowd.
+
 -- Location (optional, using the device’s geolocation).
+
 - Mood events can be private (for personal use) or public (visible to all).
+  
 - Users can view, edit, or delete their own mood events.
+  
 - Emotional states are consistently represented with emoticons and colors across the app.
+  
 - [Feature 2]: Brief description
 - [Feature 3]: Brief description
 
