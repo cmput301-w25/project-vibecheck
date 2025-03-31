@@ -16,6 +16,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowToast;
+
+import com.example.vibecheck.ui.login.LoginActivity;
+import com.example.vibecheck.ui.signup.SignUpActivity;
 import com.google.firebase.FirebaseApp;
 import androidx.test.core.app.ApplicationProvider;
 

@@ -78,9 +78,6 @@ public class AddMoodEventActivityTest {
         onView(withId(R.id.dropdown_mood)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("Happiness"))).perform(click());
 
-        // 2) Enter trigger text
-        onView(withId(R.id.input_trigger)).perform(typeText("Feeling great"), closeSoftKeyboard());
-
         // 3) Select social situation "Alone"
         onView(withId(R.id.dropdown_social)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("Alone"))).perform(click());

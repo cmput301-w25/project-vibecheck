@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.vibecheck.ui.moodevents.EditMoodEventActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -106,9 +107,8 @@ public class EditMoodEventActivityTest {
         // Wait for the asynchronous Firestore load.
         SystemClock.sleep(2000);
 
-        // Verify that the trigger and description fields show the expected text.
-        onView(withId(R.id.mood_trigger_input)).check(matches(withText("Test trigger")));
-        onView(withId(R.id.mood_description_input)).check(matches(withText("Test description")));
+        // Verify that the reason field shows the expected text.
+        onView(withId(R.id.mood_reason_input)).check(matches(withText("Test description")));
 
         scenario.close();
     }
@@ -145,10 +145,8 @@ public class EditMoodEventActivityTest {
         ActivityScenario<EditMoodEventActivity> scenario = ActivityScenario.launch(intent);
         SystemClock.sleep(2000);
 
-        // Update the trigger and description fields.
-        onView(withId(R.id.mood_trigger_input))
-                .perform(clearText(), typeText("Updated trigger"), closeSoftKeyboard());
-        onView(withId(R.id.mood_description_input))
+        // Update the reason field
+        onView(withId(R.id.mood_reason_input))
                 .perform(clearText(), typeText("Updated description"), closeSoftKeyboard());
 
         // Click the save button.

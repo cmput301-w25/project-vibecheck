@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.vibecheck.ui.signup.SignUpActivity;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Before;

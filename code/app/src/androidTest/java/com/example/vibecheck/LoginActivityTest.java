@@ -11,6 +11,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+
+import com.example.vibecheck.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.Before;

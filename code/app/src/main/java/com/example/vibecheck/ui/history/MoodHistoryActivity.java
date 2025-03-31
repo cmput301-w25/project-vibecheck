@@ -114,57 +114,6 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         moodEntryList.setLayoutManager(new LinearLayoutManager(this));
         moodEntryList.setAdapter(moodHistoryEntryAdapter);
 
-
-        /*
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        String username = currentUser.getDisplayName();
-        Task<QuerySnapshot> collection = db.collection("users/"+currentUser.getUid()+"/MoodHistory").get();
-        collection.addOnSuccessListener(querySnapshot -> {
-            // Adding each mood to mood history
-            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                Date timestamp = document.getTimestamp("timestamp").toDate();
-                Mood.MoodState moodState = Mood.MoodState.valueOf((String) document.get("moodState"));
-                String trigger =(String) document.get("trigger");
-                Mood.SocialSituation socialSituation = Mood.SocialSituation.valueOf((String) document.get("socialSituation"));
-                String description = (String) document.get("description");
-                Double latitude = document.getDouble("latitude");
-                Double longitude = document.getDouble("longitude");
-                String displayName = (String) document.get("username");
-                String documentId = document.getId();
-
-                Mood mood = new Mood(timestamp,moodState);
-                mood.setTrigger(trigger);
-                mood.setSocialSituation(socialSituation);
-                mood.setDescription(description);
-                mood.setLocation(latitude, longitude);
-                mood.setMoodId(documentId);
-                mood.setUsername(displayName);
-
-                // Ensure Mood Entries Load with Colors and Emojis
-                moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
-                dataList.add(new MoodHistoryEntry(mood));
-
-                // Need to add mood to adapter else mood history not displayed
-                //until after sorting or filtering.
-                // Need to add mood to data list as well else, the list will be cleared
-                // after soring or filtering
-                moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
-                dataList.add(new MoodHistoryEntry(mood));
-            }
-            moodHistoryEntryAdapter.notifyDataSetChanged();
-        }).addOnFailureListener(e -> {
-            System.err.println("Error retrieving mood history" + e.getMessage());
-        });
-
-        history = new MoodHistory(username,dataList);
-        history.sortByDate(); //Displays most recent moods by default
-        moodEntryList = findViewById(R.id.mood_history_list);
-        moodHistoryEntryAdapter = new MoodHistoryEntryAdapter(this, history.getFilteredMoodList());
-        moodEntryList.setAdapter(moodHistoryEntryAdapter);
-        */
-
         // Singleton for passing "states" between activities
         singleton = Singleton.getINSTANCE();
         this.states = singleton.getStates();

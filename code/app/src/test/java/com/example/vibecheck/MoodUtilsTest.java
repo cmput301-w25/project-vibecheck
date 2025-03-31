@@ -7,6 +7,8 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.vibecheck.ui.moodevents.Mood;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
