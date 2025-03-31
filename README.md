@@ -32,31 +32,36 @@ It’s tailored for the university context, where stress and emotional fluctuati
 
 ## Key Features
 
-1. **Mood Events**
-- Users can add mood events to their history, including:
-- 
--- Current date and time (automatically added).
+1. **MOOD EVENT CREATION AND MANAGEMENT**
+   
+This feature allows users to log their mood events comprehensively and manage them with ease. Users can:
+- **Add new mood events** by specifying their emotional state (e.g., happy, sad, stressed), the reason or trigger for the mood (via text or photograph), the social situation (e.g., alone, with friends), and privacy settings.
+
+- **View, edit, or delete** existing mood events to keep their records up-to-date and reflective of their experiences.
+- Attach optional details like geolocation to provide context to their emotional state.
+
+This is the foundation of the app, enabling users to document their moods in a structured and detailed way, which is essential for personal tracking and later analysis
+
+
   
--- Emotional state (required), chosen from a predefined list: anger, confusion, disgust, fear, happiness, sadness, shame, and surprise.
+2. **MOOD HISTORY ANALYSIS**
+   
+This feature empowers users to reflect on and understand their emotional patterns over time by providing tools to analyze their mood history. Key aspects include:
+- **Viewing** a chronological list of past mood events, sorted by date and time.
+- **Filtering** mood events based on criteria such as time periods, emotional states, or keywords in the reason.
+- **Visualizing** moods on a map when location data is available, offering a geographical perspective on emotional trends.
 
--- Trigger reason (optional), expressed as:
+This analytical capability is crucial for users to gain insights into their mental well-being, identify triggers, and recognize patterns—especially valuable in the high-stress environment of university life.
 
---- A short text (up to 200 characters or possibly requiring at least 3 words—needs clarification).
 
---- A photograph (under 64 KB).
 
--- Social situation (optional), selected from: alone, with one other person, with two to several people, or with a crowd.
-
--- Location (optional, using the device’s geolocation).
-
-- Mood events can be private (for personal use) or public (visible to all).
-  
-- Users can view, edit, or delete their own mood events.
-  
-- Emotional states are consistently represented with emoticons and colors across the app.
-  
-- [Feature 2]: Brief description
-- [Feature 3]: Brief description
+3. **SOCIAL SHARING AND INTERACTION**
+   
+This feature fosters a sense of community by allowing users to connect and share their experiences. It includes:
+- **Following** other users and granting permissions to view mood events based on privacy settings.
+- **Viewing** a feed of public mood events from followed users, with the ability to filter them or see nearby moods on a map.
+- **Commenting** on mood events to offer support, empathy, or advice, enhancing social engagement.
+By integrating social elements, the app not only serves as a personal tool but also builds a supportive network, encouraging users to share and learn from each other’s emotional journeys.
 
 ## Setup Instructions
 
