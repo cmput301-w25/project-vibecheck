@@ -12,6 +12,7 @@ package com.example.vibecheck;
 public class User {
     private String username;
     private String password;
+    private String displayname;
 
     /**
      * Default constructor required for Firestore deserialization.
@@ -26,9 +27,11 @@ public class User {
      * @param username The unique identifier for the user.
      * @param password The secret key used for authentication.
      */
-    public User(String username, String password) {
+    public User(String username, String password, String displayname) {
         this.username = username;
         this.password = password;
+        this.displayname = displayname;
+
     }
 
     /**
@@ -36,6 +39,9 @@ public class User {
      *
      * @return The stored username.
      */
+
+    public String getDisplayname() {return displayname; }
+    public String setDisplayname() {return this.displayname = displayname;}
     public String getUsername() {
         return username;
     }

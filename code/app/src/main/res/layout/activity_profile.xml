@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -52,6 +53,7 @@
                 android:padding="4dp" />
 
             <TextView
+                android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="\@username"
@@ -74,18 +76,22 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/follower_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/salsa" />
 
                 <TextView
+                    android:id="@+id/follower_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follower"
+                    android:text="Followers"
                     android:textSize="20sp"
-                    android:textColor="#666666" />
+                    android:textColor="#666666"
+                    android:fontFamily="@font/salsa" />
             </LinearLayout>
 
             <LinearLayout
@@ -96,23 +102,28 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/following_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/salsa" />
 
                 <TextView
+                    android:id="@+id/following_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Following"
                     android:textSize="20sp"
-                    android:textColor="#666666" />
+                    android:textColor="#666666"
+                    android:fontFamily="@font/salsa" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Personal Info -->
         <TextView
+            android:id="@+id/personal_info_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -121,45 +132,49 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/personalInfoEditText"
             android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/edit_text_border"
             android:enabled="true"
             android:gravity="top"
             android:hint="Enter a profile biography"
             android:padding="16dp" />
 
-
-        <!-- Preferences -->
+        <!-- Preferences Title -->
         <TextView
+            android:id="@+id/preferences_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="80dp"
             android:text="   Preferences"
             android:textSize="25sp"
             android:textStyle="bold" />
+        <!-- android:layout_marginBottom="0dp"
+            android:layout_marginTop="50dp" -->
 
+        <!-- Preferences Container -->
         <LinearLayout
+            android:id="@+id/preferences_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="76dp"
             android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             android:padding="16dp">
 
             <LinearLayout
+                android:id="@+id/notification_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
                 android:background="@drawable/edit_text_border_white"
-
-                >
+                android:orientation="horizontal">
 
                 <TextView
-
+                    android:id="@+id/notification_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -178,13 +193,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/public_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@drawable/edit_text_border_white"
-                >
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/public_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -201,6 +217,68 @@
                     android:id="@+id/public_switch"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Follow Requests Section -->
+        <TextView
+            android:id="@+id/follow_requests_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="Follow Requests"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/follow_requests_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Example follow request item -->
+            <LinearLayout
+                android:id="@+id/follow_request_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/request_profile_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/circle_profile_icon"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="User Profile" />
+
+                <TextView
+                    android:id="@+id/request_username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="8dp"
+                    android:text="\@username"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/accept_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accept" />
+
+                <Button
+                    android:id="@+id/decline_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Decline" />
             </LinearLayout>
         </LinearLayout>
 
@@ -221,5 +299,3 @@
 
     </LinearLayout>
 </ScrollView>
-
-

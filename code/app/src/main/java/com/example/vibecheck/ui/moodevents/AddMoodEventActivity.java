@@ -8,11 +8,14 @@
  */
 package com.example.vibecheck.ui.moodevents;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -273,6 +276,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
         //Retrieves user ID
         String uid = currentUser.getUid();
+        Log.d(TAG, "User ID received: " + currentUser);
 
         //Retrieves username from Firestore
         db.collection("users").document(uid).get()

@@ -9,6 +9,7 @@
 
 package com.example.vibecheck.ui.moodevents;
 
+import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +73,7 @@ public class Mood {
     private Double latitude;
     private Double longitude;
     private String location;
-    private String username;
+    private String username; // The username of the logged user who created the mood event.
     private String moodId;
     private boolean isPublic; //if the mood is public or not
 
@@ -91,6 +92,19 @@ public class Mood {
         this.timestamp = new Date();
         this.moodState = moodState;
     }
+
+    /** TAKE A LOOK AT THE ADD MOOD EVENT CLASS TO SEE WHAT CHANGED
+     * Constructs a mood entry with a specified mood state and the logged user's username.
+     * Use this constructor to ensure the mood event records the username of the user who added it.
+     *
+     * @param moodState The emotional state of the user.
+     * @param username The username (or display name) of the logged-in user.
+
+    public Mood(MoodState moodState, String username) {
+        this.timestamp = new Date();
+        this.moodState = moodState;
+        this.username = username;
+    }*/
 
     /**
      * Constructs a mood entry with a pre existing timestamp and mood state.
@@ -215,6 +229,11 @@ public class Mood {
         return username;
     }
 
+    /**
+     * Sets the username of the user who created the mood event.
+     * This should be the logged user's username or display name.
+     * @param username The username of the user.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -240,13 +259,13 @@ public class Mood {
                 ", description='" + description + '\'' +
                 ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
+                ", username='" + username + '\'' +
                 '}';
     }
 
     /**
      * Formats the timestamp for display.
-     * @return
-     *      Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hour:min am/pm".
+     * @return Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hh:mm a".
      */
     public String getFormattedTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
