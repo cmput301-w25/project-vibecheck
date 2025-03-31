@@ -45,11 +45,11 @@ public class SearchUserResult {
         this.numberOfFollowers = (Integer) numberOfFollowers;
     }
 
-    public int getProfileImageResourceId() {
-        return profileImageResourceId;
+    public int getUserProfileImageID() {
+        return userProfileImageID;
     }
 
     public void setProfileImageResourceId(int profileImageResourceId) {
-        this.profileImageResourceId = profileImageResourceId;
+        this.userProfileImageID = profileImageResourceId;
     }
 }

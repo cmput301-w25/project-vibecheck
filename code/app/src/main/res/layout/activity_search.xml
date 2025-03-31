@@ -25,6 +25,7 @@
             android:layout_height="50dp"
             android:background="@drawable/back_arrow" />
 
+        <!-- Search Bar -->
         <SearchView
             android:id="@+id/search_for_users_searchview"
             android:layout_width="0dp"

@@ -2,7 +2,6 @@ package com.example.vibecheck;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -19,28 +18,28 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-// Implementation of search references:
+// This implementation of search references:
 // https://www.geeksforgeeks.org/how-to-implement-android-searchview-with-example/
 
 /*
- * Search Activity
+ * Search Activity.
  */
 public class SearchActivity extends AppCompatActivity {
     private ImageButton searchBackArrow;
     private SearchView searchUsersSearchView;
     private ListView searchUsersListView;
 
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> list;
+    private SearchUserResultAdapter arrayAdapter;
+    private ArrayList<SearchUserResult> listOfResults;
 
-    private FirebaseFirestore db;
+    protected FirebaseFirestore db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // initialize views
+        // Initialize the needed views
         searchBackArrow = findViewById(R.id.search_back_arrow);
         searchUsersSearchView = findViewById(R.id.search_for_users_searchview);
         searchUsersListView = findViewById(R.id.search_users_listview);
@@ -52,12 +51,13 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // Get instance of database and set up an ArrayAdapter
         db = FirebaseFirestore.getInstance();
-        list = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.fragment_user_search, list);
+        listOfResults = new ArrayList<>();
+        arrayAdapter = new SearchUserResultAdapter(this, listOfResults);
         searchUsersListView.setAdapter(arrayAdapter);
 
-        // Listener for search bar
+        // Listener for the search bar
         searchUsersSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -75,16 +75,18 @@ public class SearchActivity extends AppCompatActivity {
     // Searches the database for the user from the query
     private void searchUsers(String query) {
         db.collection("users").whereEqualTo("username", query)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if ((task.isSuccessful()) && (task.getResult() != null)) {
-                    list.clear();
+                    listOfResults.clear();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        list.add(documentSnapshot.getString("username"));
+                        String username = documentSnapshot.getString("username");
+                        int numberOfFollowers = 0; // TODO: make this the actual number of followers
+                        listOfResults.add(new SearchUserResult(username, numberOfFollowers));
+                        arrayAdapter.notifyDataSetChanged();
                     }
-                    arrayAdapter.notifyDataSetChanged();
                 }
             }
         });
