@@ -1,11 +1,10 @@
-/*
-This java class is the adapter for posts on the home screen feed of the app. Populates the recycler view with
-home screen mood posts, which are themselves populated with data from the homescreen viewmodel.
-Through the use of the MoodUtils class, emoji and colour-coding are set based on the mood state
-for each post.
-
-Outstanding issues: Recognizing logged in users to select my mood display or user mood display,
-issues and crashing occurs when certain parts of mood info are null
+/**
+ * This java class is the adapter for posts on the home screen feed of the app. Populates the recycler view with
+ * home screen mood posts, which are themselves populated with data from the homescreen viewmodel.
+ * Through the use of the MoodUtils class, emoji and colour-coding are set based on the mood state
+ * for each post.
+ *
+ * This class has no outstanding issues
  */
 
 package com.example.vibecheck.ui.home;
@@ -129,8 +128,8 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
     }
 
     /**
-     * Returns the total number of items in the data set held by the adapter.
      * @return
+     *      Returns the total number of items in the data set held by the adapter.
      */
     @Override
     public int getItemCount() {
@@ -146,7 +145,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         LinearLayout homeScreenMoodPost;
 
         /**
-         * Constructor for the ViewHolder
+         * Constructor for the ViewHolder, initializes the views.
          * @param itemView
          *      The view to be displayed
          */
@@ -162,6 +161,11 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
         }
     }
 
+    /**
+     * Filter the mood posts based on the query.
+     * @param query
+     *      The query to filter the mood posts by.
+     */
     public void filter(String query) {
        //moodPosts.clear();
         List<Mood> filteredMoodPosts = new ArrayList<>();
