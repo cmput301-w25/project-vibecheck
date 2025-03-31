@@ -65,9 +65,17 @@ By integrating social elements, the app not only serves as a personal tool but a
 
 ## Setup Instructions
 
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
+**1. Install Requirements**
+- Install Android Studio and make sure your JDK/SDK versions match the project’s requirements.
+
+**2. Get the Project**
+- Clone or download the project repository to your local system.
+  
+**3. Open & Build**
+- Open the project in Android Studio and let Gradle synchronize automatically.
+  
+**4. Run & Test**
+- Run the app on an emulator or physical device to verify everything works correctly.
 
 ## Documentation
 
