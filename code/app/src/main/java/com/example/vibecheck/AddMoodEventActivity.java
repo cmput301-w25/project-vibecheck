@@ -7,9 +7,10 @@
  */
 package com.example.vibecheck;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,17 +20,17 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 
-/**
- * Activity for adding a new mood event.
- * Allows users to select a mood, enter an optional trigger, and choose a social situation.
- * Saves the data to Firestore upon submission.
- */
 public class AddMoodEventActivity extends AppCompatActivity {
+
     private EditText inputTrigger;
     private Spinner moodDropdown;
     private Spinner socialDropdown;
@@ -40,10 +41,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    /**
-     * Initializes the activity, sets up UI components, and populates dropdowns.
-     * @param savedInstanceState The saved instance state.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +54,13 @@ public class AddMoodEventActivity extends AppCompatActivity {
         backButton = findViewById(R.id.button_back);
         moodEmoji = findViewById(R.id.mood_emoji);
         moodBackground = findViewById(R.id.mood_background);
-      
+
         db = FirebaseFirestore.getInstance();
 
         // Populate Mood Dropdown
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.mood_options,  // Defined in XML
+                R.array.mood_options,
                 android.R.layout.simple_spinner_item
         );
         moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,7 +89,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Populate Social Situation Dropdown
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.social_options,  // Defined in XML
+                R.array.social_options,
                 android.R.layout.simple_spinner_item
         );
         socialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -123,10 +120,19 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Create mood object
         Mood newMood = new Mood();
         newMood.setMoodState(Mood.MoodState.valueOf(selectedMood.toUpperCase()));
-        if (!triggerText.isEmpty()) newMood.setTrigger(triggerText);
+        if (!triggerText.isEmpty()) {
+            newMood.setTrigger(triggerText);
+        }
         newMood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
         newMood.setTimestamp(new Date());
-        newMood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
+
+        // Retrieve current user and set the username
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "User ID received: " + currentUser);
+        if (currentUser != null) {
+            // You can use displayName instead of email if you prefer:
+            newMood.setUsername(currentUser.getEmail());
+        }
 
         // Save to Firestore
         db.collection("moods")
