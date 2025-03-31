@@ -1,3 +1,12 @@
+/**
+ * PublicProfileActivity displays a user's public profile.
+ * <p>
+ * It loads the user's display name, username, and follower/following counts from Firestore
+ * based on an identifier (email) passed via intent. It also allows sending a follow request
+ * by updating the target user's followRequests field. A back arrow enables navigation back.
+ * </p>
+ */
+
 package com.example.vibecheck;
 
 import android.os.Bundle;
