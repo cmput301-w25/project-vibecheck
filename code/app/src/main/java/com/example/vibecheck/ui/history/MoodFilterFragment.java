@@ -1,4 +1,13 @@
-package com.example.vibecheck.ui.history;
+/**
+ * A dialog fragment for filtering mood events by mood state.
+ * <p>
+ * Displays a list of checkboxes for various mood states (e.g., ANGER, CONFUSION, etc.), pre-checking those
+ * passed in via arguments. When the user confirms their selection, the fragment passes the chosen mood states
+ * back to the host activity through the MoodFilterDialogListener interface.
+ * </p>
+ */
+
+package com.example.vibecheck;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,9 +20,6 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
-import com.example.vibecheck.ui.moodevents.Mood;
-import com.example.vibecheck.R;
 
 import java.util.ArrayList;
 
@@ -41,7 +47,7 @@ public class MoodFilterFragment extends DialogFragment {
         return strings;
     }
 
-    public interface MoodFilterDialogListener {
+    interface MoodFilterDialogListener {
         void filter(ArrayList<Mood.MoodState> states);
     }
 
@@ -91,7 +97,6 @@ public class MoodFilterFragment extends DialogFragment {
             switch(s){
                 case "ANGER":
                     angerBox.setChecked(true);
-                    break;
                 case "CONFUSION":
                     confusionBox.setChecked(true);
                     break;
