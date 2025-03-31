@@ -6,28 +6,36 @@ import static org.junit.Assert.assertNotEquals;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.vibecheck.ui.signup.SignUpActivity;
+import androidx.test.core.app.ApplicationProvider;
+
+import com.google.firebase.FirebaseApp;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 
 /**
- * Unit tests for SignUpActivity.
+ * Unit tests for SignUpActivity using Robolectric.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = 30) // or whichever SDK you want to simulate
 public class SignUpActivityTest {
 
     private SignUpActivity signUpActivity;
 
     /**
-     * Initializes the SignUpActivity with Robolectric before each test.
+     * Initializes Firebase and the SignUpActivity before each test.
      */
     @Before
     public void setUp() {
+        // 1) Initialize Firebase in the Robolectric environment
+        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext());
+
+        // 2) Build and start the activity
         signUpActivity = Robolectric.buildActivity(SignUpActivity.class)
                 .create()
                 .start()
@@ -62,10 +70,6 @@ public class SignUpActivityTest {
     /**
      * Tests that if the fields are not empty, we do NOT see the
      * "Please fill all fields" toast.
-     * <p>
-     * Note: This doesn't verify Firebase sign-up success, just that
-     * the empty-fields check is bypassed.
-     * </p>
      */
     @Test
     public void testNonEmptyFieldsDoNotShowEmptyToast() {
@@ -88,6 +92,4 @@ public class SignUpActivityTest {
         // Verify that it's not the "Please fill all fields" error
         assertNotEquals("Please fill all fields", latestToast);
     }
-
-
 }
