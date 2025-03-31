@@ -147,19 +147,17 @@
             android:id="@+id/preferences_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="40dp"
             android:text="   Preferences"
             android:textSize="25sp"
             android:textStyle="bold" />
-        <!-- android:layout_marginBottom="0dp"
-            android:layout_marginTop="50dp" -->
 
         <!-- Preferences Container -->
         <LinearLayout
             android:id="@+id/preferences_container"
             android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
@@ -168,7 +166,7 @@
             <LinearLayout
                 android:id="@+id/notification_row"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/edit_text_border_white"
                 android:orientation="horizontal">
@@ -225,11 +223,11 @@
             android:id="@+id/follow_requests_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="1dp"
             android:padding="8dp"
             android:text="Follow Requests"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <LinearLayout

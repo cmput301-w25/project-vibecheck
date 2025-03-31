@@ -44,7 +44,7 @@
                     android:text="VibeCheck"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/black"
-                    android:textSize="40sp" />
+                    android:textSize="45sp" />
 
                 <!-- Horizontal Linear Layout for Icon Button Linear Layout Alignment -->
                 <LinearLayout

@@ -87,6 +87,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
+    //private String currentUser;
 
     private String imageData = null;
     private Uri imageUri;
@@ -130,6 +131,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
+        //currentUser = MoodUtils.getCurrentUsername();
 
         imagePreview.setVisibility(View.GONE);
 

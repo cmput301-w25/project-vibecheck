@@ -324,7 +324,6 @@ public class ProfileActivity extends AppCompatActivity {
                         // Save the new display name in Firestore and update username TextView.
                         saveDisplayName(newDisplayName);
                         originalDisplayName = newDisplayName;
-                        tvUsername.setText("@" + newDisplayName);
                     }
                     // Disable editing after finishing.
                     displayNameEditText.setFocusable(false);
