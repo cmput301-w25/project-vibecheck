@@ -19,7 +19,7 @@ Shza El Maadawy (shza): SamyKader Contributed till Project Part 2
 
 The project for CMPUT 301 in Winter 2025 involves designing and implementing an Android mobile application aimed at helping university students and staff track and share their moods. The app’s primary goal is to provide insights into emotional states and their triggers, enhancing users’ understanding of their mental well-being amidst the challenges of academic life. The application must be simple, attractive, easy to use, and designed with flexibility to allow future extensions or migrations.
 
-Here’s a breakdown of the app’s purpose and features, expressed in my own words based on the provided requirements:
+Here’s a breakdown of the app’s purpose and features:
 
 Core Purpose
 
