@@ -1,3 +1,11 @@
+/**
+ * This is the main activity of the application, although it is only used when no user is logged in.
+ * It is the first activity that is launched when the app is opened, it launches the login activity which is the first
+ * screen the user sees upon opening the app if no user is logged in. It is responsible for handling navigation to the signup activity.
+ *
+ * This class has no outstanding issues
+ */
+
 package com.example.vibecheck;
 
 import android.content.Intent;
@@ -25,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText editPassword;
     private FirebaseAuth mAuth;
 
+    /**
+     * Called when the activity is first created, sets the content view and network checker.
+     * Handles sign-up navigation and launches the login activity.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Start home activity if current user is logged in, login activity if not
+        //Oliver forgot about this when he added it during branch merging in part 3, not fully implemented
+        //but leaving it as-is in case there's time to do the app restructuring necessary for it.
         if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(MainActivity.this, HomeActivity.class));
         } else {
@@ -60,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Stops the network checker when the activity is destroyed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

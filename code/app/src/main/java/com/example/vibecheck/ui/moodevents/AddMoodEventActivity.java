@@ -296,7 +296,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     newMood.setLocation(location);
 
 
-                    // If there is an image, convert to Base64 and convert to byte array so it can be saved to firestore
+                    // If there is an image, convert to Base64 and convert to byte array, then to List<Integer> so it can be saved to firestore
                     List<Integer> imageIntList = null;
                     if (imageData != null) {
                         byte[] imageBytes = Base64.decode(imageData, Base64.DEFAULT);
