@@ -1,3 +1,12 @@
+/**
+ * Activity for displaying and managing a user's mood history.
+ * <p>
+ * Loads mood events from Firestore for a given user, displays them in a ListView,
+ * and supports sorting (by date) and filtering by mood states. Implements
+ * MoodFilterDialogListener to update the list based on selected filters.
+ * </p>
+ */
+
 package com.example.vibecheck;
 
 import android.os.Bundle;
