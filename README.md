@@ -17,9 +17,9 @@ Shza El Maadawy (shza): SamyKader Contributed till Project Part 2
 
 ## Project Description
 
-The project for CMPUT 301 in Winter 2025 involves designing and implementing an Android mobile application aimed at helping university students and staff track and share their moods. The app’s primary goal is to provide insights into emotional states and their triggers, enhancing users’ understanding of their mental well-being amidst the challenges of academic life. The application must be simple, attractive, easy to use, and designed with flexibility to allow future extensions or migrations.
+Our project involves designing and implementing an Android mobile application- VibeCheck, aimed at helping university students and staff track and share their moods. The app’s primary goal is to provide insights into emotional states and their triggers, enhancing users’ understanding of their mental well-being amidst the challenges of academic life. The application must be simple, attractive, easy to use, and designed with flexibility to allow future extensions or migrations.
 
-Here’s a breakdown of the app’s purpose and features:
+Here’s a breakdown of the VibeChecks' purpose and features:
 
 **Core Purpose**
 The app enables users to:
@@ -32,7 +32,18 @@ It’s tailored for the university context, where stress and emotional fluctuati
 
 ## Key Features
 
-- [Feature 1]: Brief description
+1. **Mood Events**
+- Users can add mood events to their history, including:
+-- Current date and time (automatically added).
+-- Emotional state (required), chosen from a predefined list: anger, confusion, disgust, fear, happiness, sadness, shame, and surprise.
+-- Trigger reason (optional), expressed as:
+--- A short text (up to 200 characters or possibly requiring at least 3 words—needs clarification).
+--- A photograph (under 64 KB).
+-- Social situation (optional), selected from: alone, with one other person, with two to several people, or with a crowd.
+-- Location (optional, using the device’s geolocation).
+- Mood events can be private (for personal use) or public (visible to all).
+- Users can view, edit, or delete their own mood events.
+- Emotional states are consistently represented with emoticons and colors across the app.
 - [Feature 2]: Brief description
 - [Feature 3]: Brief description
 
