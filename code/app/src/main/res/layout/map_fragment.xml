@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/map_mood_title"/>
+            app:layout_constraintEnd_toStartOf="@id/map_mood_title" />
 
         <TextView
             android:id="@+id/map_mood_title"
