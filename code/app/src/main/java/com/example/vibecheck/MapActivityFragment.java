@@ -1,3 +1,13 @@
+/**
+ * MapActivityFragment displays a Google Map with markers representing mood events.
+ * <p>
+ * It initializes the map via a SupportMapFragment and, when the map is ready, adds markers
+ * for sample mood events from two MoodHistory objects (one for the user and one for friends).
+ * A toggle button lets the user switch between viewing their own events and their friends' events.
+ * </p>
+ */
+
+
 package com.example.vibecheck;
 
 import androidx.appcompat.widget.AppCompatToggleButton;
