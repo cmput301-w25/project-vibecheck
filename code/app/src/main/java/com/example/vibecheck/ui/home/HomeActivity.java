@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.vibecheck.MapActivity;
+import com.example.vibecheck.ui.map.MapActivity;
 import com.example.vibecheck.ui.history.Singleton;
 import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;

@@ -2,7 +2,7 @@
  * PublicProfileActivity displays a user's public profile.
  * <p>
  * It loads the user's display name, username, and follower/following counts from Firestore
- * based on an identifier (email) passed via intent. It also allows sending a follow request
+ * based on an identifier (username) passed via intent. It also allows sending a follow request
  * by updating the target user's followRequests field. A back arrow enables navigation back.
  * </p>
  */
@@ -37,8 +37,8 @@ public class PublicProfileActivity extends AppCompatActivity {
     private Button followRequestButton;
 
     private FirebaseFirestore db;
-    // In this implementation, we are receiving the email as the identifier.
-    private String userIdentifier; // email passed as "userId"
+    // In this implementation, we are receiving the username as the identifier.
+    private String userIdentifier; // username passed as "username"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +56,10 @@ public class PublicProfileActivity extends AppCompatActivity {
         followRequestButton = findViewById(R.id.follow_request_status_button);
 
         // Retrieve the user identifier (email) passed from the previous screen.
-        userIdentifier = getIntent().getStringExtra("userId");
-        Log.d(TAG, "User ID received: " + userIdentifier);
+        userIdentifier = getIntent().getStringExtra("username");
+        Log.d(TAG, "Username received: " + userIdentifier);
         if (userIdentifier == null || userIdentifier.isEmpty()) {
-            Toast.makeText(this, "Invalid user ID", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid username", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -76,7 +76,7 @@ public class PublicProfileActivity extends AppCompatActivity {
 
     private void loadUserProfile() {
         db.collection("users")
-                .whereEqualTo("email", userIdentifier)
+                .whereEqualTo("username", userIdentifier)
                 .limit(1)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -118,7 +118,7 @@ public class PublicProfileActivity extends AppCompatActivity {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // Suppose userIdentifier is the target user’s email or doc ID
         db.collection("users")
-                .whereEqualTo("email", userIdentifier)  // or .document(userId) if you have the doc ID
+                .whereEqualTo("username", userIdentifier)  // or .document(userId) if you have the doc ID
                 .limit(1)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -145,5 +145,4 @@ public class PublicProfileActivity extends AppCompatActivity {
                     Log.e(TAG, "Error finding user for follow request", e);
                 });
     }
-
 }

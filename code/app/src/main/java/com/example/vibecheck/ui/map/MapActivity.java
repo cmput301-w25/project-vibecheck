@@ -8,36 +8,29 @@
  */
 
 
-package com.example.vibecheck;
+package com.example.vibecheck.ui.map;
 
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.vibecheck.R;
 import com.example.vibecheck.ui.history.MoodFilterFragment;
 import com.example.vibecheck.ui.history.MoodHistory;
-import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.history.MoodHistoryEntry;
 import com.example.vibecheck.ui.history.Singleton;
-import com.example.vibecheck.ui.home.HomeActivity;
-import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.moodevents.Mood;
-import com.example.vibecheck.ui.profile.ProfileActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.vibecheck.databinding.MapFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -49,8 +42,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -113,6 +104,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             Log.d("HomeActivity", "NavController found successfully.");
         }
 
+        /*
         // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (bottomNavigationView == null) {
@@ -163,12 +155,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+         */
+
         filterButton.setOnClickListener(v -> {
             MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
             fragment.show(getSupportFragmentManager(), "");
         });
 
-
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     /**
@@ -318,6 +314,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
             }
         }
-
     }
 }
