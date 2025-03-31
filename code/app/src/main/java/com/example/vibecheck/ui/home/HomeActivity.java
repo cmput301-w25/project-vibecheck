@@ -22,7 +22,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.vibecheck.MapActivity;
-//import com.example.vibecheck.MapActivityFragment;
+import com.example.vibecheck.ui.history.Singleton;
 import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.profile.ProfileActivity;
@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ActivityHomeBinding binding;
     private NavController navController;
+    private Singleton singleton;
 
     /**
      * The onCreate function initializes the ui elements, binding, and navigation through the bottom nav menu.
@@ -46,6 +47,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Singleton for passing "states" between activities
+        singleton = Singleton.getINSTANCE();
+
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
@@ -103,8 +108,6 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("HomeActivity", "Opening MapActivity...");
                 Intent intent = new Intent(HomeActivity.this, MapActivity.class);
                 startActivity(intent);
-                //Intent intent = new Intent(HomeActivity.this, MapActivityFragment.class);
-                //startActivity(intent);
                 return true;
 
             } else if (itemId == R.id.navigation_profile) {

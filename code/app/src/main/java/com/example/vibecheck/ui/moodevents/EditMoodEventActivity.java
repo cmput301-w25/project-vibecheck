@@ -3,12 +3,11 @@
  * The mood event is updated in the Firestore database upon saving, or the user can press the back button to cancel.
  * The user can also delete the mood event, deleting all comments attached to the event along with it.
  *
- * This class has no outstanding issues.
+ * Outstanding issues: Does not yet update a mood event in the user's mood history, only updates the mood in the firebase right now
  */
 
 package com.example.vibecheck.ui.moodevents;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

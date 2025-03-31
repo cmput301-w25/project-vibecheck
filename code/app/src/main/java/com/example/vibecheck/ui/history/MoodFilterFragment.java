@@ -26,13 +26,26 @@ import com.example.vibecheck.R;
 
 import java.util.ArrayList;
 
+/**
+ * Class for dialog that opens when filtering
+ */
 public class MoodFilterFragment extends DialogFragment {
 
     //Code for newInstance derived from here:
     //https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+
+    /**
+     * Allows new MoodFilterFragmets to be created whilst passing states in a bundle
+     * @param states
+     *      The mood states to filter on
+     * @return
+     *      A new MoodFilterFragment instance
+     */
     public static MoodFilterFragment newInstance(ArrayList<Mood.MoodState> states) {
         MoodFilterFragment fragment = new MoodFilterFragment();
 
+        // Bundle to be passed so that the filters
+        // "remember" which boxes were selected
         Bundle args = new Bundle();
         ArrayList<String> stateStrings = toStringList(states);
         args.putStringArrayList("states", stateStrings);
@@ -43,6 +56,13 @@ public class MoodFilterFragment extends DialogFragment {
 
     //Code for this method adapted from code from here:
     //https://stackoverflow.com/questions/52862900/converting-arraylist-of-enums-to-string
+    /**
+     * Converts an ArrayList of objects to an ArrayList of strigns.
+     * @param iterable
+     *      List to convert
+     * @return
+     *      An ArrayList of Strings
+     */
     public static ArrayList<String> toStringList(Iterable<?> iterable) {
         ArrayList<String> strings = new ArrayList<>();
         for (Object value : iterable)
@@ -59,6 +79,11 @@ public class MoodFilterFragment extends DialogFragment {
     private ArrayList<Mood.MoodState> states = new ArrayList<>();
 
 
+    /**
+     * Method that is run when fragment is added to fragment manage
+     * @param context
+     *      Activity that the fragment is attached to
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -69,12 +94,27 @@ public class MoodFilterFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Checked if box is checked and updates states accordingly
+     * @param box
+     *      The CheckBox to be checked
+     * @param state
+     *      If box is checked state is added to states
+     */
     public void checkState(CheckBox box, Mood.MoodState state){
         if(box.isChecked()){
             states.add(state);
         }
     }
 
+    /**
+     *Method that is run when a Dialog is about to be created
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     * or null if this is a freshly created Fragment.
+     *
+     * @return
+     *      The created Dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -96,6 +136,7 @@ public class MoodFilterFragment extends DialogFragment {
         CheckBox surpriseBox = view.findViewById(R.id.surprise_box);
         CheckBox boredomBox = view.findViewById(R.id.boredom_box);
 
+        // Checks if each check box was checked previously
         for(String s: currentlyChecked){
             switch(s){
                 case "ANGER":
@@ -136,6 +177,7 @@ public class MoodFilterFragment extends DialogFragment {
                 .setView(view)
                 .setPositiveButton("Confirm", (dialog, which) -> {
 
+                    // Adds checked off Mood states to states
                     checkState(angerBox, Mood.MoodState.ANGER);
                     checkState(confusionBox, Mood.MoodState.CONFUSION);
                     checkState(disgustBox, Mood.MoodState.DISGUST);

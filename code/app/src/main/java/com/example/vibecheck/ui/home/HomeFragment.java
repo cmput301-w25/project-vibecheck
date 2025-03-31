@@ -129,7 +129,6 @@ public class HomeFragment extends Fragment {
         iconSearch.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), SearchActivity.class);
             startActivity(intent);
-
         });
 
         iconFilter.setOnClickListener(v -> {
