@@ -1,9 +1,10 @@
 /**
- * AddMoodEventActivity.java
+ * This activity class handles adding a new mood event, allowing the user to select a mood,
+ * add an optional photo, enter an optional reason (description), and choose an optional social situation,
+ * add an optional location and set the mood event to public or private.
+ * The mood event is saved to the Firestore database and the user's mood history.
  *
- * This activity handles adding a new mood event, allowing the user to select a mood,
- * specify an optional trigger, and choose a social situation. The selected mood event
- * is then stored in Firebase Firestore.
+ * This class has no outstanding issues
  */
 package com.example.vibecheck.ui.moodevents;
 
@@ -66,14 +67,13 @@ import java.util.Map;
 
 /**
  * Activity for adding a new mood event.
- * Allows users to select a mood, enter an optional trigger, and choose a social situation.
- * Saves the data to Firestore upon submission.
+ * Allows users to select a mood, enter an optional reason (description), social situation, photo, location,
+ * and set the mood event to public or private.
+ * Saves the data to Firestore and updates the user's mood history upon submission.
  */
 public class AddMoodEventActivity extends AppCompatActivity {
-    //private EditText inputTrigger;///////////////////////////////////////////////
     private EditText inputDescription;
-    private Spinner moodDropdown;
-    private Spinner socialDropdown;
+    private Spinner moodDropdown, socialDropdown;
     private Button saveMoodButton, addPhotoButton, removePhotoButton;
     private ImageView backButton, imagePreview;
     private TextView moodEmoji;
@@ -93,6 +93,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
     /**
      * Initializes the activity, sets up UI components, and populates dropdowns.
+     * Handles all user inputs for UI components.
      * @param savedInstanceState The saved instance state.
      */
     @Override
@@ -174,7 +175,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         moodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         moodDropdown.setAdapter(moodAdapter);
 
-        // Handle Mood Selection
+        // Handle Mood Selection, dynamically change emoji and colours
         moodDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -235,7 +236,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Builds the mood event, then saves it to Firestore.
+     * Builds the mood event, then saves it to Firestore and the user's mood history.
      */
     public void SaveMood() {
         //Obtains user inputs
@@ -343,6 +344,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                 });
     }
 
+    // Helper methods for tests
     public void setAuth(FirebaseAuth auth) {
         this.mAuth = auth;
     }

@@ -1,12 +1,11 @@
-/*
-This fragment class is to display the logged-in user's mood event. It is distinct from the
-UserMoodDisplayFragment because it provides functionality to navigate to the edit mood event.
-Populates the fields with the mood event's information, colour-codes the mood type and description,
-emoji-codes the mood type, and handles the back button click.
-
-Outstanding issues: Currently not in use as the functionality to recognize if a selected mood event post
-belongs to the logged in user is not implemented. We need to be able to compare the user id of the logged in user
-to the user id of the selected post, and Top needs padding to access back button on certain devices
+/**
+ * This fragment class is used to display the current user of the app's mood events. It is distinct from the
+ * UserMoodDisplayFragment because it provides functionality to navigate to the edit mood event, and only displays
+ * for whoever is logged into the app.
+ * UI fields are populated with the mood event's data, colour-codes the mood type and description,
+ * emoji-codes the mood type, and handles the back button click.
+ *
+ * This class has no outstanding issues
  */
 
 package com.example.vibecheck.ui.moodevents;
@@ -133,6 +132,7 @@ public class MyMoodDisplayFragment extends Fragment {
         moodImageCard = view.findViewById(R.id.mood_image_card);
         moodImage = view.findViewById(R.id.mood_image);
 
+        //Initialize comment UI elements
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
         sendButton = view.findViewById(R.id.send_comment_button);

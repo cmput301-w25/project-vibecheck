@@ -1,11 +1,10 @@
 /**
- * Mood.java
+ * This java object class represents a mood event recorded by the user, including details such as
+ * emotional state, social situation, timestamp, optional reason (description), optional location,
+ * optional image, and whether the event is public or private.
+ * It is designed to be stored in Firestore and supports serialization.
  *
- * This class represents a mood event recorded by the user, including details such as
- * emotional state, social situation, timestamp, optional reason (description), location,
- * and an optional image. It is designed to be stored in Firestore and supports serialization.
- *
- * Outstanding Issues:
+ * This class has no outstanding issues.
  */
 
 package com.example.vibecheck.ui.moodevents;
@@ -85,7 +84,7 @@ public class Mood {
     }
 
     /**
-     * Constructs a mood entry with a specified mood state.
+     * Constructs a mood entry with a specified mood state, sets the timestamp to the current time.
      * @param moodState The emotional state of the user.
      */
     public Mood(MoodState moodState) {
@@ -94,7 +93,7 @@ public class Mood {
     }
 
     /**
-     * Constructs a mood entry with a timestamp and mood state.
+     * Constructs a mood entry with a pre existing timestamp and mood state.
      * @param timestamp The date and time the mood was recorded.
      * @param moodState The emotional state of the user.
      */
@@ -141,23 +140,12 @@ public class Mood {
     }
 
     /**
-     * Assigns a description to the mood while ensuring it follows length constraints.
-     * @param description A brief description of the mood event (max 20 characters, 3 words).
-     * @throws IllegalArgumentException if the description exceeds constraints.
+     * Sets the description of the mood entry. 200 character length constraint handled during input validation.
+     * @param description
      */
     public void setDescription(String description) {
-/*
-        // Check for null or empty description
-        if (description == null || description.trim().isEmpty()) {
-            this.description = null;
-            return;
-        }
-        // Check for description length
-        if (description.length() > 200) {
-            throw new IllegalArgumentException("Description must not exceed 200 characters.");
-        }
-CHECK ON THIS LATER*/
         // Removed the strict constraint to avoid crashes during Firestore deserialization.
+        // Description length constraint now handled during input validation.
         this.description = description;
     }
 
@@ -206,7 +194,7 @@ CHECK ON THIS LATER*/
     }
 
     /**
-     * Assigns a geographic location to the mood entry.
+     * Assigns latitude and longitude to the mood event.
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
@@ -214,12 +202,15 @@ CHECK ON THIS LATER*/
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
     public String getLocation() {
         return location;
     }
+
     public void setLocation(String location) {
         this.location = location;
     }
+
     public String getUsername() {
         return username;
     }
