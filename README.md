@@ -4,12 +4,12 @@
 
 | Name        | CCID   | GitHub Username |
 | ----------- | ------ | --------------- |
-|  - |-  |   -   |
+|Joel Omari |mwananko  |Joel-III   |
 | Seeratpreet Kaur | seeratpr | seeratkaursamra     |
-| - | - | -     |
-| Joel Omari | mwananko | Joel-III     |
+|Titobiloluwa Adeniji| titobilo | tadeniji3     |
 | Oliver Moore | ormoore | OliverMoore13     |
-| Titobiloluwa Adeniji | titobilo | tadeniji3     |
+|  |  |     |
+|  |  |     |
 
 Mohammed Al Robiay (malrobia):moeongit Contributed till Project Part 3
 Shza El Maadawy (shza): SamyKader Contributed till Project Part 2
