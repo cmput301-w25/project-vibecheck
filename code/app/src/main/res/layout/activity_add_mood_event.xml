@@ -1,174 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/add_mood_event_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D4EAFF"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#D4EAFF">
 
-
-    <!-- Dropdown for selecting mood -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/salsa"
-        android:text="Log Your Mood"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/salsa"
-        android:text="Select Mood:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <RelativeLayout
-        android:id="@+id/mood_background"
+    <!-- Top Bar with Back Button -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/add_mood_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:orientation="horizontal"
         android:background="@color/white"
-        android:padding="4dp">
+        android:elevation="4dp"
+        android:padding="12dp">
 
-        <!-- Mood Dropdown, padding leaves space for emoji -->
-        <Spinner
-            android:id="@+id/dropdown_mood"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingEnd="48dp"
-            android:background="@android:color/transparent"
-            android:spinnerMode="dropdown" />
-
-        <!-- Mood Emoji Display -->
-        <TextView
-            android:id="@+id/mood_emoji"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:text=""
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <ImageView
+                android:id="@+id/button_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="Back Button"
+                android:src="@drawable/backarrow_icon"/>
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/salsa"
+                android:paddingStart="42sp"
+                android:text="Log Your Mood"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-    <!-- Input for optional trigger -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/salsa"
-        android:text="Reason (optional):"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <EditText
-        android:id="@+id/input_trigger"
+    <!-- Scrollable Content -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/login_rounded_rectangle"
-        android:hint="Enter reason"
-        android:inputType="text"
-        android:padding="8dp" />
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-    <!-- Input for optional description -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/salsa"
-        android:text="Description (optional):"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <EditText
-        android:id="@+id/input_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/login_rounded_rectangle"
-        android:gravity="top|start"
-        android:hint="Enter description"
-        android:inputType="textMultiLine"
-        android:maxLength="200"
-        android:minHeight="50dp"
-        android:padding="12dp"
-        android:scrollbars="vertical"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/salsa"
-        android:text="Social Situation (Optional):"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <!-- Dropdown for social situation -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/spinner_background"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:layout_marginBottom="24dp">
-
-        <Spinner
-            android:id="@+id/dropdown_social"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/transparent"
-            android:spinnerMode="dropdown" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </RelativeLayout>
+            <!-- Mood Selection -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Mood:"
+                android:textSize="18sp"
+                android:fontFamily="@font/salsa"
+                android:layout_marginBottom="8dp" />
 
-    <!-- Save Button -->
+            <RelativeLayout
+                android:id="@+id/mood_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="4dp">
 
-    <!-- Back Button -->
+                <Spinner
+                    android:id="@+id/dropdown_mood"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingEnd="48dp"
+                    android:background="@android:color/transparent"
+                    android:spinnerMode="dropdown" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/salsa"
-        android:text="Set Private or Public Mood Event"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                <TextView
+                    android:id="@+id/mood_emoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="24sp" />
+            </RelativeLayout>
 
-    <ToggleButton
-        android:id="@+id/is_public_button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:fontFamily="@font/salsa"
+            <!-- Image Upload Section, Image Preview, Add Photo Button, Remove Photo Button -->
+            <!-- Add Image Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/salsa"
+                android:text="Add Photo (Optional):"
+                android:textSize="18sp" />
 
-        android:text="ToggleButton"
-        android:textOff="Private"
-        android:textOn="Public"
-        android:textSize="24sp" />
+            <!-- Image Preview -->
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:background="#D4EAFF"
+                android:layout_gravity="center"
+                android:src="@drawable/add_post_icon"
+                android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/button_save_mood"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/white"
-        android:fontFamily="@font/salsa"
-        android:text="Save Mood"
-        android:textColor="@color/black" />
+            <!-- Add Photo Button -->
+            <Button
+                android:id="@+id/button_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose Photo"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/button_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fontFamily="@font/salsa"
-        android:text="Back"
-        android:textColor="@color/black" />
+            <!-- Remove Photo Button -->
+            <Button
+                android:id="@+id/button_remove_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remove Photo"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"/>
 
+
+            <!-- Reason Input -->
+            <TextView
+                android:id="@+id/add_reason_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/salsa"
+                android:text="Reason (optional):"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/input_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_rounded_rectangle"
+                android:gravity="top|start"
+                android:hint="Enter reason"
+                android:inputType="textMultiLine"
+                android:maxLength="200"
+                android:minHeight="50dp"
+                android:padding="12dp"
+                android:scrollbars="vertical"
+                android:textSize="14sp" />
+
+            <!-- Social Situation Dropdown -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Social Situation (Optional):"
+                android:textSize="18sp"
+                android:fontFamily="@font/salsa"
+                android:layout_marginTop="12dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="4dp">
+
+                <Spinner
+                    android:id="@+id/dropdown_social"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:spinnerMode="dropdown" />
+            </RelativeLayout>
+
+
+
+            <!-- Location Label -->
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Location (optional):"
+                android:textSize="18sp"
+                android:fontFamily="@font/salsa"
+                android:layout_marginTop="12dp" />
+
+            <!-- Location Autocomplete Fragment -->
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                tools:ignore="MissingClass" />
+
+            <!-- Public or Private Setting Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Private or Public Mood Event"
+                android:textSize="18sp"
+                android:fontFamily="@font/salsa"
+                android:layout_marginTop="12dp" />
+
+            <!-- Privacy Toggle -->
+            <ToggleButton
+                android:id="@+id/is_public_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textOn="Public"
+                android:textOff="Private"
+                android:textSize="24sp" />
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/button_save_mood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Mood"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginTop="12dp"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

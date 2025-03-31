@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/home_background_blue">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center|fill_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/follow_requests_back_arrow"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/back_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:fontFamily="@font/salsa"
+            android:textSize="32dp"
+            />
+
+    </LinearLayout>
+
+    <!-- Follow Requests -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/follow_requests_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        tools:listitem="@layout/fragment_follow_request" />
+
+</LinearLayout>

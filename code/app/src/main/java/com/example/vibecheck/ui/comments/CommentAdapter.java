@@ -47,6 +47,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         } else {
             holder.commentTime.setText("Just now");
         }
+
+        //Attempt to get the display name of the user associated with the comment
+        String username = comment.getUsername();
+        MoodUtils.getDisplayName(username, displayName -> {
+            if (displayName != null) {
+                holder.commentDisplayName.setText(displayName);
+            }
+        });
     }
 
     @Override
@@ -59,4 +67,3 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         notifyDataSetChanged();
     }
 }
-

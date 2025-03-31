@@ -2,7 +2,7 @@
  * Mood.java
  *
  * This class represents a mood event recorded by the user, including details such as
- * emotional state, social situation, timestamp, optional trigger, description, location,
+ * emotional state, social situation, timestamp, optional reason (description), location,
  * and an optional image. It is designed to be stored in Firestore and supports serialization.
  *
  * Outstanding Issues:
@@ -12,6 +12,7 @@ package com.example.vibecheck.ui.moodevents;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -38,10 +39,11 @@ public class Mood {
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, LARGE_GROUP;
+        NOINPUT, ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE;
 
         public String socialSituationToString() {
             switch (this) {
+                case NOINPUT: return "N/A";
                 case ALONE: return "Alone";
                 case ONE_TO_ONE: return "One-to-One";
                 case SMALL_GROUP: return "Small Group";
@@ -52,6 +54,7 @@ public class Mood {
 
         public static SocialSituation socialSituationToEnum(String socialSituationString) {
             switch (socialSituationString) {
+                case "N/A": return NOINPUT;
                 case "Alone": return ALONE;
                 case "One-to-One": return ONE_TO_ONE;
                 case "Small Group": return SMALL_GROUP;
@@ -63,16 +66,16 @@ public class Mood {
 
     private Date timestamp;
     private MoodState moodState;
-    private String trigger;
     private SocialSituation socialSituation;
-    private String description;
-    private byte[] image;
+    private String description; //This is the mood Reason
+    private List<Integer> image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
+    private String location;
     private String username;
     private String moodId;
-    private boolean isPublic; //Use in implementation of public/private mood events later
+    private boolean isPublic; //if the mood is public or not
 
     /**
      * No-argument constructor required by Firestore for serialization.
@@ -125,14 +128,6 @@ public class Mood {
         this.moodState = moodState;
     }
 
-    public String getTrigger() {
-        return trigger;
-    }
-
-    public void setTrigger(String trigger) {
-        this.trigger = trigger;
-    }
-
     public SocialSituation getSocialSituation() {
         return socialSituation;
     }
@@ -151,6 +146,7 @@ public class Mood {
      * @throws IllegalArgumentException if the description exceeds constraints.
      */
     public void setDescription(String description) {
+/*
         // Check for null or empty description
         if (description == null || description.trim().isEmpty()) {
             this.description = null;
@@ -160,21 +156,42 @@ public class Mood {
         if (description.length() > 200) {
             throw new IllegalArgumentException("Description must not exceed 200 characters.");
         }
-
+CHECK ON THIS LATER*/
+        // Removed the strict constraint to avoid crashes during Firestore deserialization.
         this.description = description;
     }
 
-    public byte[] getImage() {
+    /**
+     * Retrieves the mood image, stored as a list of integers in firestore, and converts it to a byte array.
+     * @return
+     *      Returns a byte array representing the mood image.
+     */
+    public byte[] getImageByteArr() {
+        // If the mood doesn't have an image, return null
+        if (image == null) {
+            return null;
+        }
+
+        // Convert the List<Integer> to a byte array
+        byte[] byteArray = new byte[image.size()];
+        // Convert each Integer in the List to a byte and store in the byte array
+        for (int i = 0; i < image.size(); i++) {
+            byteArray[i] = (byte) (image.get(i) & 0xFF);
+        }
+        return byteArray;
+    }
+
+    public List<Integer> getImage() {
         return image;
     }
 
     /**
      * Sets the mood image while ensuring it adheres to the size limit.
-     * @param image A byte array representing the image.
+     * @param image A list of integers representing the image.
      * @throws IllegalArgumentException if the image size exceeds the allowed limit.
      */
-    public void setImage(byte[] image) {
-        if (image != null && image.length > MAX_IMAGE_SIZE) {
+    public void setImage(List<Integer> image) {
+        if (image != null && image.size() > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("Image must be under 65536 bytes.");
         }
         this.image = image;
@@ -193,11 +210,16 @@ public class Mood {
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
-    public void setLocation(Double latitude, Double longitude) {
+    public void setLatAndLong(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
     public String getUsername() {
         return username;
     }
@@ -223,7 +245,6 @@ public class Mood {
         return "Mood{" +
                 "timestamp=" + timestamp +
                 ", moodState=" + moodState +
-                ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
                 ", image=" + (image != null ? "attached" : "none") +

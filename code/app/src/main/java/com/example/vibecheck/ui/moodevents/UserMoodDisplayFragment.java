@@ -9,6 +9,8 @@ to change page is back button inaccessable
 
 package com.example.vibecheck.ui.moodevents;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.annotation.NonNull;
@@ -49,8 +52,12 @@ import java.util.List;
  * Fragment to display a user's mood event.
  */
 public class UserMoodDisplayFragment extends Fragment{
-    private TextView usernameText, moodDate, moodType, moodTrigger, moodDescription, socialSituation, commentsLabel;
-    private ImageView backButton;
+
+    //TextViews for labels
+    private TextView moodReasonLabel, socialSituationLabel, locationLabel, commentsLabel;
+    //TextViews for mood event data
+    private TextView usernameText, moodDate, moodType, moodDescription, socialSituation, locationText;
+    private ImageView backButton, moodImage;
     private RelativeLayout topBar;
     private ListenerRegistration moodListener;
     private FirebaseFirestore db;
@@ -64,6 +71,10 @@ public class UserMoodDisplayFragment extends Fragment{
 
     private CommentAdapter commentAdapter;
     private List<Comment> commentList = new ArrayList<>();
+    private String moodEventUsername;
+
+    private CardView moodImageCard;
+
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -87,6 +98,14 @@ public class UserMoodDisplayFragment extends Fragment{
     }
 
 
+    /**
+     * Initializes ui elements, loads the mood event from Firestore, dynamically fetches the display name of the mood post's creator.
+     * Loads comments from Firestore. Handles post comment and back button presses.
+     *
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -102,11 +121,20 @@ public class UserMoodDisplayFragment extends Fragment{
         }
         loadMoodEvent(moodEventId);
 
+        MoodUtils.getDisplayName(moodEventUsername, displayName -> {
+            if (displayName != null) {
+                usernameText.setText(displayName + "'s Mood");
+            }
+        });
+
         //Initialize UI elements
         usernameText = view.findViewById(R.id.username_mood_title);
+        moodReasonLabel = view.findViewById(R.id.mood_reason_label);
+        socialSituationLabel = view.findViewById(R.id.social_situation_label);
+        locationLabel = view.findViewById(R.id.location_label);
+        locationText = view.findViewById(R.id.location_text);
         moodDate = view.findViewById(R.id.mood_date);
         moodType = view.findViewById(R.id.mood_type);
-        moodTrigger = view.findViewById(R.id.mood_trigger);
         moodDescription = view.findViewById(R.id.mood_description);
         socialSituation = view.findViewById(R.id.social_situation);
         backButton = view.findViewById(R.id.back_button);
@@ -114,18 +142,33 @@ public class UserMoodDisplayFragment extends Fragment{
         moodDescriptionCard = view.findViewById(R.id.mood_description_card);
         topBar = view.findViewById(R.id.view_mood_topbar);
         commentsLabel = view.findViewById(R.id.comments_label);
-
+        moodImageCard = view.findViewById(R.id.mood_image_card);
+        moodImage = view.findViewById(R.id.mood_image);
         recyclerView = view.findViewById(R.id.comment_list);
         commentInput = view.findViewById(R.id.comment_input);
         sendButton = view.findViewById(R.id.send_comment_button);
 
+        //Initialize comment adapter
         commentAdapter = new CommentAdapter(commentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(commentAdapter);
 
+        //Set optional attribute labels as invisible initially, then make them visible when their elements are present in the mood event
+        moodReasonLabel.setVisibility(View.GONE);
+        socialSituationLabel.setVisibility(View.GONE);
+        locationLabel.setVisibility(View.GONE);
 
+        //Set optional attributes as invisible initially, then make them visible when they are not null or empty
+        moodDescription.setVisibility(View.GONE);
+        socialSituation.setVisibility(View.GONE);
+        moodImageCard.setVisibility(View.GONE);
+        moodImage.setVisibility(View.GONE);
+        locationText.setVisibility(View.GONE);
+
+        //Handle send button click
         sendButton.setOnClickListener(v -> saveComment());
 
+        //Load comments
         loadComments();
         if (commentList.isEmpty()) {
             commentsLabel.setText("Comments (No Comments Yet)");
@@ -133,16 +176,12 @@ public class UserMoodDisplayFragment extends Fragment{
             commentsLabel.setText("Comments");
         }
 
-        //Load the mood event from Firestore
-        //loadMoodEvent(moodEventId);
-
         //Handle back button click
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_home);
         backButton.setOnClickListener(v -> navController.popBackStack());
     }
 
 
-    //I MIGHT CONSIDER DOING A FALLBACK PLAN FOR THIS
     /**
      * Loads a mood event from Firestore and updates the UI accordingly.
      * @param moodEventId
@@ -164,6 +203,7 @@ public class UserMoodDisplayFragment extends Fragment{
                         username = "N/A";
                     }
                     usernameText.setText(username + "'s Mood");
+                    moodEventUsername = username;
 
                     //Attempts to find and set the display name of the user associated with the mood
                     db.collection("users")
@@ -196,21 +236,43 @@ public class UserMoodDisplayFragment extends Fragment{
                     topBar.setBackgroundColor(moodColor);
                     moodDescriptionCard.setCardBackgroundColor(moodColor);
 
-                    //Only update trigger, description, and social situation if they are not null or empty
-                    if (mood.getTrigger() != null && !mood.getTrigger().trim().isEmpty()) {
-                        moodTrigger.setText(mood.getTrigger());
-                    } else {
-                        moodTrigger.setText("N/A");
-                    }
+                    //Only set the reason, social situation, location if they are not null or empty, if any are their views become visible
                     if (mood.getDescription() != null && !mood.getDescription().trim().isEmpty()) {
                         moodDescription.setText(mood.getDescription());
+                        moodReasonLabel.setVisibility(View.VISIBLE);
+                        moodDescription.setVisibility(View.VISIBLE);
                     } else {
                         moodDescription.setText("N/A");
                     }
+
                     Mood.SocialSituation foundSocialSituation = mood.getSocialSituation();
-                    if (mood.getSocialSituation() != null && !foundSocialSituation.socialSituationToString().trim().isEmpty()) {
+                    if (mood.getSocialSituation() != null &&
+                            !foundSocialSituation.socialSituationToString().trim().isEmpty() &&
+                            !foundSocialSituation.equals(Mood.SocialSituation.NOINPUT)) {
                         socialSituation.setText(foundSocialSituation.socialSituationToString());
+                        socialSituationLabel.setVisibility(View.VISIBLE);
+                        socialSituation.setVisibility(View.VISIBLE);
+                    } else {
+                        socialSituation.setText("N/A");
                     }
+
+                    // Obtain the location from the snapshot if available
+                    String location = snapshot.getString("location");
+                    if (location != null && !location.trim().isEmpty()) {
+                        locationText.setText(location);
+                        locationLabel.setVisibility(View.VISIBLE);
+                        locationText.setVisibility(View.VISIBLE);
+                    }
+
+                    //Set mood image if it exists
+                    if (mood.getImageByteArr() != null) {
+                        byte[] imageBytes = mood.getImageByteArr();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        moodImage.setImageBitmap(bitmap);
+                        moodImageCard.setVisibility(View.VISIBLE);
+                        moodImage.setVisibility(View.VISIBLE);
+                    }
+
                 }
             }
         });
@@ -228,6 +290,7 @@ public class UserMoodDisplayFragment extends Fragment{
             return;
         }
 
+        //Query the database for comments associated with the mood ID
         db.collection("comments")
                 .whereEqualTo("moodEventId", moodId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -238,6 +301,7 @@ public class UserMoodDisplayFragment extends Fragment{
                         return;
                     }
 
+                    //Clear the comment list and add the new comments
                     commentList.clear();
                     for (QueryDocumentSnapshot doc : snapshots) {
                         try {
@@ -248,8 +312,8 @@ public class UserMoodDisplayFragment extends Fragment{
                         } catch (Exception e) {
                             Log.e("Comments", "Failed to parse comment document: " + doc.getId(), e);
                         }
-
                     }
+                    //Update the UI
                     commentAdapter.notifyDataSetChanged();
                     if (commentList.isEmpty()) {
                         commentsLabel.setText("Comments (No Comments Yet)");
@@ -258,7 +322,6 @@ public class UserMoodDisplayFragment extends Fragment{
                     }
                 });
     }
-
 
 
     /**

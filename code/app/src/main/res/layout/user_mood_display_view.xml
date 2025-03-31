@@ -24,14 +24,14 @@
             android:fontFamily="@font/salsa"
             android:text="username's Mood"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <!-- Back Button -->
         <ImageView
             android:id="@+id/back_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="2dp"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/back_button"
             android:layout_alignStart="@id/back_button"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_marginEnd="6dp"
                 android:text="Date:"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/mood_date"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:hint="N/A"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -86,7 +86,7 @@
             android:padding="12dp"
             android:text="😃 Mood Type"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -103,6 +103,7 @@
             android:orientation="vertical">
 
             <!-- Trigger -->
+            <!--
             <TextView
                 android:id="@+id/mood_reason_label"
                 android:layout_width="wrap_content"
@@ -111,6 +112,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/mood_trigger"
@@ -121,12 +123,13 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"/>
+            -->
 
             <!-- Image -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/mood_image_card"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
@@ -142,13 +145,13 @@
 
             <!-- Description Label -->
             <TextView
-                android:id="@+id/mood_description_label"
+                android:id="@+id/mood_reason_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Description:"
+                android:text="Reason:"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <!-- Description Card -->
@@ -164,10 +167,10 @@
                     android:id="@+id/mood_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No description available."
-                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:text="No reason available."
                     android:textColor="@color/black"
-                    android:padding="12dp"/>
+                    android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
 
             <!-- Social Situation -->
@@ -178,7 +181,7 @@
                 android:layout_marginTop="12dp"
                 android:text="Social Situation:"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -188,8 +191,27 @@
                 android:layout_marginTop="1dp"
                 android:hint="N/A"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="italic"/>
+                android:textSize="17sp" />
+
+            <!-- Location -->
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Location:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/location_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:hint="N/A"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
 
             <!-- Comments Header -->
             <TextView
@@ -199,7 +221,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Comments"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
 
@@ -207,40 +229,42 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comment_list"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="8dp"
                 android:overScrollMode="always"
                 android:scrollbars="vertical" />
-
-            <!-- Comment Input Bar -->
-            <LinearLayout
-                android:id="@+id/comment_input_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/comment_input"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="Write a comment..."
-                    android:maxLength="200"
-                    android:background="@color/white"
-                    android:padding="10dp"
-                    android:textColor="@color/black" />
-
-                <ImageButton
-                    android:id="@+id/send_comment_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/send_icon"
-                    android:contentDescription="Send"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Comment Input Bar -->
+    <LinearLayout
+        android:id="@+id/comment_input_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/comment_input"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="Write a comment..."
+            android:maxLength="200"
+            android:padding="10dp"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/send_comment_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Send"
+            android:padding="8dp"
+            android:src="@drawable/send_icon" />
+    </LinearLayout>
 </LinearLayout>
 
