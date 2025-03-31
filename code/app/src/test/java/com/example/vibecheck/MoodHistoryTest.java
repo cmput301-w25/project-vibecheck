@@ -176,5 +176,4 @@ public class MoodHistoryTest {
         assertEquals(stateStrings, MoodFilterFragment.toStringList(stateStrings));
     }
 
-
 }

@@ -26,6 +26,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Class for MoodHistoryActivity
+ */
 public class MoodHistoryActivity extends AppCompatActivity implements MoodFilterFragment.MoodFilterDialogListener{
 
     private ArrayList<MoodHistoryEntry> dataList;
@@ -46,7 +49,13 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
     private MoodHistory userHistory;
     private Singleton singleton;
 
-
+    /**
+     * Method that is run when Dialog is about to be created
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +84,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
         String username = currentUser.getDisplayName();
         Task<QuerySnapshot> collection = db.collection("users/"+currentUser.getUid()+"/MoodHistory").get();
         collection.addOnSuccessListener(querySnapshot -> {
+            // Adding each mood to mood history
             for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                 Date timestamp = document.getTimestamp("timestamp").toDate();
                 Mood.MoodState moodState = Mood.MoodState.valueOf((String) document.get("moodState"));
@@ -83,6 +93,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
                 String description = (String) document.get("description");
                 Double latitude = document.getDouble("latitude");
                 Double longitude = document.getDouble("longitude");
+                String displayName = (String) document.get("username");
                 String documentId = document.getId();
 
                 Mood mood = new Mood(timestamp,moodState);
@@ -91,6 +102,7 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
                 mood.setDescription(description);
                 mood.setLocation(latitude, longitude);
                 mood.setMoodId(documentId);
+                mood.setUsername(displayName);
 
                 // Ensure Mood Entries Load with Colors and Emojis
                 moodHistoryEntryAdapter.add(new MoodHistoryEntry(mood));
@@ -143,6 +155,11 @@ public class MoodHistoryActivity extends AppCompatActivity implements MoodFilter
 
     }
 
+    /**
+     * Filters MoodHistory based on states
+     * @param states
+     *      Mood states to filter the MoodHistory on
+     */
     @Override
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;

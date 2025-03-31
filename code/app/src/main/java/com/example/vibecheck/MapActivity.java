@@ -40,6 +40,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class manages the mood map activity
+ */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, MoodFilterFragment.MoodFilterDialogListener {
 
     private GoogleMap mMap;
@@ -60,7 +63,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ArrayList<Mood.MoodState> states = new ArrayList<>();
     private Singleton singleton;
 
-
+    /**
+     * Method that is run where activity is created
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +164,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
+     * @param googleMap Map to manipulate
+     *                  once ready
+     *
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -240,7 +252,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     }
                 });
 
-
+        //Toggles between personal map and friends map
         toggle.setOnClickListener(v -> {
             if(toggle.isChecked()){
                 mMap.clear();
@@ -256,7 +268,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
                     if(entry.getMood().getLatitude() != null) {
                         LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(marker));
+                        mMap.addMarker(new MarkerOptions().position(marker).title(entry.getMood().getDescription()));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                     }
                 }
@@ -265,16 +277,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         });
 
-
+        // Close mood history activity and return to home screen
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
 
     }
 
+    /**
+     * Filters Mood history based on selected Mood states
+     * @param states
+     *      Mood states to filter on.
+     */
     @Override
     public void filter(ArrayList<Mood.MoodState> states) {
         this.states = states;
         singleton.setStates(states);
         userHistory.filterByMood(states);
         mMap.clear();
+        //Populating Map
         for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
             if(entry.getMood().getLatitude() != null) {
                 LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
