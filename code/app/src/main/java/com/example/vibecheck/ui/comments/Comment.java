@@ -1,3 +1,10 @@
+/**
+ * This java object class represents a comment on a mood event. It constructs a comment object containing the comment text, comment ID,
+ * the mood event ID of the mood event it belongs to, the Firebase UID and username of the commenter, and the time of creation as a timestamp.
+ *
+ * No outstanding issues with this class.
+ */
+
 package com.example.vibecheck.ui.comments;
 
 import java.util.Date;
@@ -6,7 +13,7 @@ public class Comment {
 
     private String commentID;;      // ID of the comment
     private String moodEventId;    // The ID of the mood this comment is attached to
-    private String userId;         // Firebase UID of the commenting user, MAY NOT NEED THIS IF I USE USERNAME
+    private String userId;         // Firebase UID of the commenting user
     private String username;       // The commenter's chosen unique username
     private String commentText;    // The actual comment
     private  Date timestamp;       // Time of comment creation
@@ -17,25 +24,13 @@ public class Comment {
      */
     public Comment() {}
 
-    /*
+    /**
      * Constructor for a comment.
-     * @param commentId
      * @param moodEventId
      * @param userId
      * @param username
-     * @param displayName
      * @param commentText
-
-    public Comment(String commentId, String moodEventId, String userId, String username, String displayName, String commentText) {
-        this.commentId = commentId;
-        this.moodEventId = moodEventId;
-        this.userId = userId;//MAY NOT NEED THIS IF I USE USERNAME
-        this.username = username;
-        this.commentText = commentText;
-        this.timestamp = new Date();
-    }
-    */
-
+     */
     public Comment(String moodEventId, String userId, String username, String commentText) {
         this.moodEventId = moodEventId;
         this.userId = userId;
@@ -107,12 +102,4 @@ public class Comment {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-
-    /* IMPLEMENT THIS TO GET THE TIME SINCE THE USER POSTED FOR THE COMMENT DISPLAY
-    public String getTimeSincePosting() {
-        long currentTime = System.currentTimeMillis();
-        return DateFormat.getDateTimeInstance().format(currentTime);
-    }
-
-     */
 }
