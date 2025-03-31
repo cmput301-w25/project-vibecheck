@@ -84,34 +84,63 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </RelativeLayout>
+
+            <!-- Image Upload Section, Image Preview, Add Photo Button, Remove Photo Button -->
+            <!-- Add Image Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/salsa"
+                android:text="Add Photo (Optional):"
+                android:textSize="18sp" />
+
+            <!-- Image Preview -->
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:background="#D4EAFF"
+                android:layout_gravity="center"
+                android:src="@drawable/add_post_icon"
+                android:layout_marginTop="8dp" />
+
+            <!-- Add Photo Button -->
+            <Button
+                android:id="@+id/button_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose Photo"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <!-- Remove Photo Button -->
+            <Button
+                android:id="@+id/button_remove_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remove Photo"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
 
             <!-- Reason Input -->
             <TextView
+                android:id="@+id/add_reason_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/salsa"
                 android:text="Reason (optional):"
-                android:textSize="18sp"
-                android:fontFamily="@font/salsa"
-                android:layout_marginTop="12dp" />
-
-            <EditText
-                android:id="@+id/input_trigger"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Enter reason"
-                android:background="@drawable/login_rounded_rectangle"
-                android:padding="8dp" />
-
-            <!-- Description Input -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description (optional):"
-                android:textSize="18sp"
-                android:fontFamily="@font/salsa"
-                android:layout_marginTop="12dp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/input_description"
@@ -119,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/login_rounded_rectangle"
                 android:gravity="top|start"
-                android:hint="Enter description"
+                android:hint="Enter reason"
                 android:inputType="textMultiLine"
                 android:maxLength="200"
                 android:minHeight="50dp"
@@ -150,45 +179,9 @@
                     android:spinnerMode="dropdown" />
             </RelativeLayout>
 
-            <!-- Image Upload Section, Image Preview, Add Photo Button, Remove Photo Button -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Photo:"
-                android:textSize="18sp"
-                android:fontFamily="@font/salsa"
-                android:layout_marginTop="12dp" />
-
-            <ImageView
-                android:id="@+id/image_preview"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:layout_gravity="center"
-                android:src="@drawable/add_post_icon"
-                android:layout_marginTop="8dp" />
-
-            <Button
-                android:id="@+id/button_add_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose Photo"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:textColor="@color/black" />
-
-            <Button
-                android:id="@+id/button_remove_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Remove Photo"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:textColor="@color/black"
-                android:visibility="gone"/>
 
 
+            <!-- Location Label -->
             <TextView
                 android:id="@+id/location_label"
                 android:layout_width="wrap_content"
@@ -198,6 +191,7 @@
                 android:fontFamily="@font/salsa"
                 android:layout_marginTop="12dp" />
 
+            <!-- Location Autocomplete Fragment -->
             <fragment
                 android:id="@+id/autocomplete_fragment"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -205,18 +199,7 @@
                 android:layout_height="50dp"
                 tools:ignore="MissingClass" />
 
-
-            <!-- Include Location Switch -->
-            <!--
-            <Switch
-                android:id="@+id/location_switch"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/salsa"
-                android:text="Include Current Location"
-                android:textSize="18sp" />
-                -->
-
+            <!-- Public or Private Setting Label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -234,7 +217,7 @@
                 android:textOff="Private"
                 android:textSize="24sp" />
 
-            <!-- Save and Back Buttons -->
+            <!-- Save Button -->
             <Button
                 android:id="@+id/button_save_mood"
                 android:layout_width="match_parent"
@@ -242,18 +225,9 @@
                 android:text="Save Mood"
                 android:background="@color/white"
                 android:textColor="@color/black"
-                android:layout_marginTop="12dp" />
+                android:layout_marginTop="12dp"
+                android:textSize="18sp" />
 
-            <!--
-            <Button
-                android:id="@+id/button_back_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:background="@color/white"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp" />
-                -->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

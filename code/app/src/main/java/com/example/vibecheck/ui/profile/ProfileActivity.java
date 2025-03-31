@@ -16,7 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
 import com.example.vibecheck.ui.home.HomeActivity;
 import com.example.vibecheck.ui.login.LoginActivity;
@@ -44,6 +48,14 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Log.d("ProfileActivity", "onCreate called");
+
+        //Top padding
+        View root = findViewById(R.id.activity_profile_root_layout);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -108,6 +120,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Logout button
         logoutButton.setOnClickListener(view -> {
+            MoodUtils.setCurrentUsername(null);
+            MoodUtils.clearUserMoodHistory();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
@@ -131,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                             Log.d("ProfileActivity", "Firestore returned displayName: " + displayName);
                             if (displayName != null && !displayName.isEmpty()) {
                                 displayNameEditText.setText(displayName);
-                                tvUsername.setText("@" + displayName);
+                                tvUsername.setText("@" + MoodUtils.getCurrentUsername());
                                 originalDisplayName = displayName;
                             } else {
                                 displayNameEditText.setText("No Display Name");

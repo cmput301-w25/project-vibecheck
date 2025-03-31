@@ -30,7 +30,8 @@
     <string name="title_add_mood_event">Create Mood Event</string>
     <string name="title_mood_history">Mood History</string>
     <string name="title_activity_mood_map">MoodMapActivity</string>
+
     <!-- add api key below -->
-    <string name="google_maps_key"></string>
+    <string name="google_maps_key">AIzaSyDOvapion_glRNHcgncyCqoQSZrpoR28Lc</string>
 
 </resources>

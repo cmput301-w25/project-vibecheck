@@ -96,17 +96,20 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             holder.displayNameText.setText(displayName);
         });
 
-        //Set mood trigger text
-        holder.moodTriggerText.setText(mood.getTrigger() != null ? mood.getTrigger() : "No reason");
+        //Set location text
+        holder.locationText.setText(mood.getLocation() != null ? mood.getLocation() : "Location: N/A");
 
-        //Set mood description text
-        holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No description");
+        //Set mood reason text
+        holder.moodDescriptionText.setText(mood.getDescription() != null ? mood.getDescription() : "No reason");
 
         //Change background color based on mood state
         holder.moodPostContainer.setBackgroundColor(MoodUtils.getMoodColor(holder.itemView.getContext(), mood.getMoodState()));
 
         //Set emoji based on mood state
         holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
+
+        //Set date text
+        holder.dateText.setText(mood.getFormattedTimestamp());
 
         //Handle click on mood post
         holder.homeScreenMoodPost.setOnClickListener(v -> {
@@ -138,7 +141,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      * ViewHolder for the home screen recycler view.
      */
     static class HomeScreenPostViewHolder extends RecyclerView.ViewHolder {
-        TextView displayNameText, moodTriggerText, moodDescriptionText, moodEmoji;
+        TextView displayNameText, moodDescriptionText, moodEmoji, dateText, locationText;
         RelativeLayout moodPostContainer;
         LinearLayout homeScreenMoodPost;
 
@@ -151,9 +154,10 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             super(itemView);
             homeScreenMoodPost = itemView.findViewById(R.id.home_screen_mood_post);
             displayNameText = itemView.findViewById(R.id.username);
-            moodTriggerText = itemView.findViewById(R.id.moodReasonText);
+            locationText = itemView.findViewById(R.id.location);
             moodDescriptionText = itemView.findViewById(R.id.moodDescriptionText);
             moodEmoji = itemView.findViewById(R.id.moodEmoji);
+            dateText = itemView.findViewById(R.id.mood_date);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);
         }
     }

@@ -25,6 +25,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.vibecheck.MapActivity;
 import com.example.vibecheck.ui.history.Singleton;
+import com.example.vibecheck.MapActivityFragment;
 import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.profile.ProfileActivity;
@@ -115,6 +116,4 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

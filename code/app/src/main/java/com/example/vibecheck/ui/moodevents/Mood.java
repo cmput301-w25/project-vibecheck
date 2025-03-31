@@ -2,7 +2,7 @@
  * Mood.java
  *
  * This class represents a mood event recorded by the user, including details such as
- * emotional state, social situation, timestamp, optional trigger, description, location,
+ * emotional state, social situation, timestamp, optional reason (description), location,
  * and an optional image. It is designed to be stored in Firestore and supports serialization.
  *
  * Outstanding Issues:
@@ -62,19 +62,17 @@ public class Mood {
                 default: return null;
             }
         }
-
-        //ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
     private MoodState moodState;
-    private String trigger;
     private SocialSituation socialSituation;
-    private String description;
+    private String description; //This is the mood Reason
     private List<Integer> image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
+    private String location;
     private String username;
     private String moodId;
     private boolean isPublic; //if the mood is public or not
@@ -130,14 +128,6 @@ public class Mood {
         this.moodState = moodState;
     }
 
-    public String getTrigger() {
-        return trigger;
-    }
-
-    public void setTrigger(String trigger) {
-        this.trigger = trigger;
-    }
-
     public SocialSituation getSocialSituation() {
         return socialSituation;
     }
@@ -176,7 +166,7 @@ CHECK ON THIS LATER*/
      * @return
      *      Returns a byte array representing the mood image.
      */
-    public byte[] getImage() {
+    public byte[] getImageByteArr() {
         // If the mood doesn't have an image, return null
         if (image == null) {
             return null;
@@ -189,6 +179,10 @@ CHECK ON THIS LATER*/
             byteArray[i] = (byte) (image.get(i) & 0xFF);
         }
         return byteArray;
+    }
+
+    public List<Integer> getImage() {
+        return image;
     }
 
     /**
@@ -216,11 +210,16 @@ CHECK ON THIS LATER*/
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
-    public void setLocation(Double latitude, Double longitude) {
+    public void setLatAndLong(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
     public String getUsername() {
         return username;
     }
@@ -246,7 +245,6 @@ CHECK ON THIS LATER*/
         return "Mood{" +
                 "timestamp=" + timestamp +
                 ", moodState=" + moodState +
-                ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
                 ", image=" + (image != null ? "attached" : "none") +
@@ -263,23 +261,4 @@ CHECK ON THIS LATER*/
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
         return sdf.format(timestamp);
     }
-/*
-    /**
-     * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
-
-    public String socialSituationToString() {
-        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
-    }
-
-    /**
-     * Converts the mood state to a string representation.
-     * @return
-     *      Returns a string representation of the mood state, with the first letter capitalized.
-
-    public String moodStateToString() {
-        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
-    }
-*/
 }

@@ -10,48 +10,151 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vibecheck.MoodUtils;
 import com.example.vibecheck.R;
+import com.example.vibecheck.ui.history.MoodHistoryEntry;
+import com.example.vibecheck.ui.home.HomeScreenPostAdapter;
+import com.example.vibecheck.ui.moodevents.Mood;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Adapter for the MoodHistory entries
+ * Adapter for the history screen recycler view. Displays mood history entries.
  */
+public class MoodHistoryEntryAdapter extends RecyclerView.Adapter<MoodHistoryEntryAdapter.ViewHolder> {
+    private final List<MoodHistoryEntry> moodHistoryList;
+    private final Context context;
+
+    private OnMoodClickListener onMoodClickListener;
+
+    public interface OnMoodClickListener {
+        void onMoodClick(Mood mood);
+    }
+
+    /**
+     * Constructor for the adapter.
+     * @param context
+     * @param moodHistoryList
+     */
+    public MoodHistoryEntryAdapter(Context context, List<MoodHistoryEntry> moodHistoryList, OnMoodClickListener listener) {
+        this.context = context;
+        this.moodHistoryList = moodHistoryList;
+        this.onMoodClickListener = listener;
+    }
+
+    /**
+     * ViewHolder for the history screen recycler view.
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView displayNameText, location, description, moodEmoji, dateText;
+        LinearLayout moodPostContainer;
+
+        /**
+         * Constructor for the ViewHolder
+         * @param itemView
+         */
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            displayNameText = itemView.findViewById(R.id.username);
+            location = itemView.findViewById(R.id.location);
+            description = itemView.findViewById(R.id.moodDescriptionText);
+            moodEmoji = itemView.findViewById(R.id.moodEmoji);
+            dateText = itemView.findViewById(R.id.mood_date);
+            moodPostContainer = itemView.findViewById(R.id.description_background);
+        }
+    }
+
+
+    /**
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return
+     */
+    @NonNull
+    @Override
+    public MoodHistoryEntryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.mood_event, parent, false);
+        return new ViewHolder(view);
+    }
+
+
+    /**
+     * Used to bind mood info to views
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
+    @Override
+    public void onBindViewHolder(@NonNull MoodHistoryEntryAdapter.ViewHolder holder, int position) {
+        MoodHistoryEntry entry = moodHistoryList.get(position);
+        Mood mood = entry.getMood();
+
+        MoodUtils.getDisplayName(mood.getUsername(), displayName -> {
+            holder.displayNameText.setText(displayName);
+        });
+
+        holder.dateText.setText(mood.getFormattedTimestamp());
+
+        if (mood.getLocation() == null) {
+            holder.location.setText("Location: N/A");
+        } else {
+            String locationString = mood.getLocation();
+            holder.location.setText(locationString);
+        }
+
+        holder.description.setText(mood.getDescription());
+
+        int moodColor = MoodUtils.getMoodColor(context, mood.getMoodState());
+        holder.moodPostContainer.setBackgroundColor(moodColor);
+
+        holder.moodEmoji.setText(MoodUtils.getEmojiForMood(mood.getMoodState()));
+
+        // Handle click on mood post
+        holder.itemView.setOnClickListener(v -> {
+            if (mood.getMoodId() == null || mood.getMoodId().isEmpty()) {
+                return;
+            }
+
+            if (onMoodClickListener != null) {
+                onMoodClickListener.onMoodClick(mood);
+            }
+        });
+    }
+
+    public void updateData(List<MoodHistoryEntry> newData) {
+        moodHistoryList.clear();
+        moodHistoryList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return moodHistoryList.size();
+    }
+}
+
+
+
+/*
 public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
 
-    private TextView username;
+    private TextView displayNameText;
     private TextView location;
     private TextView description;
     private LinearLayout moodPostContainer;
     private TextView moodEmoji;
 
-    /**
-     * Constructor for MoodHistoryEntryAdapter
-     * @param context
-     *      The context in which the adapter is running
-     * @param moodHistory
-     *      Mood History that is the basis of the array
-     */
+    private TextView dateText;
+
     public MoodHistoryEntryAdapter(Context context, ArrayList<MoodHistoryEntry> moodHistory) {
         super(context, 0, moodHistory);
     }
 
-    /**
-     * Get a View that displays the data at the specified position in the data set.
-     * @param position The position of the item within the adapter's data set of the item whose view
-     *        we want.
-     * @param convertView The old view to reuse, if possible. Note: You should check that this view
-     *        is non-null and of an appropriate type before using. If it is not possible to convert
-     *        this view to display the correct data, this method can create a new view.
-     *        Heterogeneous lists can specify their number of view types, so that this View is
-     *        always of the right type (see {@link #getViewTypeCount()} and
-     *        {@link #getItemViewType(int)}).
-     * @param parent The parent that this view will eventually be attached to
-     * @return
-     *      Returns this view
-     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -66,12 +169,19 @@ public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
 
         MoodHistoryEntry entry = getItem(position);
 
-        username = view.findViewById(R.id.username);
+        displayNameText = view.findViewById(R.id.username);
         location = view.findViewById(R.id.location);
         description = view.findViewById(R.id.moodDescriptionText);
         moodPostContainer = view.findViewById(R.id.description_background);
         moodEmoji = view.findViewById(R.id.moodEmoji);
-        username.setText(entry.getMood().getUsername());
+        dateText = view.findViewById(R.id.mood_date);
+
+        String username = entry.getMood().getUsername();
+        MoodUtils.getDisplayName(username, displayName -> {
+            displayNameText.setText(displayName);
+        });
+
+        dateText.setText(entry.getMood().getFormattedTimestamp());
 
         if(entry.getMood().getLatitude() == null || entry.getMood().getLongitude() == null){
             location.setText("");
@@ -96,3 +206,5 @@ public class MoodHistoryEntryAdapter extends ArrayAdapter<MoodHistoryEntry> {
     }
 
 }
+
+ */

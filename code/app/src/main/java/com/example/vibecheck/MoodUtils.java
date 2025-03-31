@@ -17,12 +17,13 @@ import android.util.Log;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 
+import com.example.vibecheck.ui.history.MoodHistory;
+import com.example.vibecheck.ui.history.MoodHistoryEntry;
 import com.example.vibecheck.ui.moodevents.Mood;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -34,6 +35,11 @@ public class MoodUtils {
 
     //Static variable to store current username of whoever is logged in
     private static String currentUsername = null;
+
+
+    //Mood history variable to story the current user's mood history
+    private static MoodHistory moodHistory;
+
 
     //Interface for getting display name
     public interface OnDisplayNameFetchedListener {
@@ -204,5 +210,76 @@ public class MoodUtils {
                     listener.onFetched(username); // Return username on failure
                 });
     }
+
+
+    /**
+     * Populates the logged in user's mood history from Firestore. Mood history is set for every user who logs in, cleared upon logout
+     */
+    public static void populateUserMoodHistory() {
+        String username = currentUsername;
+        if (username == null) {
+            Log.e("MoodUtils", "Current username is null. Cannot populate user mood history.");
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("moods")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<MoodHistoryEntry> historyEntries = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        try {
+                            // Convert document to Mood object
+                            Mood mood = snapshot.toObject(Mood.class);
+
+                            // Wrap in MoodHistoryEntry
+                            MoodHistoryEntry entry = new MoodHistoryEntry(mood);
+                            historyEntries.add(entry);
+
+                        } catch (Exception e) {
+                            Log.e("MoodUtils", "Error converting mood document: " + e.getMessage());
+                        }
+                    }
+
+                    // Create or update MoodHistory instance
+                    moodHistory = new MoodHistory(username, historyEntries);
+
+                    Log.d("MoodUtils", "Loaded " + historyEntries.size() + " mood entries for user " + username);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("MoodUtils", "Error getting user mood history: " + e.getMessage());
+                });
+    }
+
+    /**
+     * Clears the user's mood history.
+     */
+    public static void clearUserMoodHistory() {moodHistory = null;}
+
+    /**
+     * @return
+     *      Returns the user's mood history.
+     */
+    public static MoodHistory getUserMoodHistory() {return moodHistory;}
+
+    /**
+     * Uses the history class to add a mood to the current user's mood history.
+     * @param mood
+     */
+    public static void addMoodToUserMoodHistory(Mood mood) {
+        moodHistory.addMoodEvent(mood);
+    }
+
+    /**
+     * Uses the history class to remove a mood from the current user's mood history.
+     * Designed to work with how the delete mood event function is set up.
+     * @param moodToRemove
+     */
+    public static void removeMoodFromUserMoodHistory(Mood moodToRemove) {
+        moodHistory.removeMoodEvent(moodToRemove);
+    }
+
 
 }
