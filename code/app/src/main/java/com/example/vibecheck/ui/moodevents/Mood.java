@@ -2,17 +2,17 @@
  * Mood.java
  *
  * This class represents a mood event recorded by the user, including details such as
- * emotional state, social situation, timestamp, optional reason (description), location,
+ * emotional state, social situation, timestamp, optional trigger, description, location,
  * and an optional image. It is designed to be stored in Firestore and supports serialization.
  *
  * Outstanding Issues:
  */
 
-package com.example.vibecheck.ui.moodevents;
+package com.example.vibecheck;
 
+import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -24,58 +24,28 @@ public class Mood {
      * Represents various emotional states a user can have.
      */
     public enum MoodState {
-        ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM;
-
-        public String moodStateToString() {
-            return this.name().charAt(0) + name().substring(1).toLowerCase();
-        }
-
-        public static MoodState moodStateToEnum(String moodStateString) {
-            return MoodState.valueOf(moodStateString.toUpperCase().trim());
-        }
+        ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
     }
 
     /**
      * Describes the social setting when the mood was recorded.
      */
     public enum SocialSituation {
-        NOINPUT, ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE;
-
-        public String socialSituationToString() {
-            switch (this) {
-                case NOINPUT: return "N/A";
-                case ALONE: return "Alone";
-                case ONE_TO_ONE: return "One-to-One";
-                case SMALL_GROUP: return "Small Group";
-                case LARGE_AUDIENCE: return "Large Audience";
-                default: return null;
-            }
-        }
-
-        public static SocialSituation socialSituationToEnum(String socialSituationString) {
-            switch (socialSituationString) {
-                case "N/A": return NOINPUT;
-                case "Alone": return ALONE;
-                case "One-to-One": return ONE_TO_ONE;
-                case "Small Group": return SMALL_GROUP;
-                case "Large Audience": return LARGE_AUDIENCE;
-                default: return null;
-            }
-        }
+        ALONE, ONE_TO_ONE, SMALL_GROUP, LARGE_AUDIENCE, NOINPUT
     }
 
     private Date timestamp;
     private MoodState moodState;
+    private String trigger;
     private SocialSituation socialSituation;
-    private String description; //This is the mood Reason
-    private List<Integer> image;
+    private String description;
+    // The image field remains commented out; if you use image storage, consider using Blob.
+    // private byte[] image;
     private static final int MAX_IMAGE_SIZE = 65536;
     private Double latitude;
     private Double longitude;
-    private String location;
-    private String username;
-    private String moodId;
-    private boolean isPublic; //if the mood is public or not
+    private String username;  // The username of the logged user who created the mood event.
+    private String documentId;
 
     /**
      * No-argument constructor required by Firestore for serialization.
@@ -94,6 +64,19 @@ public class Mood {
     }
 
     /**
+     * Constructs a mood entry with a specified mood state and the logged user's username.
+     * Use this constructor to ensure the mood event records the username of the user who added it.
+     *
+     * @param moodState The emotional state of the user.
+     * @param username The username (or display name) of the logged-in user.
+     */
+    public Mood(MoodState moodState, String username) {
+        this.timestamp = new Date();
+        this.moodState = moodState;
+        this.username = username;
+    }
+
+    /**
      * Constructs a mood entry with a timestamp and mood state.
      * @param timestamp The date and time the mood was recorded.
      * @param moodState The emotional state of the user.
@@ -103,13 +86,12 @@ public class Mood {
         this.moodState = moodState;
     }
 
-    // Getters and setters
-    public String getMoodId() {
-        return moodId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setMoodId(String moodId) {
-        this.moodId = moodId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public Date getTimestamp() {
@@ -128,6 +110,14 @@ public class Mood {
         this.moodState = moodState;
     }
 
+    public String getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(String trigger) {
+        this.trigger = trigger;
+    }
+
     public SocialSituation getSocialSituation() {
         return socialSituation;
     }
@@ -141,60 +131,24 @@ public class Mood {
     }
 
     /**
-     * Assigns a description to the mood while ensuring it follows length constraints.
-     * @param description A brief description of the mood event (max 20 characters, 3 words).
-     * @throws IllegalArgumentException if the description exceeds constraints.
+     * Assigns a description to the mood while checking constraints.
+     * If the description is too long (more than 20 characters or more than 3 words), it logs a warning
+     * and truncates the description.
+     *
+     * @param description A brief description of the mood event.
      */
     public void setDescription(String description) {
-/*
-        // Check for null or empty description
-        if (description == null || description.trim().isEmpty()) {
-            this.description = null;
+        if (description == null) {
+            this.description = "";
             return;
         }
-        // Check for description length
-        if (description.length() > 200) {
-            throw new IllegalArgumentException("Description must not exceed 200 characters.");
+        if (description.length() > 20 || description.trim().split("\\s+").length > 3) {
+            Log.w("Mood", "Description exceeds limits: " + description);
+            // Truncate to first 20 characters and the first word (example strategy)
+            this.description = description.substring(0, Math.min(20, description.length())).split("\\s+")[0];
+        } else {
+            this.description = description;
         }
-CHECK ON THIS LATER*/
-        // Removed the strict constraint to avoid crashes during Firestore deserialization.
-        this.description = description;
-    }
-
-    /**
-     * Retrieves the mood image, stored as a list of integers in firestore, and converts it to a byte array.
-     * @return
-     *      Returns a byte array representing the mood image.
-     */
-    public byte[] getImageByteArr() {
-        // If the mood doesn't have an image, return null
-        if (image == null) {
-            return null;
-        }
-
-        // Convert the List<Integer> to a byte array
-        byte[] byteArray = new byte[image.size()];
-        // Convert each Integer in the List to a byte and store in the byte array
-        for (int i = 0; i < image.size(); i++) {
-            byteArray[i] = (byte) (image.get(i) & 0xFF);
-        }
-        return byteArray;
-    }
-
-    public List<Integer> getImage() {
-        return image;
-    }
-
-    /**
-     * Sets the mood image while ensuring it adheres to the size limit.
-     * @param image A list of integers representing the image.
-     * @throws IllegalArgumentException if the image size exceeds the allowed limit.
-     */
-    public void setImage(List<Integer> image) {
-        if (image != null && image.size() > MAX_IMAGE_SIZE) {
-            throw new IllegalArgumentException("Image must be under 65536 bytes.");
-        }
-        this.image = image;
     }
 
     public Double getLatitude() {
@@ -210,55 +164,59 @@ CHECK ON THIS LATER*/
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
-    public void setLatAndLong(Double latitude, Double longitude) {
+    public void setLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    public String getLocation() {
-        return location;
-    }
-    public void setLocation(String location) {
-        this.location = location;
-    }
+
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username of the user who created the mood event.
+     * This should be the logged user's username or display name.
+     * @param username The username of the user.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-
-    /**
-     * @return
-     *      Returns a string representation of the mood entry.
-     */
     @Override
     public String toString() {
         return "Mood{" +
                 "timestamp=" + timestamp +
                 ", moodState=" + moodState +
+                ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", description='" + description + '\'' +
-                ", image=" + (image != null ? "attached" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
+                ", username='" + username + '\'' +
                 '}';
     }
 
     /**
      * Formats the timestamp for display.
-     * @return
-     *      Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hour:min am/pm".
+     * @return Returns a formatted string representation of the timestamp in the format "MMM dd, yyyy - hh:mm a".
      */
     public String getFormattedTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a", Locale.getDefault());
         return sdf.format(timestamp);
+    }
+
+    /**
+     * Converts the social situation to a string representation.
+     * @return Returns a string representation of the social situation.
+     */
+    public String socialSituationToString() {
+        return socialSituation.name().charAt(0) + socialSituation.name().substring(1).toLowerCase();
+    }
+
+    /**
+     * Converts the mood state to a string representation.
+     * @return Returns a string representation of the mood state.
+     */
+    public String moodStateToString() {
+        return moodState.name().charAt(0) + moodState.name().substring(1).toLowerCase();
     }
 }
