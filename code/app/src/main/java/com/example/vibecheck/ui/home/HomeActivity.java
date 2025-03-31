@@ -23,7 +23,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.vibecheck.MapActivityFragment;
+import com.example.vibecheck.MapActivity;
+//import com.example.vibecheck.MapActivityFragment;
 import com.example.vibecheck.ui.moodevents.AddMoodEventActivity;
 import com.example.vibecheck.ui.history.MoodHistoryActivity;
 import com.example.vibecheck.ui.profile.ProfileActivity;
@@ -95,8 +96,10 @@ public class HomeActivity extends AppCompatActivity {
 
             } else if (itemId == R.id.navigation_map) {
                 Log.d("HomeActivity", "Opening MapActivity...");
-                Intent intent = new Intent(HomeActivity.this, MapActivityFragment.class);
+                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
                 startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, MapActivityFragment.class);
+                //startActivity(intent);
                 return true;
 
             } else if (itemId == R.id.navigation_profile) {

@@ -39,7 +39,8 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- Search -->
+
+            <!-- Search
             <ImageButton
                 android:id="@+id/icon_search"
                 android:layout_width="50dp"
@@ -47,6 +48,14 @@
                 android:background="@drawable/search_icon"
                 android:backgroundTint="@color/black"
                 android:contentDescription="Search"/>
+            -->
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchview"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                />
 
             <!-- Filter -->
             <ImageButton

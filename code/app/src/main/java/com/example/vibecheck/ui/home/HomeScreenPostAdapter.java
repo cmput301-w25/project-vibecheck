@@ -35,6 +35,7 @@ import java.util.List;
 public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAdapter.HomeScreenPostViewHolder> {
 
     private List<Mood> moodPosts = new ArrayList<>();
+    private List<Mood> moodPostsCopy = new ArrayList<>(moodPosts);
     private OnMoodClickListener onMoodClickListener;
 
     /**
@@ -59,6 +60,7 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
      */
     public void setMoodPosts(List<Mood> newPosts) {
         this.moodPosts = newPosts;
+        this.moodPostsCopy = newPosts;
         notifyDataSetChanged();
     }
 
@@ -158,5 +160,21 @@ public class HomeScreenPostAdapter extends RecyclerView.Adapter<HomeScreenPostAd
             dateText = itemView.findViewById(R.id.mood_date);
             moodPostContainer = itemView.findViewById(R.id.mood_post_container);
         }
+    }
+
+    public void filter(String query) {
+       //moodPosts.clear();
+        List<Mood> filteredMoodPosts = new ArrayList<>();
+        if (query.isEmpty()) {
+            filteredMoodPosts.addAll(moodPostsCopy);
+        } else {
+            for (Mood mood : moodPostsCopy) {
+                if (mood.getDescription() != null && mood.getDescription().toLowerCase().contains(query.toLowerCase())) {
+                    filteredMoodPosts.add(mood);
+                }
+            }
+        }
+        this.moodPosts = filteredMoodPosts;
+        notifyDataSetChanged();
     }
 }
