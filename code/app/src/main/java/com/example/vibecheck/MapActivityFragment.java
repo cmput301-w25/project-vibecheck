@@ -1,3 +1,13 @@
+/**
+ * MapActivityFragment displays a Google Map with markers representing mood events.
+ * <p>
+ * It initializes the map via a SupportMapFragment and, when the map is ready, adds markers
+ * for sample mood events from two MoodHistory objects (one for the user and one for friends).
+ * A toggle button lets the user switch between viewing their own events and their friends' events.
+ * </p>
+ */
+
+
 package com.example.vibecheck;
 
 import androidx.appcompat.widget.AppCompatToggleButton;
@@ -5,37 +15,24 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.vibecheck.ui.history.MoodFilterFragment;
-import com.example.vibecheck.ui.history.MoodHistory;
-import com.example.vibecheck.ui.history.MoodHistoryEntry;
-import com.example.vibecheck.ui.history.MoodHistoryEntryAdapter;
-import com.example.vibecheck.ui.moodevents.Mood;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.vibecheck.databinding.MapFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback, MoodFilterFragment.MoodFilterDialogListener {
+public class MapActivityFragment extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MapFragmentBinding binding;
@@ -46,22 +43,13 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     private TextView label;
     private AppCompatToggleButton toggle;
     private BottomNavigationView bottomNavigationView;
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private FirebaseUser currentUser;
-    private MoodHistory userHistory;
-    private MoodHistory friendsHistory;
-    private ArrayList<Mood.MoodState> states = new ArrayList<>();
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("jo@gmail.com", "joel02");
-        db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         binding = MapFragmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -85,14 +73,8 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
             Log.d("HomeActivity", "BottomNavigationView found successfully.");
         }
 
-        // Handle filter button press
-        filterButton.setOnClickListener(v -> {
-            MoodFilterFragment fragment = MoodFilterFragment.newInstance(states);
-            fragment.show(getSupportFragmentManager(), "");
-        });
 
-        // Handle back button press///////////////////////////////////////////////////////////THIS WILL HAVE TO CHANGE IF I TURN THIS INTO A FRAGMENT
-        backButton.setOnClickListener(view -> finish());
+
 
     }
 
@@ -109,83 +91,34 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        CollectionReference moodHistoryRef = db.collection("users").document(currentUser.getUid()).collection("MoodHistory");
+        ArrayList<MoodHistoryEntry> testList = new ArrayList<>();
+        Mood one = new Mood(Mood.MoodState.BOREDOM);
+        one.setLocation(53.522778, -113.623055);
+        Mood two = new Mood(Mood.MoodState.BOREDOM);
+        two.setLocation(51.522778, -114.623055);
+        testList.add(new MoodHistoryEntry(one));
+        testList.add(new MoodHistoryEntry(two));
+        testList.add(new MoodHistoryEntry(new Mood(Mood.MoodState.ANGER)));
+        MoodHistory userHistory = new MoodHistory("Joel", testList);
 
-        moodHistoryRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        ArrayList<MoodHistoryEntry> moodHistoryList = new ArrayList<>();
-                        userHistory = new MoodHistory(currentUser.getDisplayName(), moodHistoryList);
+        Mood three= new Mood(Mood.MoodState.BOREDOM);
+        three.setLocation(50.522778, -110.623055);
 
-                        // Iterate over the documents in the snapshot
-                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                            // Convert each document to an Item object
-                            Mood mood = document.toObject(Mood.class);
-                            userHistory.addMoodEvent(mood);  // Add the Item to the list
-                        }
-                        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
-                            if(entry.getMood().getLatitude() != null) {
-                                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(marker));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-                            }
-                        }
-                        Log.d("MapActivityFragment", "User's Mood History obtained succesfully");
-
-                    } else {
-                        // Handle error
-                        Log.e("MapActivityFragment", "Failed to obtain User's Mood History obtained succesfully");
-                    }
-                });
-
-        DocumentReference followersRef = db.collection("users").document(currentUser.getUid());
-/*
-        followersRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        List <String> followers = (List<String>) documentSnapshot.get("followers");
-                        ArrayList<MoodHistoryEntry> friends = new ArrayList<>();
-                        friendsHistory = new MoodHistory("Friends", friends);
-
-                        // Iterate over the documents in the snapshot
-                        for (String follower : followers) {
-                            // Convert each document to an Item object
-                            CollectionReference friendHistoryRef = db.collection("users").document(follower).collection("MoodHistory");
-                            friendHistoryRef.get()
-                                    .addOnCompleteListener(innerTask -> {
-                                        if (task.isSuccessful()) {
-                                            QuerySnapshot querySnapshot = innerTask.getResult();
-
-                                            // Iterate over the documents in the snapshot
-                                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                                                // Convert each document to an Item object
-                                                Mood mood = document.toObject(Mood.class);
-                                                friendsHistory.addMoodEvent(mood);  // Add the Item to the list
-                                            }
-
-                                            Log.d("MapActivityFragment", "User's Mood History obtained succesfully");
-
-                                        } else {
-                                            // Handle error
-                                            Log.e("MapActivityFragment", "Failed to obtain User's Mood History obtained succesfully");
-                                        }
-                                    });
-                        }
-                        Log.d("MapActivityFragment", "User's Mood History obtained succesfully");
-
-                    } else {
-                        // Handle error
-                        Log.e("MapActivityFragment", "Failed to obtain User's Mood History obtained succesfully");
-                    }
-                });
+        ArrayList<MoodHistoryEntry> friends = new ArrayList<>();
+        friends.add(new MoodHistoryEntry(three));
+        MoodHistory friendsHistory = new MoodHistory("Friends", friends);
 
 
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
+        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
+            if(entry.getMood().getLatitude() != null) {
+                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
+                mMap.addMarker(new MarkerOptions().position(marker));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+            }
+        }
 
-
-//      mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         toggle.setOnClickListener(v -> {
             if(toggle.isChecked()){
                 mMap.clear();
@@ -210,24 +143,7 @@ public class MapActivityFragment extends FragmentActivity implements OnMapReadyC
 
         });
 
- */
 
-
-
-    }
-
-    @Override
-    public void filter(ArrayList<Mood.MoodState> states) {
-        this.states = states;
-        userHistory.filterByMood(states);
-        mMap.clear();
-        for(MoodHistoryEntry entry: userHistory.getFilteredMoodList()){
-            if(entry.getMood().getLatitude() != null) {
-                LatLng marker = new LatLng(entry.getMood().getLatitude(), entry.getMood().getLongitude());
-                mMap.addMarker(new MarkerOptions().position(marker));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-            }
-        }
 
     }
 }
